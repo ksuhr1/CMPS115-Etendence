@@ -39,7 +39,7 @@
 
 
     <Button
-        android:id="@+id/signUpButton"
+        android:id="@+id/email_sign_up_button"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="400dp"
         android:layout_height="wrap_content"

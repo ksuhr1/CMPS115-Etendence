@@ -21,4 +21,6 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
+    <string name="error_invalid_ID">This student ID is invalid</string>
+    <string name="error_invalid_confirm">This password does not match</string>
 </resources>
