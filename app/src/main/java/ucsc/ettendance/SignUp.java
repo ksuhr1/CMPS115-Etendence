@@ -170,19 +170,24 @@ public class SignUp extends AppCompatActivity implements LoaderCallbacks<Cursor>
         boolean cancel = false;
         View focusView = null;
 
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
+        //checks for confirm
+        if (TextUtils.isEmpty(confirm)) {
+            mConfirmView.setError(getString(R.string.error_field_required));
+            focusView = mConfirmView;
+            cancel = true;
+        } else if (!isConfirmValid(password,confirm)) {
+            mConfirmView.setError(getString(R.string.error_invalid_confirm));
+            focusView = mConfirmView;
             cancel = true;
         }
+
 
         // Check for a valid password
         if (TextUtils.isEmpty(password)) {
             mPasswordView.setError(getString(R.string.error_field_required));
             focusView = mPasswordView;
             cancel = true;
-        } else if (!isPasswordValid(email)) {
+        } else if (!isPasswordValid(password)) {
             mPasswordView.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
@@ -199,12 +204,6 @@ public class SignUp extends AppCompatActivity implements LoaderCallbacks<Cursor>
             cancel = true;
         }
 
-        //checks for valid name
-        if (TextUtils.isEmpty(name)) {
-            mNameView.setError(getString(R.string.error_field_required));
-            focusView = mNameView;
-            cancel = true;
-        }
         //checks for valid ID
         if (TextUtils.isEmpty(id)) {
             mStudentView.setError(getString(R.string.error_field_required));
@@ -215,16 +214,15 @@ public class SignUp extends AppCompatActivity implements LoaderCallbacks<Cursor>
             focusView = mStudentView;
             cancel = true;
         }
-        //checks for confirm
-        if (TextUtils.isEmpty(confirm)) {
-            mConfirmView.setError(getString(R.string.error_field_required));
-            focusView = mConfirmView;
-            cancel = true;
-        } else if (!isConfirmValid(password,confirm)) {
-            mConfirmView.setError(getString(R.string.error_invalid_confirm));
-            focusView = mConfirmView;
+
+        //checks for valid name
+        if (TextUtils.isEmpty(name)) {
+            mNameView.setError(getString(R.string.error_field_required));
+            focusView = mNameView;
             cancel = true;
         }
+
+
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first

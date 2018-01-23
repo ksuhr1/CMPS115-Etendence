@@ -5,95 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ucsc.ettendance.log_in">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
+
         <View
             android:id="@+id/myRectangleView"
             android:layout_width="424dp"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="504dp"
             android:background="@drawable/buttonback"
-            android:layout_alignParentBottom="true"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
     </RelativeLayout>
-
-
-    <Button
-        android:id="@+id/signUpButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="0.5"
-        android:background="@drawable/buttonback"
-        android:fontFamily="sans-serif"
-        android:text="@string/signup"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/background_light"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="@string/signup" />
-
-    <Button
-        android:id="@+id/signInButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="0.5"
-        android:background="@drawable/buttonback"
-        android:fontFamily="sans-serif"
-        android:text="@string/signin"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/background_light"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="@string/signin" />
-
-    <View
-        android:id="@+id/myDivider"
-        android:layout_width="3dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="321dp"
-        android:background="@drawable/divider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
-
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Ettendance"
+        android:text="Add a Class"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@color/mintGreen"
         android:textSize="40sp"
@@ -108,8 +41,35 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintHorizontal_bias="0.048" />
 
+
+    <Button
+        android:id="@+id/addClassButton"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_weight="0.5"
+        android:background="@drawable/buttonback"
+        android:fontFamily="sans-serif"
+        android:text="Add Class"
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textColor="@android:color/background_light"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:text="Add Class" />
+
     <EditText
-        android:id="@+id/email"
+        android:id="@+id/className"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -118,8 +78,8 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/mintGreen"
         android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textEmailAddress"
+        android:hint="Class Name"
+        android:inputType="text"
         android:singleLine="false"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -127,27 +87,49 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.273" />
+        app:layout_constraintVertical_bias="0.221" />
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/classCode"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/mintGreen"
         android:ems="10"
-        android:hint="Password"
-        android:inputType="textPassword"
-        android:fontFamily="sans-serif"
-        android:textColor="@color/colorPrimaryDark"
+        android:hint="Class Code"
+        android:inputType="text"
+        android:singleLine="false"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.366" />
+
+    <EditText
+        android:id="@+id/pin"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorAccent"
+        android:ems="10"
+        android:hint="PIN"
+        android:inputType="number"
         android:backgroundTint="@color/mintGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+
 
 
 </android.support.constraint.ConstraintLayout>
