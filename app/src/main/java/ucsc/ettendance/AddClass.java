@@ -7,7 +7,7 @@ import android.view.View;
 import android.widget.Button;
 
 public class AddClass extends AppCompatActivity {
-
+//katy
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
