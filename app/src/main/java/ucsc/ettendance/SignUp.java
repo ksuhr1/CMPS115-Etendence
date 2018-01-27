@@ -56,6 +56,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth auth;
     private EditText loginInputEmail, loginInputPassword, loginInputName, loginInputID, loginInputConfirm;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
+    View focusView = null;
 
 
     @Override
@@ -97,12 +98,24 @@ public class SignUp extends AppCompatActivity {
         String name = loginInputName.getText().toString().trim();
 
 
+        if(!checkName()) {
+            return;
+        }
+        if(!checkStudentId()) {
+            return;
+        }
         if(!checkEmail()) {
             return;
         }
         if(!checkPassword()) {
             return;
         }
+
+        if(!checkConfirm()) {
+            return;
+        }
+
+
 //        loginInputLayoutEmail.setErrorEnabled(false);
   //      loginInputLayoutPassword.setErrorEnabled(false);
 
@@ -119,7 +132,7 @@ public class SignUp extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.d(TAG,"Authentication failed." + task.getException());
-                            Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
+                            //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
 
                         } else {
                             Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
@@ -133,29 +146,40 @@ public class SignUp extends AppCompatActivity {
 
     private boolean checkEmail() {
         String email = loginInputEmail.getText().toString().trim();
-        if (email.isEmpty() || !isEmailValid(email)) {
-
-//            loginInputLayoutEmail.setErrorEnabled(true);
-//            loginInputLayoutEmail.setError(getString(R.string.err_msg_email));
-//            loginInputEmail.setError(getString(R.string.err_msg_required));
-//            requestFocus(loginInputEmail);
+        if (email.isEmpty()) {
+            loginInputEmail.setError(getString(R.string.error_field_required));
+            focusView = loginInputEmail;
              return false;
         }
-       // loginInputLayoutEmail.setErrorEnabled(false);
+        if (!isEmailValid(email))
+        {
+            loginInputEmail.setError(getString(R.string.error_already_registered));
+            focusView = loginInputEmail;
+            return false;
+        }
+        if (!email.contains("@"))
+        {
+            loginInputEmail.setError(getString(R.string.error_invalid_email));
+            focusView = loginInputEmail;
+            return false;
+        }
         return true;
     }
 
     private boolean checkPassword() {
 
         String password = loginInputPassword.getText().toString().trim();
-        if (password.isEmpty() || !isPasswordValid(password)) {
-
-//            loginInputLayoutPassword.setError(getString(R.string.err_msg_password));
-//            loginInputPassword.setError(getString(R.string.err_msg_required));
-//            requestFocus(loginInputPassword);
+        if (password.isEmpty()) {
+            loginInputPassword.setError(getString(R.string.error_field_required));
+            focusView = loginInputPassword;
             return false;
         }
-        //loginInputLayoutPassword.setErrorEnabled(false);
+        else if(!isPasswordValid(password))
+        {
+            loginInputPassword.setError(getString(R.string.error_invalid_password));
+            focusView = loginInputPassword;
+            return false;
+        }
         return true;
     }
 
@@ -163,20 +187,57 @@ public class SignUp extends AppCompatActivity {
 
         String name = loginInputName.getText().toString().trim();
         if (name.isEmpty()) {
-
-//            loginInputLayoutPassword.setError(getString(R.string.err_msg_password));
-//            loginInputPassword.setError(getString(R.string.err_msg_required));
-//            requestFocus(loginInputPassword);
+            loginInputName.setError(getString(R.string.error_field_required));
+            focusView = loginInputName;
             return false;
         }
-
-        //loginInputLayoutPassword.setErrorEnabled(false);
         return true;
     }
 
+    private boolean checkStudentId() {
+
+        String studentID = loginInputID.getText().toString().trim();
+        if (studentID.isEmpty()) {
+            loginInputID.setError(getString(R.string.error_field_required));
+            focusView = loginInputID;
+            return false;
+        }
+        else if(!isIdValid(studentID))
+        {
+            loginInputID.setError(getString(R.string.error_invalid_ID));
+            focusView = loginInputID;
+            return false;
+        }
+        return true;
+    }
+    private boolean checkConfirm() {
+
+        String password = loginInputConfirm.getText().toString().trim();
+        String confirm = loginInputConfirm.getText().toString().trim();
+        if (confirm.isEmpty()) {
+            loginInputConfirm.setError(getString(R.string.error_field_required));
+            focusView = loginInputConfirm;
+            return false;
+        }
+        if(!confirm.equals(password))
+        {
+            loginInputConfirm.setError(getString(R.string.error_invalid_confirm));
+            focusView = loginInputConfirm;
+            return false;
+        }
+
+        return true;
+    }
+
+
     private static boolean isEmailValid(String email) {
-        System.out.println("GAPRRRRRR" +android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
-        return (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
+
+        return (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
+    }
+
+    private static boolean isIdValid(String id) {
+
+        return (id.length() == 7);
     }
 
     private static boolean isPasswordValid(String password){

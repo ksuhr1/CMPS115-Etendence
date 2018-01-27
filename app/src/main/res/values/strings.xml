@@ -21,8 +21,10 @@
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
-    <string name="error_invalid_ID">This student ID is invalid</string>
+    <string name="error_invalid_ID">Studdent ID must have the length of 7</string>
     <string name="error_invalid_confirm">This password does not match</string>
+    <string name="error_already_registered">This email is already registered</string>
+
 
     <string  name="minimum_password">Password too short, enter minimum 6 characters!</string>
     <string  name="auth_failed">Authentication error, Please enter a valid email and password or sign up</string>
