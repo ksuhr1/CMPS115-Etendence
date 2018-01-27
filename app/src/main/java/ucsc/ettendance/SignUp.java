@@ -39,6 +39,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.ProviderQueryResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -53,7 +54,8 @@ public class SignUp extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
     private Button btnLogin;
     private ProgressBar progressBar;
-    private FirebaseAuth auth;
+    private static int result = 0;
+    private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private EditText loginInputEmail, loginInputPassword, loginInputName, loginInputID, loginInputConfirm;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
@@ -63,7 +65,6 @@ public class SignUp extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-        auth = FirebaseAuth.getInstance();
 
      //   loginInputLayoutEmail = (TextInputLayout) findViewById(R.id.login_input_layout_email);
        // loginInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_input_layout_password);
@@ -132,6 +133,9 @@ public class SignUp extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.d(TAG,"Authentication failed." + task.getException());
+                            loginInputEmail.setError(getString(R.string.error_already_registered));
+                            focusView = loginInputEmail;
+                            focusView.requestFocus();
                             //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
 
                         } else {
@@ -149,18 +153,21 @@ public class SignUp extends AppCompatActivity {
         if (email.isEmpty()) {
             loginInputEmail.setError(getString(R.string.error_field_required));
             focusView = loginInputEmail;
-             return false;
+            focusView.requestFocus();
+            return false;
         }
-        if (!isEmailValid(email))
+        if (isEmailValid(email))
         {
             loginInputEmail.setError(getString(R.string.error_already_registered));
             focusView = loginInputEmail;
+            focusView.requestFocus();
             return false;
         }
-        if (!email.contains("@"))
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
             loginInputEmail.setError(getString(R.string.error_invalid_email));
             focusView = loginInputEmail;
+            focusView.requestFocus();
             return false;
         }
         return true;
@@ -172,12 +179,14 @@ public class SignUp extends AppCompatActivity {
         if (password.isEmpty()) {
             loginInputPassword.setError(getString(R.string.error_field_required));
             focusView = loginInputPassword;
+            focusView.requestFocus();
             return false;
         }
         else if(!isPasswordValid(password))
         {
             loginInputPassword.setError(getString(R.string.error_invalid_password));
             focusView = loginInputPassword;
+            focusView.requestFocus();
             return false;
         }
         return true;
@@ -189,6 +198,7 @@ public class SignUp extends AppCompatActivity {
         if (name.isEmpty()) {
             loginInputName.setError(getString(R.string.error_field_required));
             focusView = loginInputName;
+            focusView.requestFocus();
             return false;
         }
         return true;
@@ -200,29 +210,34 @@ public class SignUp extends AppCompatActivity {
         if (studentID.isEmpty()) {
             loginInputID.setError(getString(R.string.error_field_required));
             focusView = loginInputID;
+            focusView.requestFocus();
             return false;
         }
         else if(!isIdValid(studentID))
         {
             loginInputID.setError(getString(R.string.error_invalid_ID));
             focusView = loginInputID;
+            focusView.requestFocus();
             return false;
         }
         return true;
     }
     private boolean checkConfirm() {
-
-        String password = loginInputConfirm.getText().toString().trim();
-        String confirm = loginInputConfirm.getText().toString().trim();
+        Log.d(TAG,"IM IN CONFIRM.");
+        String password = loginInputPassword.getText().toString();
+        String confirm = loginInputConfirm.getText().toString();
         if (confirm.isEmpty()) {
             loginInputConfirm.setError(getString(R.string.error_field_required));
             focusView = loginInputConfirm;
+            focusView.requestFocus();
             return false;
         }
         if(!confirm.equals(password))
         {
+
             loginInputConfirm.setError(getString(R.string.error_invalid_confirm));
             focusView = loginInputConfirm;
+            focusView.requestFocus();
             return false;
         }
 
@@ -232,7 +247,24 @@ public class SignUp extends AppCompatActivity {
 
     private static boolean isEmailValid(String email) {
 
-        return (android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
+        Log.d(TAG,"inside EMAIL VALID");
+        auth.fetchProvidersForEmail("emailaddress@gmail.com").addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+            @Override
+            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                if(task.isSuccessful()){
+                    ///////// getProviders().size() will return size 1. if email ID is available.
+                     result = task.getResult().getProviders().size();
+                }
+            }
+        });
+        if(result ==1)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     private static boolean isIdValid(String id) {
