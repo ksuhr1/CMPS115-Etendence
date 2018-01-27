@@ -119,14 +119,16 @@ public class SignUp extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.d(TAG,"Authentication failed." + task.getException());
+                            Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
 
                         } else {
+                            Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUp.this, MyClasses.class));
                             finish();
                         }
                     }
                 });
-        Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
+
     }
 
     private boolean checkEmail() {
@@ -157,9 +159,24 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
+    private boolean checkName() {
+
+        String name = loginInputName.getText().toString().trim();
+        if (name.isEmpty()) {
+
+//            loginInputLayoutPassword.setError(getString(R.string.err_msg_password));
+//            loginInputPassword.setError(getString(R.string.err_msg_required));
+//            requestFocus(loginInputPassword);
+            return false;
+        }
+
+        //loginInputLayoutPassword.setErrorEnabled(false);
+        return true;
+    }
+
     private static boolean isEmailValid(String email) {
-        return !TextUtils.isEmpty(email) ;
-                //&& android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+        System.out.println("GAPRRRRRR" +android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
+        return (!TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches());
     }
 
     private static boolean isPasswordValid(String password){
