@@ -20,7 +20,6 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".log_in" />
         <activity android:name=".MyClasses" />
         <activity android:name=".SignUp" />
         <activity android:name=".AddClass" />
