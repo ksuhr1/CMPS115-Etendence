@@ -24,6 +24,7 @@
     <string name="error_invalid_ID">Studdent ID must have the length of 7</string>
     <string name="error_invalid_confirm">This password does not match</string>
     <string name="error_already_registered">This email is already registered</string>
+    <string name="error_not_registered">This email has not been registered</string>
 
 
     <string  name="minimum_password">Password too short, enter minimum 6 characters!</string>
