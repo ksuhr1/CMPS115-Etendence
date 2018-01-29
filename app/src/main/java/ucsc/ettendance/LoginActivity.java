@@ -122,12 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                         progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
 
-                            // password incorrect message
-                            //Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-                            loginInputPassword.setError(getString(R.string.error_incorrect_password));
-                            focusView = loginInputPassword;
-                            focusView.requestFocus();
-
                             //checks if email is in database
                             auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
                                 @Override
@@ -141,9 +135,21 @@ public class LoginActivity extends AppCompatActivity {
                                             focusView = loginInputEmail;
                                             focusView.requestFocus();
                                         }
+                                        else
+                                        {
+                                            loginInputPassword.setError(getString(R.string.error_incorrect_password));
+                                            focusView = loginInputPassword;
+                                            focusView.requestFocus();
+                                        }
                                     }
                                 }
                             });
+
+                            // password incorrect message
+                            //Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
+
+
+
 
                         } else {
                             Intent intent = new Intent(LoginActivity.this, MyClasses.class);
