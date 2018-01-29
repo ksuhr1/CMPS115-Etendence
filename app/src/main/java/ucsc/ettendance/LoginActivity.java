@@ -57,6 +57,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText loginInputEmail, loginInputPassword;
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static int result = 0;
+    private static boolean emailInDatabase;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
 
@@ -97,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
      * Validating form
      */
     private void submitForm() {
-        String email = loginInputEmail.getText().toString().trim();
+        final String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
 
         if(!checkEmail()) {
@@ -120,16 +121,35 @@ public class LoginActivity extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         progressBar.setVisibility(View.GONE);
                         if (!task.isSuccessful()) {
-                            // there was an error
+
+                            // password incorrect message
                             //Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
                             loginInputPassword.setError(getString(R.string.error_incorrect_password));
                             focusView = loginInputPassword;
                             focusView.requestFocus();
 
+                            //checks if email is in database
+                            auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<ProviderQueryResult> task) {
+                                    if(task.isSuccessful()){
+                                        ///////// getProviders().size() will return size 1. if email ID is available.
+                                        result = task.getResult().getProviders().size();
+                                        if(result != 1)
+                                        {
+                                            loginInputEmail.setError(getString(R.string.error_not_registered));
+                                            focusView = loginInputEmail;
+                                            focusView.requestFocus();
+                                        }
+                                    }
+                                }
+                            });
+
                         } else {
                             Intent intent = new Intent(LoginActivity.this, MyClasses.class);
                             startActivity(intent);
                             finish();
+                            //TODO add logic to send professors to professor UI
                         }
                     }
                 });
@@ -143,13 +163,7 @@ public class LoginActivity extends AppCompatActivity {
             focusView.requestFocus();
             return false;
         }
-        if (!isEmailValid(email)) {
-            loginInputEmail.setError(getString(R.string.error_not_registered));
-            focusView = loginInputEmail;
-            focusView.requestFocus();
-            return false;
-        }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
         {
             loginInputEmail.setError(getString(R.string.error_invalid_email));
             focusView = loginInputEmail;
@@ -173,28 +187,6 @@ public class LoginActivity extends AppCompatActivity {
         }
         //loginInputLayoutPassword.setErrorEnabled(false);
         return true;
-    }
-
-    private static boolean isEmailValid(String email) {
-
-        Log.d(TAG,"inside EMAIL VALID");
-        auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
-            @Override
-            public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                if(task.isSuccessful()){
-                    ///////// getProviders().size() will return size 1. if email ID is available.
-                    result = task.getResult().getProviders().size();
-                }
-            }
-        });
-        if(result == 1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
     }
 
     private void requestFocus(View view) {
