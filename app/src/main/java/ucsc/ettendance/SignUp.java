@@ -29,7 +29,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -84,9 +86,9 @@ public class SignUp extends AppCompatActivity {
     private void submitForm() {
         String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
-        String studentId = loginInputID.getText().toString().trim();
+        final String studentId = loginInputID.getText().toString().trim();
         String confirm = loginInputConfirm.getText().toString().trim();
-        String name = loginInputName.getText().toString().trim();
+        final String name = loginInputName.getText().toString().trim();
 
 
         if(!checkName()) {
@@ -129,6 +131,14 @@ public class SignUp extends AppCompatActivity {
                             //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
 
                         } else {
+                            FirebaseUser user = auth.getCurrentUser();
+                            if(user!=null)
+                            {
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(name)
+                                        .build();
+                                user.updateProfile(profileUpdates);
+                            }
                             Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUp.this, MyClasses.class));
                             finish();

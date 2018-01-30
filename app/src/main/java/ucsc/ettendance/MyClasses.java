@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -33,6 +34,11 @@ public class MyClasses extends AppCompatActivity {
         if(mFirebaseUser == null)
         {
             loadLogInView();
+        }
+        else
+        {
+            TextView welcome = (TextView) findViewById(R.id.title3);
+            welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
         }
 
 
