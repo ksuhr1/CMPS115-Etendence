@@ -5,6 +5,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -25,20 +27,13 @@ public class MyClasses extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_classes);
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
-        authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    // if user is null launch login activity
-                    startActivity(new Intent(MyClasses.this, LoginActivity.class));
-                    finish();
-                }else{
-                    Log.d(TAG,"HELLO: "+user.getEmail());
-                }
-            }
-        };
+        if(mFirebaseUser == null)
+        {
+            loadLogInView();
+        }
 
 
         //ADD CLASS BUTTON
@@ -51,5 +46,37 @@ public class MyClasses extends AppCompatActivity {
 
             }
         });
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_logout) {
+            mFirebaseAuth.signOut();
+            loadLogInView();
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void loadLogInView()
+    {
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
     }
 }

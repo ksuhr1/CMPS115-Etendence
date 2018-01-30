@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="tutorial.matt.todo.MainActivity">
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/log_out"
+        android:orderInCategory="100"
+        android:title="Log Out"
+        android:color="@color/mintGreen"
+        app:showAsAction="always" />
+</menu>

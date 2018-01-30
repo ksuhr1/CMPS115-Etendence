@@ -17,6 +17,7 @@
             android:layout_alignParentBottom="true"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
+
     </RelativeLayout>
     <TextView
         android:id="@+id/title"
@@ -103,8 +104,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-
 
 
 </android.support.constraint.ConstraintLayout>

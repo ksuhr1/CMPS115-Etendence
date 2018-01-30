@@ -20,13 +20,16 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MyClasses"
+        <activity android:name=".LoginActivity"
+            android:label=""
             android:screenOrientation="portrait"/>
         <activity android:name=".SignUp"
+            android:label=""
             android:screenOrientation="portrait"/>
         <activity android:name=".AddClass"
             android:screenOrientation="portrait"/>
-        <activity android:name=".LoginActivity"
+        <activity android:name=".MyClasses"
+            android:label=""
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,8 +38,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".Pmain"
+            android:label=""
             android:screenOrientation="portrait"/>
         <activity android:name=".PaddClass"
+            android:label=""
             android:screenOrientation="portrait">
 
         </activity>
