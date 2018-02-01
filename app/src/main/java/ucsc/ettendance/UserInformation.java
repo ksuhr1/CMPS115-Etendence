@@ -15,6 +15,17 @@ public class UserInformation {
         this.isProfessor = isProfessor;
     }
 
+    public String getName(){
+        return name;
+    }
+
+    public String getId(){
+        return studentId;
+    }
+
+    public boolean isProf(){
+        return isProfessor;
+    }
 
 
 }
