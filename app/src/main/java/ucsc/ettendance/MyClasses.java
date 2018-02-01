@@ -13,6 +13,11 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 
 
 public class MyClasses extends AppCompatActivity {
@@ -22,7 +27,9 @@ public class MyClasses extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    //private FirebaseDatabase mDatabase;
     private String mUserId;
+    private DatabaseReference mDatabase;
     private static final String TAG = "My Classes";
 
     @Override
@@ -31,6 +38,7 @@ public class MyClasses extends AppCompatActivity {
         setContentView(R.layout.activity_my_classes);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
 
         if(mFirebaseUser == null)
         {
@@ -57,6 +65,25 @@ public class MyClasses extends AppCompatActivity {
             }
         });
     }
+/*
+    // Retrieving data from database
+    mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+
+            UserInformation user = dataSnapshot.getValue(UserInformation.class);
+
+            Log.d(TAG, "Name: " + user.getName() + ", ID: " + user.getId() + "isProfessor: " + user.isProf());
+        }
+
+        @Override
+        public void onCancelled(DatabaseError error) {
+            // Failed to read value
+            Log.w(TAG, "Failed to read value.", error.toException());
+        }
+    });
+*/
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
