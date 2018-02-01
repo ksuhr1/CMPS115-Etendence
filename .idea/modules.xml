@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/Ettendance.iml" filepath="$PROJECT_DIR$/Ettendance.iml" />
       <module fileurl="file://C:\Users\jjjoe\OneDrive\homework\3_Junior_Year\2_CS115\Ettendance2\Ettendance.iml" filepath="C:\Users\jjjoe\OneDrive\homework\3_Junior_Year\2_CS115\Ettendance2\Ettendance.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/Ettendance2.iml" filepath="$PROJECT_DIR$/.idea/Ettendance2.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
