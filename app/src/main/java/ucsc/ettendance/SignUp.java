@@ -53,8 +53,10 @@ public class SignUp extends AppCompatActivity {
     private static FirebaseAuth auth;
 
     private EditText loginInputEmail, loginInputPassword, loginInputName, loginInputID, loginInputConfirm;
+    private EditText loginInputFirstName, loginInputLastName;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
+    boolean isProfessor = false;
 
     private DatabaseReference databaseReference;
 
@@ -76,8 +78,11 @@ public class SignUp extends AppCompatActivity {
 
         loginInputEmail = (EditText) findViewById(R.id.email);
         loginInputPassword = (EditText) findViewById(R.id.password);
-        loginInputName = (EditText) findViewById(R.id.name);
-        loginInputID = (EditText) findViewById(R.id.studentId);
+       // loginInputName = (EditText) findViewById(R.id.name);
+       // loginInputID = (EditText) findViewById(R.id.studentId);
+        loginInputFirstName = (EditText) findViewById(R.id.firstName);
+        loginInputLastName = (EditText) findViewById(R.id.lastName);
+
         loginInputConfirm = (EditText) findViewById(R.id.confirm);
 
 
@@ -100,19 +105,24 @@ public class SignUp extends AppCompatActivity {
     private void submitForm() {
         String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
-        final String studentId = loginInputID.getText().toString().trim();
+       // final String studentId = loginInputID.getText().toString().trim();
         String confirm = loginInputConfirm.getText().toString().trim();
-        final String name = loginInputName.getText().toString().trim();
-        boolean isProfessor = false;
+        //final String name = loginInputName.getText().toString().trim();
+        final String firstname = loginInputFirstName.getText().toString().trim();
+        final String lastname = loginInputLastName.getText().toString().trim();
+        //boolean isProfessor = false;
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox); // reference to checkbox value
 
 
-        if(!checkName()) {
+        if(!checkFirstName()) {
             return;
         }
-        if(!checkStudentId()) {
+        if(!checkLastName()) {
             return;
         }
+//        if(!checkStudentId()) {
+//            return;
+//        }
         if(!checkEmail()) {
             return;
         }
@@ -129,7 +139,7 @@ public class SignUp extends AppCompatActivity {
             isProfessor = true;
         }
 
-        final UserInformation userInformation = new UserInformation(name, studentId, isProfessor);
+        final UserInformation userInformation = new UserInformation(firstname,lastname, isProfessor, email);
 
 
 //        loginInputLayoutEmail.setErrorEnabled(false);
@@ -137,6 +147,7 @@ public class SignUp extends AppCompatActivity {
 
         progressBar.setVisibility(View.VISIBLE);
         //authenticate user
+      //  final boolean finalIsProfessor = isProfessor;
         auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -155,18 +166,41 @@ public class SignUp extends AppCompatActivity {
 
                         } else {
                             FirebaseUser user = auth.getCurrentUser();
-                            databaseReference.child(user.getUid()).setValue(userInformation);
-                            Toast.makeText(getApplicationContext(), "Information Saved..", Toast.LENGTH_LONG).show();
                             if(user!=null)
                             {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(name)
+                                        .setDisplayName(firstname)
                                         .build();
                                 user.updateProfile(profileUpdates);
                             }
+                            if(!isProfessor){
+                                databaseReference.child("students").child(user.getUid()).setValue(userInformation);
+                                //databaseReference.child(user.getUid()).setValue(userInformation);
+                                Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(SignUp.this, MyClasses.class));
+                               // finish();
+                            }
+                            else {
+                                databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
+                                //databaseReference.child(user.getUid()).setValue(userInformation);
+                                Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
+                                startActivity(new Intent(SignUp.this, Pmain.class));
+                              //  finish();
+
+                            }
+                          //  databaseReference.child("students").child(user.getUid()).setValue(userInformation);
+                            //databaseReference.child(user.getUid()).setValue(userInformation);
+                          //  Toast.makeText(getApplicationContext(), "Information Saved..", Toast.LENGTH_LONG).show();
+//                            if(user!=null)
+//                            {
+//                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+//                                        .setDisplayName(name)
+//                                        .build();
+//                                user.updateProfile(profileUpdates);
+//                            }
                            // Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
-                            startActivity(new Intent(SignUp.this, MyClasses.class));
-                            finish();
+//                            startActivity(new Intent(SignUp.this, MyClasses.class));
+//                            finish();
                         }
                     }
                 });
@@ -217,36 +251,45 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    private boolean checkName() {
-
-        String name = loginInputName.getText().toString().trim();
-        if (name.isEmpty()) {
-            loginInputName.setError(getString(R.string.error_field_required));
-            focusView = loginInputName;
+    private boolean checkFirstName() {
+        String firstname = loginInputFirstName.getText().toString().trim();
+        if (firstname.isEmpty()) {
+            loginInputFirstName.setError(getString(R.string.error_field_required));
+            focusView = loginInputFirstName;
+            focusView.requestFocus();
+            return false;
+        }
+        return true;
+    }
+    private boolean checkLastName() {
+        String lastname = loginInputLastName.getText().toString().trim();
+        if (lastname.isEmpty()) {
+            loginInputFirstName.setError(getString(R.string.error_field_required));
+            focusView = loginInputLastName;
             focusView.requestFocus();
             return false;
         }
         return true;
     }
 
-    private boolean checkStudentId() {
-
-        String studentID = loginInputID.getText().toString().trim();
-        if (studentID.isEmpty()) {
-            loginInputID.setError(getString(R.string.error_field_required));
-            focusView = loginInputID;
-            focusView.requestFocus();
-            return false;
-        }
-        else if(!isIdValid(studentID))
-        {
-            loginInputID.setError(getString(R.string.error_invalid_ID));
-            focusView = loginInputID;
-            focusView.requestFocus();
-            return false;
-        }
-        return true;
-    }
+//    private boolean checkStudentId() {
+//
+//        String studentID = loginInputID.getText().toString().trim();
+//        if (studentID.isEmpty()) {
+//            loginInputID.setError(getString(R.string.error_field_required));
+//            focusView = loginInputID;
+//            focusView.requestFocus();
+//            return false;
+//        }
+//        else if(!isIdValid(studentID))
+//        {
+//            loginInputID.setError(getString(R.string.error_invalid_ID));
+//            focusView = loginInputID;
+//            focusView.requestFocus();
+//            return false;
+//        }
+//        return true;
+//    }
     private boolean checkConfirm() {
         Log.d(TAG,"IM IN CONFIRM.");
         String password = loginInputPassword.getText().toString();

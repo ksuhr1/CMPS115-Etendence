@@ -65,7 +65,7 @@
         tools:text="@string/signup" />
 
     <EditText
-        android:id="@+id/name"
+        android:id="@+id/firstName"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -74,7 +74,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/mintGreen"
         android:ems="10"
-        android:hint="First and Last Name"
+        android:hint="First Name"
         android:inputType="text"
         android:singleLine="false"
         android:textColor="@color/colorAccent"
@@ -87,7 +87,7 @@
         app:layout_constraintVertical_bias="0.22" />
 
     <EditText
-        android:id="@+id/studentId"
+        android:id="@+id/lastName"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -96,8 +96,8 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/mintGreen"
         android:ems="10"
-        android:hint="Student ID"
-        android:inputType="number"
+        android:hint="Last Name"
+        android:inputType="text"
         android:singleLine="false"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
