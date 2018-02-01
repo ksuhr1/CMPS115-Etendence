@@ -20,6 +20,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -100,10 +101,8 @@ public class SignUp extends AppCompatActivity {
         final String studentId = loginInputID.getText().toString().trim();
         String confirm = loginInputConfirm.getText().toString().trim();
         final String name = loginInputName.getText().toString().trim();
-
-        final UserInformation userInformation = new UserInformation(name, studentId, email);
-
-
+        boolean isProfessor = false;
+        final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox); // reference to checkbox value
 
 
         if(!checkName()) {
@@ -122,6 +121,13 @@ public class SignUp extends AppCompatActivity {
         if(!checkConfirm()) {
             return;
         }
+
+        // if professor checkbox is checked, user is a professor
+        if (checkBox.isChecked()) {
+            isProfessor = true;
+        }
+
+        final UserInformation userInformation = new UserInformation(name, studentId, isProfessor);
 
 
 //        loginInputLayoutEmail.setErrorEnabled(false);
@@ -289,6 +295,7 @@ public class SignUp extends AppCompatActivity {
 
         return (id.length() == 7);
     }
+
 
     private static boolean isPasswordValid(String password){
         return (password.length() >= 6);

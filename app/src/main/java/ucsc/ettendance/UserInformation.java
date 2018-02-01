@@ -7,12 +7,12 @@ package ucsc.ettendance;
 public class UserInformation {
     public String name;
     public String studentId;
-    public String email;
+    public boolean isProfessor;
 
-    public UserInformation(String name, String studentId, String email){
+    public UserInformation(String name, String studentId, boolean isProfessor){
         this.name = name;
         this.studentId = studentId;
-        this.email = email;
+        this.isProfessor = isProfessor;
     }
 
 
