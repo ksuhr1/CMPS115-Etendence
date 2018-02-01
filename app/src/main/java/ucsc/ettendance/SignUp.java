@@ -80,6 +80,8 @@ public class SignUp extends AppCompatActivity {
         loginInputID = (EditText) findViewById(R.id.studentId);
         loginInputConfirm = (EditText) findViewById(R.id.confirm);
 
+
+
         btnLogin = (Button) findViewById(R.id.signUpButton);
 
 
@@ -146,7 +148,7 @@ public class SignUp extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.d(TAG,"Authentication failed." + task.getException());
-                            loginInputEmail.setError(getString(R.string.error_already_registered));
+                            loginInputEmail.setError(getString(R.string.error_invalid_email));
                             focusView = loginInputEmail;
                             focusView.requestFocus();
                             //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
