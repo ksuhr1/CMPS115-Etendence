@@ -32,6 +32,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,16 +49,25 @@ public class SignUp extends AppCompatActivity {
     private Button btnLogin;
     private ProgressBar progressBar;
     private static int result = 0;
-    private static FirebaseAuth auth = FirebaseAuth.getInstance();
+    private static FirebaseAuth auth;
+
     private EditText loginInputEmail, loginInputPassword, loginInputName, loginInputID, loginInputConfirm;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
+
+    private DatabaseReference databaseReference;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        //initializing firebase authentication object
+        auth = FirebaseAuth.getInstance();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
      //   loginInputLayoutEmail = (TextInputLayout) findViewById(R.id.login_input_layout_email);
        // loginInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_input_layout_password);
@@ -89,6 +100,10 @@ public class SignUp extends AppCompatActivity {
         final String studentId = loginInputID.getText().toString().trim();
         String confirm = loginInputConfirm.getText().toString().trim();
         final String name = loginInputName.getText().toString().trim();
+
+        final UserInformation userInformation = new UserInformation(name, studentId, email);
+
+
 
 
         if(!checkName()) {
@@ -132,6 +147,8 @@ public class SignUp extends AppCompatActivity {
 
                         } else {
                             FirebaseUser user = auth.getCurrentUser();
+                            databaseReference.child(user.getUid()).setValue(userInformation);
+                            Toast.makeText(getApplicationContext(), "Information Saved..", Toast.LENGTH_LONG).show();
                             if(user!=null)
                             {
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -139,7 +156,7 @@ public class SignUp extends AppCompatActivity {
                                         .build();
                                 user.updateProfile(profileUpdates);
                             }
-                            Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
+                           // Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(SignUp.this, MyClasses.class));
                             finish();
                         }

@@ -22,6 +22,7 @@ public class MyClasses extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private String mUserId;
     private static final String TAG = "My Classes";
 
     @Override
@@ -33,11 +34,14 @@ public class MyClasses extends AppCompatActivity {
 
         if(mFirebaseUser == null)
         {
+            //Not logged in, launch the Log in activity
             loadLogInView();
         }
         else
         {
             TextView welcome = (TextView) findViewById(R.id.title3);
+            //Gets details of the logged in user
+            mUserId = mFirebaseUser.getUid();
             welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
         }
 
