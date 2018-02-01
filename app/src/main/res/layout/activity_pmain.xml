@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ucsc.ettendance.log_in">
+    tools:context="ucsc.ettendance.Pmain"
+    >
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -18,7 +19,7 @@
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="504dp"
-            android:background="@drawable/buttonback"
+            android:background="@drawable/bluebuttonback"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
 
@@ -51,7 +52,7 @@
         android:layout_marginTop="8dp"
         android:text="My Classes"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@color/mintGreen"
+        android:textColor="@color/lightBlue"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.048"
@@ -70,7 +71,7 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="0.5"
-        android:background="@drawable/buttonback"
+        android:background="@drawable/bluebuttonback"
         android:fontFamily="sans-serif"
         android:text="@string/addClass"
         android:textAlignment="center"

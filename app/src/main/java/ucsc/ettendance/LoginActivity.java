@@ -92,6 +92,15 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button prof = (Button) findViewById(R.id.prof);
+        prof.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this, Pmain.class);
+                startActivity(intent);
+            }
+        });
     }
 
     /**
