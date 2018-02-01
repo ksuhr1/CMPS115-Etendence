@@ -147,7 +147,8 @@ public class SignUp extends AppCompatActivity {
 
                         } else {
                             FirebaseUser user = auth.getCurrentUser();
-                            databaseReference.child(user.getUid()).setValue(userInformation);
+                            databaseReference.child("students").child(user.getUid()).setValue(userInformation);
+                            //databaseReference.child(user.getUid()).setValue(userInformation);
                             Toast.makeText(getApplicationContext(), "Information Saved..", Toast.LENGTH_LONG).show();
                             if(user!=null)
                             {
