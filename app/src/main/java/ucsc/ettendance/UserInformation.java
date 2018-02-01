@@ -5,27 +5,31 @@ package ucsc.ettendance;
  */
 
 public class UserInformation {
-    public String name;
-    public String studentId;
+    public String firstName;
+    public String lastName;
+    public String email;
+   // public String studentId;
     public boolean isProfessor;
 
-    public UserInformation(String name, String studentId, boolean isProfessor){
-        this.name = name;
-        this.studentId = studentId;
+    public UserInformation(String firstName, String lastName, boolean isProfessor, String email){
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        //this.studentId = studentId;
         this.isProfessor = isProfessor;
     }
 
-    public String getName(){
-        return name;
-    }
+//    public String getName(){
+//        return name;
+//    }
+//
+//    public String getId(){
+//        return studentId;
+//    }
 
-    public String getId(){
-        return studentId;
-    }
-
-    public boolean isProf(){
-        return isProfessor;
-    }
+//    public boolean isProf(){
+//        return isProfessor;
+//    }
 
 
 }
