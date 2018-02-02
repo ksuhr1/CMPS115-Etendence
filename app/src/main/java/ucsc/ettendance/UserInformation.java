@@ -8,7 +8,7 @@ public class UserInformation {
     public String firstName;
     public String lastName;
     public String email;
-   // public String studentId;
+    public String studentId;
     public boolean isProfessor;
 
     public UserInformation(String firstName, String lastName, boolean isProfessor, String email){
@@ -19,17 +19,20 @@ public class UserInformation {
         this.isProfessor = isProfessor;
     }
 
-//    public String getName(){
-//        return name;
-//    }
-//
-//    public String getId(){
-//        return studentId;
-//    }
+    public String getFirstName(){
+        return firstName;
+    }
+    public String getLastName(){
+        return lastName;
+    }
 
-//    public boolean isProf(){
-//        return isProfessor;
-//    }
+    public String getId(){
+        return studentId;
+    }
+
+    public boolean isProf(){
+        return isProfessor;
+    }
 
 
 }
