@@ -11,11 +11,11 @@ public class UserInformation {
     public String studentId;
     public boolean isProfessor;
 
-    public UserInformation(String firstName, String lastName, boolean isProfessor, String email){
+    public UserInformation(String firstName, String lastName,String studentId, boolean isProfessor, String email){
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        //this.studentId = studentId;
+        this.studentId = studentId;
         this.isProfessor = isProfessor;
     }
 

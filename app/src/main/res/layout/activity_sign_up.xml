@@ -80,11 +80,10 @@
         android:textColor="@color/colorAccent"
 
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.22" />
+        app:layout_constraintVertical_bias="0.171" />
 
     <EditText
         android:id="@+id/lastName"
@@ -101,11 +100,30 @@
         android:singleLine="false"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.348" />
+        app:layout_constraintVertical_bias="0.284" />
+
+    <EditText
+        android:id="@+id/studentid"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/mintGreen"
+        android:ems="10"
+        android:hint="Student ID (Students Only)"
+        android:inputType="number"
+        android:singleLine="false"
+        android:textColor="@color/colorAccent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.387" />
 
     <EditText
         android:id="@+id/email"
@@ -115,18 +133,16 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/mintGreen"
         android:ems="10"
         android:hint="E-mail"
         android:inputType="textEmailAddress"
         android:singleLine="false"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.464"
-        android:backgroundTint="@color/mintGreen"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/password"
@@ -136,40 +152,38 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
+        android:backgroundTint="@color/mintGreen"
         android:ems="10"
+        android:fontFamily="sans-serif"
         android:hint="Password"
         android:inputType="textPassword"
-        android:fontFamily="sans-serif"
         android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:backgroundTint="@color/mintGreen"
-        app:layout_constraintVertical_bias="0.578" />
+        app:layout_constraintVertical_bias="0.608" />
 
     <EditText
         android:id="@+id/confirm"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:fontFamily="sans-serif"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/mintGreen"
         android:ems="10"
+        android:fontFamily="sans-serif"
         android:hint="Confirm Password"
         android:inputType="textPassword"
-        android:typeface="sans"
         android:textColor="@color/colorAccent"
+        android:typeface="sans"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.692" />
+        app:layout_constraintVertical_bias="0.719" />
 
     <CheckBox
         android:id="@+id/checkBox"
@@ -180,16 +194,16 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/mintGreen"
+        android:buttonTint="@color/colorAccent"
         android:text="I am a Professor"
         android:textColor="@color/colorAccent"
         android:textSize="18sp"
-        android:buttonTint="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.231"
+        app:layout_constraintHorizontal_bias="0.257"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.799" />
+        app:layout_constraintVertical_bias="0.836" />
 
     <ProgressBar
         android:id="@+id/progressBar"

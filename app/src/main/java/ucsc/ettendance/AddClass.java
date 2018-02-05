@@ -3,18 +3,21 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
 public class AddClass extends AppCompatActivity {
-//katy
 
+    private EditText mClassCodeView;
+    private EditText mClassPINView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -26,15 +29,70 @@ public class AddClass extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
+        mClassCodeView = (EditText) findViewById(R.id.classCode);
+        mClassPINView = (EditText) findViewById(R.id.password);
+
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
         addClass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
+                checkValid();
 
             }
         });
+    }
+
+    private void checkValid() {
+
+        // Reset errors.
+        mClassCodeView.setError(null);
+        mClassPINView.setError(null);
+
+
+        // Store values at the time of the login attempt.
+        String code = mClassCodeView.getText().toString();
+        String pin = mClassPINView.getText().toString();
+
+
+        boolean cancel = false;
+        View focusView = null;
+
+
+
+
+        if (TextUtils.isEmpty(pin)) {
+            mClassPINView.setError(getString(R.string.error_field_required));
+            focusView = mClassPINView;
+            cancel = true;
+        }
+        // Check for a valid class code, if the user entered one.
+        if (TextUtils.isEmpty(code) ) {
+            mClassCodeView.setError(getString(R.string.error_field_required));
+            focusView = mClassCodeView;
+            cancel = true;
+        }
+
+        if (cancel) {
+            // There was an error; don't attempt login and focus the first
+            // form field with an error.
+            focusView.requestFocus();
+        }
+        else
+        {
+            //TODO add logic to let students add classes here
+            //TODO check if class is in database
+            //TODO add student to class child
+            finish();
+        }
+//        else {
+//            // Show a progress spinner, and kick off a background task to
+//            // perform the user login attempt.
+//            //showProgress(true);
+//            mAuthTask = new LoginActivity.UserLoginTask(email, password);
+//            mAuthTask.execute((Void) null);
+//    }
+
     }
 
     @Override

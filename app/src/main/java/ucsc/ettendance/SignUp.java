@@ -79,7 +79,7 @@ public class SignUp extends AppCompatActivity {
         loginInputEmail = (EditText) findViewById(R.id.email);
         loginInputPassword = (EditText) findViewById(R.id.password);
        // loginInputName = (EditText) findViewById(R.id.name);
-       // loginInputID = (EditText) findViewById(R.id.studentId);
+        loginInputID = (EditText) findViewById(R.id.studentid);
         loginInputFirstName = (EditText) findViewById(R.id.firstName);
         loginInputLastName = (EditText) findViewById(R.id.lastName);
 
@@ -105,7 +105,7 @@ public class SignUp extends AppCompatActivity {
     private void submitForm() {
         String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
-       // final String studentId = loginInputID.getText().toString().trim();
+        final String studentId = loginInputID.getText().toString().trim();
         String confirm = loginInputConfirm.getText().toString().trim();
         //final String name = loginInputName.getText().toString().trim();
         final String firstname = loginInputFirstName.getText().toString().trim();
@@ -120,9 +120,9 @@ public class SignUp extends AppCompatActivity {
         if(!checkLastName()) {
             return;
         }
-//        if(!checkStudentId()) {
-//            return;
-//        }
+        if(!checkStudentId()) {
+            return;
+        }
         if(!checkEmail()) {
             return;
         }
@@ -139,7 +139,7 @@ public class SignUp extends AppCompatActivity {
             isProfessor = true;
         }
 
-        final UserInformation userInformation = new UserInformation(firstname,lastname, isProfessor, email);
+        final UserInformation userInformation = new UserInformation(firstname,lastname,studentId, isProfessor, email);
 
 
 //        loginInputLayoutEmail.setErrorEnabled(false);
@@ -272,24 +272,24 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-//    private boolean checkStudentId() {
-//
-//        String studentID = loginInputID.getText().toString().trim();
-//        if (studentID.isEmpty()) {
-//            loginInputID.setError(getString(R.string.error_field_required));
-//            focusView = loginInputID;
-//            focusView.requestFocus();
-//            return false;
-//        }
-//        else if(!isIdValid(studentID))
-//        {
-//            loginInputID.setError(getString(R.string.error_invalid_ID));
-//            focusView = loginInputID;
-//            focusView.requestFocus();
-//            return false;
-//        }
-//        return true;
-//    }
+    private boolean checkStudentId() {
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
+        String studentID = loginInputID.getText().toString().trim();
+        if (studentID.isEmpty()&& !checkBox.isChecked()) {
+            loginInputID.setError(getString(R.string.error_field_required));
+            focusView = loginInputID;
+            focusView.requestFocus();
+            return false;
+        }
+        else if(!isIdValid(studentID)&& !checkBox.isChecked())
+        {
+            loginInputID.setError(getString(R.string.error_invalid_ID));
+            focusView = loginInputID;
+            focusView.requestFocus();
+            return false;
+        }
+        return true;
+    }
     private boolean checkConfirm() {
         Log.d(TAG,"IM IN CONFIRM.");
         String password = loginInputPassword.getText().toString();

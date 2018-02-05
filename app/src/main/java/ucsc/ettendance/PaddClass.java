@@ -44,9 +44,6 @@ public class PaddClass extends AppCompatActivity {
     }
 
     private void checkValid() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
 
         // Reset errors.
         mClassNameView.setError(null);
@@ -57,7 +54,7 @@ public class PaddClass extends AppCompatActivity {
         // Store values at the time of the login attempt.
         String name = mClassNameView.getText().toString();
         String code = mClassCodeView.getText().toString();
-        String pin = mClassCodeView.getText().toString();
+        String pin = mClassPINView.getText().toString();
 
 
         boolean cancel = false;
@@ -91,6 +88,8 @@ public class PaddClass extends AppCompatActivity {
         }
         else
         {
+            //TODO add logic to let professors add classes here
+            //TODO check if class is in database
             finish();
         }
 //        else {

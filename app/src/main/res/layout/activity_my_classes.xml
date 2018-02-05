@@ -3,23 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ucsc.ettendance.log_in">
+    android:layout_height="match_parent">
+
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="133dp">
+
         <View
             android:id="@+id/myRectangleView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:layout_marginTop="504dp"
             android:background="@drawable/buttonback"
-            android:layout_alignParentBottom="true"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
 
 
     </RelativeLayout>
+
+    <ListView
+        android:id="@+id/listview"
+        android:layout_width="284dp"
+        android:layout_height="383dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="57dp"
+        android:divider="@null"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.49" />
 
 
     <Button
@@ -74,15 +93,15 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="My Classes"
+        android:text="welcome"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@color/mintGreen"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.042"
+        app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.191" />
+        app:layout_constraintVertical_bias="0.133" />
 
 </android.support.constraint.ConstraintLayout>

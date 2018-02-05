@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -44,7 +45,7 @@ public class Pmain extends AppCompatActivity {
             }
         });
 
-        ArrayList<String> classArray = new ArrayList<String>();
+        final ArrayList<String> classArray = new ArrayList<String>();
         classArray.add("gorp1");
         classArray.add("gorp2");
         classArray.add("gorp3");
@@ -56,6 +57,18 @@ public class Pmain extends AppCompatActivity {
         // Attach the adapter to a ListView
 
         list.setAdapter(aa);
+
+        /*IF ARRAY IS CLICKED*/
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                    Intent intent = new Intent(Pmain.this, pClassPage.class);
+                    String className = classArray.get(position);
+                    intent.putExtra("className", className);
+                    startActivity(intent);
+            }
+        });
     }
 
     @Override

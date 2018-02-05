@@ -164,7 +164,6 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, MyClasses.class);
                             startActivity(intent);
                             finish();
-                            //TODO add logic to send professors to professor UI
                         }
                     }
                 });
