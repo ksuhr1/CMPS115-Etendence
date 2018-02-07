@@ -1,38 +1,51 @@
 package ucsc.ettendance;
 
-/**
- * Created by katelynsuhr on 1/31/18.
- */
-
-public class UserInformation {
+public class UserInformation
+{
     public String firstName;
     public String lastName;
-    public String email;
     public String studentId;
     public boolean isProfessor;
+    public String email;
 
-    public UserInformation(String firstName, String lastName,String studentId, boolean isProfessor, String email){
+    // Needed for Firebase
+    public UserInformation()
+    {
+
+    }
+
+    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email){
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
         this.studentId = studentId;
         this.isProfessor = isProfessor;
+        this.email = email;
     }
 
-    public String getFirstName(){
+    public String getFirstName()
+    {
         return firstName;
     }
-    public String getLastName(){
+    public String getLastName()
+    {
         return lastName;
     }
 
-    public String getId(){
+    public String getStudentId()
+    {
         return studentId;
     }
 
-    public boolean isProf(){
+    public boolean isProfessor()
+    {
         return isProfessor;
     }
 
+    public String getEmail()
+    {
+        return email;
+    }
+
+    //public UserInformation() { }
 
 }

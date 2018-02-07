@@ -25,7 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import java.util.ArrayList;
 
 
-public class MyClasses extends AppCompatActivity {
+public class MyClasses extends AppCompatActivity
+{
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -35,15 +36,19 @@ public class MyClasses extends AppCompatActivity {
     //private FirebaseDatabase mDatabase;
     private String mUserId;
     private DatabaseReference mDatabase;
+    private DatabaseReference mStudentRef;
     private static final String TAG = "My Classes";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_classes);
+
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
+        mStudentRef = mDatabase.child("students");
 
         if(mFirebaseUser == null)
         {
@@ -61,9 +66,11 @@ public class MyClasses extends AppCompatActivity {
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
-        addClass.setOnClickListener(new View.OnClickListener() {
+        addClass.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(MyClasses.this, AddClass.class);
                 startActivity(intent);
 
@@ -96,25 +103,33 @@ public class MyClasses extends AppCompatActivity {
             }
         });
 
+        // Retrieving data from database
+
+        //DatabaseReference studentsRef = FirebaseAuth.getInstance().getReference("students");
+        //mStudentRef.orderByChild("firstName").addValueEventListener(new ValueEventListener() {
+        //mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
+        mStudentRef.addValueEventListener(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+
+                UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error)
+            {
+                // Failed to read value
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
     }
-/*
-    // Retrieving data from database
-    mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
-        @Override
-        public void onDataChange(DataSnapshot dataSnapshot) {
 
-            UserInformation user = dataSnapshot.getValue(UserInformation.class);
 
-            Log.d(TAG, "Name: " + user.getName() + ", ID: " + user.getId() + "isProfessor: " + user.isProf());
-        }
 
-        @Override
-        public void onCancelled(DatabaseError error) {
-            // Failed to read value
-            Log.w(TAG, "Failed to read value.", error.toException());
-        }
-    });
-*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -133,7 +148,8 @@ public class MyClasses extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
