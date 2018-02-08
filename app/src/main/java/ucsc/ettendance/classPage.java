@@ -12,12 +12,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
-public class classPage extends AppCompatActivity {
+public class classPage extends AppCompatActivity
+{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -29,6 +31,7 @@ public class classPage extends AppCompatActivity {
         title.setText(className);
     }
 
+    //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -37,6 +40,7 @@ public class classPage extends AppCompatActivity {
         return true;
     }
 
+    //log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -50,7 +54,6 @@ public class classPage extends AppCompatActivity {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
-
         return super.onOptionsItemSelected(item);
     }
 

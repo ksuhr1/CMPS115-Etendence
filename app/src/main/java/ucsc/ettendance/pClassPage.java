@@ -12,12 +12,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
-public class pClassPage extends AppCompatActivity {
+public class pClassPage extends AppCompatActivity
+{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -28,7 +30,7 @@ public class pClassPage extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(className);
     }
-
+    //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -36,7 +38,7 @@ public class pClassPage extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
+    //more log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -46,14 +48,15 @@ public class pClassPage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
 
         return super.onOptionsItemSelected(item);
     }
-
+    //takes user to log in screen if logout button is pressed
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);

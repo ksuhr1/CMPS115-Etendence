@@ -73,7 +73,7 @@
         android:layout_weight="0.5"
         android:background="@drawable/bluebuttonback"
         android:fontFamily="sans-serif"
-        android:text="@string/addClass"
+        android:text="Create Class"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light"
@@ -84,7 +84,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="@string/addClass" />
+        tools:text="Create Class" />
 
 
 </android.support.constraint.ConstraintLayout>
