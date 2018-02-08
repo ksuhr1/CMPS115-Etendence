@@ -52,15 +52,12 @@ import static android.Manifest.permission.READ_CONTACTS;
 public class LoginActivity extends AppCompatActivity {
 
     private static final String TAG = "LoginActivity";
-    private Button btnLogin, btnLinkToSignUp;
+    private Button logInButton, signUpButton;
     private ProgressBar progressBar;
     private EditText loginInputEmail, loginInputPassword;
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
     private static int result = 0;
-    private static boolean emailInDatabase;
-    private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,35 +65,39 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
 
-        //loginInputLayoutEmail = (TextInputLayout) findViewById(R.id.login_input_layout_email);
-        //loginInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_input_layout_password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         loginInputEmail = (EditText) findViewById(R.id.email);
         loginInputPassword = (EditText) findViewById(R.id.password);
+        logInButton = (Button) findViewById(R.id.email_sign_in_button);
+        signUpButton = (Button) findViewById(R.id.email_sign_up_button);
 
-        btnLogin = (Button) findViewById(R.id.email_sign_in_button);
-        btnLinkToSignUp = (Button) findViewById(R.id.email_sign_up_button);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
+        //log in button to take user to main
+        logInButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 submitForm();
             }
         });
-
-        btnLinkToSignUp.setOnClickListener(new View.OnClickListener() {
+        //sign up button to take user to sign up page
+        signUpButton.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(LoginActivity.this, SignUp.class);
                 startActivity(intent);
             }
         });
-
+        //TODO DELETE THIS METHOD WHEN PROF REDERECT LOGIC IS COMPLETE
         Button prof = (Button) findViewById(R.id.prof);
-        prof.setOnClickListener(new View.OnClickListener() {
+        prof.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(LoginActivity.this, Pmain.class);
                 startActivity(intent);
             }
@@ -106,73 +107,71 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Validating form
      */
-    private void submitForm() {
+    private void submitForm()
+    {
         final String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
 
-        if(!checkEmail()) {
+        if(!checkEmail())
             return;
-        }
-        if(!checkPassword()) {
+        if(!checkPassword())
             return;
-        }
-//        loginInputLayoutEmail.setErrorEnabled(false);
-//        loginInputLayoutPassword.setErrorEnabled(false);
 
         progressBar.setVisibility(View.VISIBLE);
         //authenticate user
-        auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // If sign in fails, Log a message to the LogCat. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        progressBar.setVisibility(View.GONE);
-                        if (!task.isSuccessful()) {
-
-                            //checks if email is in database
-                            auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
-                                @Override
-                                public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                                    if(task.isSuccessful()){
-                                        ///////// getProviders().size() will return size 1. if email ID is available.
-                                        result = task.getResult().getProviders().size();
-                                        if(result != 1)
-                                        {
-                                            loginInputEmail.setError(getString(R.string.error_not_registered));
-                                            focusView = loginInputEmail;
-                                            focusView.requestFocus();
-                                        }
-                                        else
-                                        {
-                                            loginInputPassword.setError(getString(R.string.error_incorrect_password));
-                                            focusView = loginInputPassword;
-                                            focusView.requestFocus();
-                                        }
-                                    }
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task)
+            {
+                // If sign in fails, Log a message to the LogCat. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                progressBar.setVisibility(View.GONE);
+                if (!task.isSuccessful())
+                {
+                    //checks if email is in database
+                    auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
+                    {
+                        @Override
+                        public void onComplete(@NonNull Task<ProviderQueryResult> task)
+                        {
+                            if(task.isSuccessful())
+                            {
+                                // getProviders().size() will return size 1. if email ID is available.
+                                result = task.getResult().getProviders().size();
+                                if(result != 1)
+                                {
+                                    loginInputEmail.setError(getString(R.string.error_not_registered));
+                                    focusView = loginInputEmail;
+                                    focusView.requestFocus();
                                 }
-                            });
-
-                            // password incorrect message
-                            //Toast.makeText(LoginActivity.this, getString(R.string.auth_failed), Toast.LENGTH_LONG).show();
-
-
-
-
-                        } else {
-                            Intent intent = new Intent(LoginActivity.this, MyClasses.class);
-                            startActivity(intent);
-                            finish();
-                            //TODO add logic to send professors to professor UI
+                                else
+                                {
+                                    loginInputPassword.setError(getString(R.string.error_incorrect_password));
+                                    focusView = loginInputPassword;
+                                    focusView.requestFocus();
+                                }
+                            }
                         }
-                    }
-                });
+                    });
+                }
+                //if authentication is successful
+                else
+                {
+                    Intent intent = new Intent(LoginActivity.this, MyClasses.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 
-    private boolean checkEmail() {
+    private boolean checkEmail()
+    {
         String email = loginInputEmail.getText().toString().trim();
-        if (email.isEmpty()) {
+        if (email.isEmpty())
+        {
             loginInputEmail.setError(getString(R.string.error_field_required));
             focusView = loginInputEmail;
             focusView.requestFocus();
@@ -188,30 +187,30 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private boolean checkPassword() {
-
+    private boolean checkPassword()
+    {
         String password = loginInputPassword.getText().toString().trim();
-        if (password.isEmpty()) {
+        if (password.isEmpty())
+        {
             loginInputPassword.setError(getString(R.string.error_field_required));
             focusView = loginInputPassword;
             focusView.requestFocus();
-//            loginInputLayoutPassword.setError(getString(R.string.err_msg_password));
-//            loginInputPassword.setError(getString(R.string.err_msg_required));
-//            requestFocus(loginInputPassword);
             return false;
         }
-        //loginInputLayoutPassword.setErrorEnabled(false);
         return true;
     }
 
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
+    private void requestFocus(View view)
+    {
+        if (view.requestFocus())
+        {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }

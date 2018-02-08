@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
@@ -21,13 +22,15 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class Pmain extends AppCompatActivity {
+public class Pmain extends AppCompatActivity
+{
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pmain);
 
@@ -36,15 +39,17 @@ public class Pmain extends AppCompatActivity {
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
-        addClass.setOnClickListener(new View.OnClickListener() {
+        addClass.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 Intent intent = new Intent(Pmain.this, PaddClass.class);
                 startActivity(intent);
             }
         });
 
-        ArrayList<String> classArray = new ArrayList<String>();
+        final ArrayList<String> classArray = new ArrayList<String>();
         classArray.add("gorp1");
         classArray.add("gorp2");
         classArray.add("gorp3");
@@ -52,12 +57,23 @@ public class Pmain extends AppCompatActivity {
         ListView list = (ListView) findViewById(R.id.listview);
         // Create the adapter to convert the array to views
         final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlistblue, classArray);
-        //final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
         // Attach the adapter to a ListView
-
         list.setAdapter(aa);
+
+        //IF ARRAY IS CLICKED
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                    Intent intent = new Intent(Pmain.this, pClassPage.class);
+                    String className = classArray.get(position);
+                    intent.putExtra("className", className);
+                    startActivity(intent);
+            }
+        });
     }
 
+    //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -66,6 +82,7 @@ public class Pmain extends AppCompatActivity {
         return true;
     }
 
+    //more log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -83,6 +100,7 @@ public class Pmain extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    //takes user to log in screen when log out button is pressed
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);

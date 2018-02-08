@@ -13,7 +13,8 @@ import android.widget.EditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class PaddClass extends AppCompatActivity {
+public class PaddClass extends AppCompatActivity
+{
     private EditText mClassNameView;
     private EditText mClassCodeView;
     private EditText mClassPINView;
@@ -22,7 +23,8 @@ public class PaddClass extends AppCompatActivity {
     private FirebaseUser mFirebaseUser;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_padd_class);
 
@@ -34,74 +36,68 @@ public class PaddClass extends AppCompatActivity {
         mClassPINView = (EditText) findViewById(R.id.pin);
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
-        addClass.setOnClickListener(new View.OnClickListener() {
+        addClass.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 checkValid();
 
             }
         });
     }
 
-    private void checkValid() {
-//        if (mAuthTask != null) {
-//            return;
-//        }
+    private void checkValid()
+    {
 
         // Reset errors.
         mClassNameView.setError(null);
         mClassCodeView.setError(null);
         mClassPINView.setError(null);
 
-
         // Store values at the time of the login attempt.
         String name = mClassNameView.getText().toString();
         String code = mClassCodeView.getText().toString();
-        String pin = mClassCodeView.getText().toString();
-
+        String pin = mClassPINView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
-
-
-
-        if (TextUtils.isEmpty(pin)) {
+        if (TextUtils.isEmpty(pin))
+        {
             mClassPINView.setError(getString(R.string.error_field_required));
             focusView = mClassPINView;
             cancel = true;
         }
         // Check for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code) ) {
+        if (TextUtils.isEmpty(code) )
+        {
             mClassCodeView.setError(getString(R.string.error_field_required));
             focusView = mClassCodeView;
             cancel = true;
         }
         // Check for a valid name
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name))
+        {
             mClassNameView.setError(getString(R.string.error_field_required));
             focusView = mClassNameView;
             cancel = true;
         }
-
-        if (cancel) {
+        if (cancel)
+        {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
         }
         else
         {
+            //TODO add logic to let professors add classes here
+            //TODO check if class is in database
             finish();
         }
-//        else {
-//            // Show a progress spinner, and kick off a background task to
-//            // perform the user login attempt.
-//            //showProgress(true);
-//            mAuthTask = new LoginActivity.UserLoginTask(email, password);
-//            mAuthTask.execute((Void) null);
-//    }
-
     }
+
+    //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -109,6 +105,7 @@ public class PaddClass extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+    //log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -116,16 +113,16 @@ public class PaddClass extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
-
         return super.onOptionsItemSelected(item);
     }
 
+    //transfers user to login page when logout button is clicked
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);

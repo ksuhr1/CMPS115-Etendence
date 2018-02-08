@@ -1,6 +1,5 @@
 package ucsc.ettendance;
 
-
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
@@ -44,26 +43,22 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class SignUp extends AppCompatActivity {
-
+public class SignUp extends AppCompatActivity
+{
     private static final String TAG = "LoginActivity";
-    private Button btnLogin;
     private ProgressBar progressBar;
     private static int result = 0;
     private static FirebaseAuth auth;
 
-    private EditText loginInputEmail, loginInputPassword, loginInputName, loginInputID, loginInputConfirm;
+    private EditText loginInputEmail, loginInputPassword, loginInputID, loginInputConfirm;
     private EditText loginInputFirstName, loginInputLastName;
-    private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
     boolean isProfessor = false;
-
     private DatabaseReference databaseReference;
 
-
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
@@ -72,142 +67,109 @@ public class SignUp extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-     //   loginInputLayoutEmail = (TextInputLayout) findViewById(R.id.login_input_layout_email);
-       // loginInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_input_layout_password);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
-
         loginInputEmail = (EditText) findViewById(R.id.email);
         loginInputPassword = (EditText) findViewById(R.id.password);
-       // loginInputName = (EditText) findViewById(R.id.name);
-       // loginInputID = (EditText) findViewById(R.id.studentId);
+        loginInputID = (EditText) findViewById(R.id.studentid);
         loginInputFirstName = (EditText) findViewById(R.id.firstName);
         loginInputLastName = (EditText) findViewById(R.id.lastName);
-
         loginInputConfirm = (EditText) findViewById(R.id.confirm);
 
-
-
-        btnLogin = (Button) findViewById(R.id.signUpButton);
-
-
+        //sign up button logic
         Button signUp = (Button) findViewById(R.id.signUpButton);
-        signUp.setOnClickListener(new View.OnClickListener() {
+        signUp.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
+            public void onClick(View view)
+            {
                 submitForm();
             }
         });
     }
 
-    /**
-     * Validating form
-     */
-    private void submitForm() {
+    //validating form
+    private void submitForm()
+    {
         String email = loginInputEmail.getText().toString().trim();
         String password = loginInputPassword.getText().toString().trim();
-       // final String studentId = loginInputID.getText().toString().trim();
-        String confirm = loginInputConfirm.getText().toString().trim();
-        //final String name = loginInputName.getText().toString().trim();
-        final String firstname = loginInputFirstName.getText().toString().trim();
-        final String lastname = loginInputLastName.getText().toString().trim();
-        //boolean isProfessor = false;
+        final String studentId = loginInputID.getText().toString().trim();
+        final String firstName = loginInputFirstName.getText().toString().trim();
+        final String lastName = loginInputLastName.getText().toString().trim();
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox); // reference to checkbox value
 
-
-        if(!checkFirstName()) {
+        if(!checkFirstName())
             return;
-        }
-        if(!checkLastName()) {
+        if(!checkLastName())
             return;
-        }
-//        if(!checkStudentId()) {
-//            return;
-//        }
-        if(!checkEmail()) {
+        if(!checkStudentId())
             return;
-        }
-        if(!checkPassword()) {
+        if(!checkEmail())
             return;
-        }
-
-        if(!checkConfirm()) {
+        if(!checkPassword())
             return;
-        }
+        if(!checkConfirm())
+            return;
 
         // if professor checkbox is checked, user is a professor
-        if (checkBox.isChecked()) {
+        if (checkBox.isChecked())
             isProfessor = true;
-        }
-
-        final UserInformation userInformation = new UserInformation(firstname,lastname, isProfessor, email);
-
-
-//        loginInputLayoutEmail.setErrorEnabled(false);
-  //      loginInputLayoutPassword.setErrorEnabled(false);
-
+        //Sets user info
+        final UserInformation userInformation = new UserInformation(firstName,lastName,studentId, isProfessor, email);
+        //displays progress bar
         progressBar.setVisibility(View.VISIBLE);
         //authenticate user
-      //  final boolean finalIsProfessor = isProfessor;
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG,"createUserWithEmail:onComplete:" + task.isSuccessful());
-                        progressBar.setVisibility(View.GONE);
-                        // If sign in fails, Log the message to the LogCat. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.d(TAG,"Authentication failed." + task.getException());
-                            loginInputEmail.setError(getString(R.string.error_invalid_email));
-                            focusView = loginInputEmail;
-                            focusView.requestFocus();
-                            //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
-
-                        } else {
-                            FirebaseUser user = auth.getCurrentUser();
-                            if(user!=null)
-                            {
-                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(firstname)
-                                        .build();
-                                user.updateProfile(profileUpdates);
-                            }
-                            if(!isProfessor){
-                                databaseReference.child("students").child(user.getUid()).setValue(userInformation);
-                                //databaseReference.child(user.getUid()).setValue(userInformation);
-                                Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(SignUp.this, MyClasses.class));
-                               // finish();
-                            }
-                            else {
-                                databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
-                                //databaseReference.child(user.getUid()).setValue(userInformation);
-                                Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
-                                startActivity(new Intent(SignUp.this, Pmain.class));
-                              //  finish();
-
-                            }
-                          //  databaseReference.child("students").child(user.getUid()).setValue(userInformation);
-                            //databaseReference.child(user.getUid()).setValue(userInformation);
-                          //  Toast.makeText(getApplicationContext(), "Information Saved..", Toast.LENGTH_LONG).show();
-//                            if(user!=null)
-//                            {
-//                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-//                                        .setDisplayName(name)
-//                                        .build();
-//                                user.updateProfile(profileUpdates);
-//                            }
-                           // Toast.makeText(getApplicationContext(), "You are successfully Registered !!", Toast.LENGTH_SHORT).show();
-//                            startActivity(new Intent(SignUp.this, MyClasses.class));
-//                            finish();
-                        }
+        .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>()
+        {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task)
+            {
+                Log.d(TAG,"createUserWithEmail:onComplete:" + task.isSuccessful());
+                progressBar.setVisibility(View.GONE);
+                // If sign in fails, Log the message to the LogCat. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful())
+                {
+                    Log.d(TAG,"Authentication failed." + task.getException());
+                    loginInputEmail.setError(getString(R.string.error_invalid_email));
+                    focusView = loginInputEmail;
+                    focusView.requestFocus();
+                    //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    FirebaseUser user = auth.getCurrentUser();
+                    if(user!=null)
+                    {
+                        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(firstName)
+                                .build();
+                        user.updateProfile(profileUpdates);
                     }
-                });
-
+                    if(!isProfessor)
+                    {
+                        databaseReference.child("students").child(user.getUid()).setValue(userInformation);
+                        //databaseReference.child(user.getUid()).setValue(userInformation);
+                        Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(SignUp.this, MyClasses.class));
+                        finish();
+                    }
+                    else
+                    {
+                        databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
+                        //databaseReference.child(user.getUid()).setValue(userInformation);
+                        Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(SignUp.this, Pmain.class));
+                        finish();
+                    }
+                }
+            }
+        });
     }
 
-    private boolean checkEmail() {
+    private boolean checkEmail()
+    {
         String email = loginInputEmail.getText().toString().trim();
         if (email.isEmpty()) {
             loginInputEmail.setError(getString(R.string.error_field_required));
@@ -232,10 +194,11 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    private boolean checkPassword() {
-
+    private boolean checkPassword()
+    {
         String password = loginInputPassword.getText().toString().trim();
-        if (password.isEmpty()) {
+        if (password.isEmpty())
+        {
             loginInputPassword.setError(getString(R.string.error_field_required));
             focusView = loginInputPassword;
             focusView.requestFocus();
@@ -251,9 +214,11 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-    private boolean checkFirstName() {
-        String firstname = loginInputFirstName.getText().toString().trim();
-        if (firstname.isEmpty()) {
+    private boolean checkFirstName()
+    {
+        String firstName = loginInputFirstName.getText().toString().trim();
+        if (firstName.isEmpty())
+        {
             loginInputFirstName.setError(getString(R.string.error_field_required));
             focusView = loginInputFirstName;
             focusView.requestFocus();
@@ -261,9 +226,10 @@ public class SignUp extends AppCompatActivity {
         }
         return true;
     }
-    private boolean checkLastName() {
-        String lastname = loginInputLastName.getText().toString().trim();
-        if (lastname.isEmpty()) {
+    private boolean checkLastName()
+    {
+        String lastName = loginInputLastName.getText().toString().trim();
+        if (lastName.isEmpty()) {
             loginInputFirstName.setError(getString(R.string.error_field_required));
             focusView = loginInputLastName;
             focusView.requestFocus();
@@ -272,29 +238,33 @@ public class SignUp extends AppCompatActivity {
         return true;
     }
 
-//    private boolean checkStudentId() {
-//
-//        String studentID = loginInputID.getText().toString().trim();
-//        if (studentID.isEmpty()) {
-//            loginInputID.setError(getString(R.string.error_field_required));
-//            focusView = loginInputID;
-//            focusView.requestFocus();
-//            return false;
-//        }
-//        else if(!isIdValid(studentID))
-//        {
-//            loginInputID.setError(getString(R.string.error_invalid_ID));
-//            focusView = loginInputID;
-//            focusView.requestFocus();
-//            return false;
-//        }
-//        return true;
-//    }
-    private boolean checkConfirm() {
+    private boolean checkStudentId()
+    {
+        CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
+        String studentID = loginInputID.getText().toString().trim();
+        if (studentID.isEmpty()&& !checkBox.isChecked())
+        {
+            loginInputID.setError(getString(R.string.error_field_required));
+            focusView = loginInputID;
+            focusView.requestFocus();
+            return false;
+        }
+        else if(!isIdValid(studentID)&& !checkBox.isChecked())
+        {
+            loginInputID.setError(getString(R.string.error_invalid_ID));
+            focusView = loginInputID;
+            focusView.requestFocus();
+            return false;
+        }
+        return true;
+    }
+    private boolean checkConfirm()
+    {
         Log.d(TAG,"IM IN CONFIRM.");
         String password = loginInputPassword.getText().toString();
         String confirm = loginInputConfirm.getText().toString();
-        if (confirm.isEmpty()) {
+        if (confirm.isEmpty())
+        {
             loginInputConfirm.setError(getString(R.string.error_field_required));
             focusView = loginInputConfirm;
             focusView.requestFocus();
@@ -302,21 +272,20 @@ public class SignUp extends AppCompatActivity {
         }
         if(!confirm.equals(password))
         {
-
             loginInputConfirm.setError(getString(R.string.error_invalid_confirm));
             focusView = loginInputConfirm;
             focusView.requestFocus();
             return false;
         }
-
         return true;
     }
 
 
-    private static boolean isEmailValid(String email) {
-
+    private static boolean isEmailValid(String email)
+    {
         Log.d(TAG,"inside EMAIL VALID");
-        auth.fetchProvidersForEmail("emailaddress@gmail.com").addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>() {
+        auth.fetchProvidersForEmail("emailaddress@gmail.com").addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
+        {
             @Override
             public void onComplete(@NonNull Task<ProviderQueryResult> task) {
                 if(task.isSuccessful()){
@@ -335,24 +304,28 @@ public class SignUp extends AppCompatActivity {
         }
     }
 
-    private static boolean isIdValid(String id) {
-
+    private static boolean isIdValid(String id)
+    {
         return (id.length() == 7);
     }
 
 
-    private static boolean isPasswordValid(String password){
+    private static boolean isPasswordValid(String password)
+    {
         return (password.length() >= 6);
     }
 
-    private void requestFocus(View view) {
-        if (view.requestFocus()) {
+    private void requestFocus(View view)
+    {
+        if (view.requestFocus())
+        {
             getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         }
     }
 
     @Override
-    protected void onResume() {
+    protected void onResume()
+    {
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }

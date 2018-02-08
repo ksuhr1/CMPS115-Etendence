@@ -21,6 +21,7 @@
             android:background="@drawable/bluebuttonback"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
+
     </RelativeLayout>
 
     <TextView
@@ -31,7 +32,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="Add a Class"
+        android:text="Create a Class"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@color/lightBlue"
         android:textSize="40sp"
@@ -55,7 +56,7 @@
         android:layout_weight="0.5"
         android:background="@drawable/bluebuttonback"
         android:fontFamily="sans-serif"
-        android:text="Add Class"
+        android:text="Create Class"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light"
@@ -66,7 +67,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="Add Class" />
+        tools:text="Create Class" />
 
     <EditText
         android:id="@+id/className"
