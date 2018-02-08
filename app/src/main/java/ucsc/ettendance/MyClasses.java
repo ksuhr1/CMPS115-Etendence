@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -57,9 +58,28 @@ public class MyClasses extends AppCompatActivity
         }
         else
         {
+            mUserId = mFirebaseUser.getUid();
+            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
+            {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+
+                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                    Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                }
+
+                @Override
+                public void onCancelled(DatabaseError error)
+                {
+                    // Failed to read value
+                    Log.w(TAG, "Failed to read value.", error.toException());
+                }
+            });
+
             TextView welcome = (TextView) findViewById(R.id.title3);
             //Gets details of the logged in user
-            mUserId = mFirebaseUser.getUid();
+//            mUserId = mFirebaseUser.getUid();
             welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
         }
 
@@ -108,23 +128,23 @@ public class MyClasses extends AppCompatActivity
         //DatabaseReference studentsRef = FirebaseAuth.getInstance().getReference("students");
         //mStudentRef.orderByChild("firstName").addValueEventListener(new ValueEventListener() {
         //mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
-        mStudentRef.addValueEventListener(new ValueEventListener()
-        {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-
-                UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error)
-            {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+//        mStudentRef.addValueEventListener(new ValueEventListener()
+//        {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot)
+//            {
+//
+//                UserInformation user = dataSnapshot.getValue(UserInformation.class);
+//                Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError error)
+//            {
+//                // Failed to read value
+//                Log.w(TAG, "Failed to read value.", error.toException());
+//            }
+//        });
 
     }
 
