@@ -40,6 +40,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -60,6 +62,7 @@ public class LoginActivity extends AppCompatActivity {
     private static boolean emailInDatabase;
     private TextInputLayout loginInputLayoutEmail, loginInputLayoutPassword;
     View focusView = null;
+    //private DatabaseReference databaseReference;
 
 
     @Override
@@ -67,6 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
+
+       // databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //loginInputLayoutEmail = (TextInputLayout) findViewById(R.id.login_input_layout_email);
         //loginInputLayoutPassword = (TextInputLayout) findViewById(R.id.login_input_layout_password);
