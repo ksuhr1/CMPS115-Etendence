@@ -167,6 +167,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //checks to make sure that the emails field is not empty nor is it invalid
     private boolean checkEmail()
     {
         String email = loginInputEmail.getText().toString().trim();
@@ -187,6 +188,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    //make sure to see that the password field is not empty
     private boolean checkPassword()
     {
         String password = loginInputPassword.getText().toString().trim();
@@ -200,6 +202,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
+    //make the keyboard appear once the focus is on the email or password bar
     private void requestFocus(View view)
     {
         if (view.requestFocus())
@@ -208,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    //continue the activity
     @Override
     protected void onResume()
     {

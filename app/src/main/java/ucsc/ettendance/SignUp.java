@@ -170,6 +170,7 @@ public class SignUp extends AppCompatActivity
 
     private boolean checkEmail()
     {
+        //Checks to see if the email is not entered and prints out message the email is require
         String email = loginInputEmail.getText().toString().trim();
         if (email.isEmpty()) {
             loginInputEmail.setError(getString(R.string.error_field_required));
@@ -177,14 +178,14 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
-        if (isEmailValid(email))
+        if (isEmailValid(email)) //check to see if the email is already used before when creating it and sends error messages
         {
             loginInputEmail.setError(getString(R.string.error_already_registered));
             focusView = loginInputEmail;
             focusView.requestFocus();
             return false;
         }
-        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches())
+        if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) //if incorrect email displays message that email is not valid
         {
             loginInputEmail.setError(getString(R.string.error_invalid_email));
             focusView = loginInputEmail;
@@ -195,7 +196,7 @@ public class SignUp extends AppCompatActivity
     }
 
     private boolean checkPassword()
-    {
+    { //checks to make sure that the password section is not blank
         String password = loginInputPassword.getText().toString().trim();
         if (password.isEmpty())
         {
@@ -204,7 +205,7 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
-        else if(!isPasswordValid(password))
+        else if(!isPasswordValid(password)) //Checks to makes sure that the password is a minimum length
         {
             loginInputPassword.setError(getString(R.string.error_invalid_password));
             focusView = loginInputPassword;
@@ -215,7 +216,7 @@ public class SignUp extends AppCompatActivity
     }
 
     private boolean checkFirstName()
-    {
+    { //Make sure that field for the first name is not left blank
         String firstName = loginInputFirstName.getText().toString().trim();
         if (firstName.isEmpty())
         {
@@ -227,7 +228,7 @@ public class SignUp extends AppCompatActivity
         return true;
     }
     private boolean checkLastName()
-    {
+    { //Makes sure that the field for the last name is not left blank
         String lastName = loginInputLastName.getText().toString().trim();
         if (lastName.isEmpty()) {
             loginInputFirstName.setError(getString(R.string.error_field_required));
@@ -243,14 +244,14 @@ public class SignUp extends AppCompatActivity
         CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox);
         String studentID = loginInputID.getText().toString().trim();
         if (studentID.isEmpty()&& !checkBox.isChecked())
-        {
+        { //Make sure that the student id section is not left empty
             loginInputID.setError(getString(R.string.error_field_required));
             focusView = loginInputID;
             focusView.requestFocus();
             return false;
         }
         else if(!isIdValid(studentID)&& !checkBox.isChecked())
-        {
+        { //Check to see that the student id is at least of length 7
             loginInputID.setError(getString(R.string.error_invalid_ID));
             focusView = loginInputID;
             focusView.requestFocus();
@@ -271,7 +272,7 @@ public class SignUp extends AppCompatActivity
             return false;
         }
         if(!confirm.equals(password))
-        {
+        { //check to see that the passowrds are matched for the account
             loginInputConfirm.setError(getString(R.string.error_invalid_confirm));
             focusView = loginInputConfirm;
             focusView.requestFocus();
@@ -304,12 +305,13 @@ public class SignUp extends AppCompatActivity
         }
     }
 
+    //the id length should be atleast 7 characters
     private static boolean isIdValid(String id)
     {
         return (id.length() == 7);
     }
 
-
+    // the password length must be atleast 6 characters
     private static boolean isPasswordValid(String password)
     {
         return (password.length() >= 6);
@@ -323,6 +325,7 @@ public class SignUp extends AppCompatActivity
         }
     }
 
+    //continue
     @Override
     protected void onResume()
     {

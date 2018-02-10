@@ -66,7 +66,7 @@ public class MyClasses extends AppCompatActivity
                 {
 
                     UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                   //Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
                 }
 
                 @Override

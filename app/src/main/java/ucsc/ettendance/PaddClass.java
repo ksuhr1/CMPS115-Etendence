@@ -57,8 +57,8 @@ public class PaddClass extends AppCompatActivity
 
         // Store values at the time of the login attempt.
         String name = mClassNameView.getText().toString();
-        String code = mClassCodeView.getText().toString();
-        String pin = mClassPINView.getText().toString();
+        String code = mClassCodeView.getText().toString().trim();
+        String pin = mClassPINView.getText().toString().trim();
 
         boolean cancel = false;
         View focusView = null;
