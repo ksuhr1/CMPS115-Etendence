@@ -50,10 +50,10 @@ public class Pmain extends AppCompatActivity
         });
 
         final ArrayList<String> classArray = new ArrayList<String>();
-        classArray.add("gorp1");
-        classArray.add("gorp2");
-        classArray.add("gorp3");
-        classArray.add("gorp4");
+        classArray.add("Class 1");
+        classArray.add("Class 2");
+        classArray.add("Class 3");
+        classArray.add("Class 4");
         ListView list = (ListView) findViewById(R.id.listview);
         // Create the adapter to convert the array to views
         final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlistblue, classArray);
