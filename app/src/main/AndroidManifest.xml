@@ -51,9 +51,11 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlue" />
-        <activity android:name=".pClassPage"
-                  android:theme="@style/AppThemeBlue"/>
-        <activity android:name=".classPage"></activity>
+        <activity
+            android:name=".pClassPage"
+            android:theme="@style/AppThemeBlue" />
+        <activity android:name=".classPage" />
+        <activity android:name=".splashScreen"></activity>
     </application>
 
 </manifest>
