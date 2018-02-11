@@ -38,6 +38,8 @@ public class MyClasses extends AppCompatActivity
     private String mUserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
+    private DatabaseReference mProfRef;
+
     private static final String TAG = "My Classes";
 
     @Override
@@ -50,6 +52,8 @@ public class MyClasses extends AppCompatActivity
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStudentRef = mDatabase.child("students");
+        mProfRef = mDatabase.child("teachers");
+
 
         if(mFirebaseUser == null)
         {
@@ -59,19 +63,51 @@ public class MyClasses extends AppCompatActivity
         else
         {
             mUserId = mFirebaseUser.getUid();
-            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
+
+            /*if(mProfRef.child(mUserId) == null)
+            {*/
+                mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+
+                        UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                        if(user == null)
+                        {
+                            Log.d(TAG, "This is a professor, trying to access the student side");
+                        }
+                        else
+                        {
+                            Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
+
+            mProfRef.child(mUserId).addValueEventListener(new ValueEventListener()
             {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
+                public void onDataChange(DataSnapshot dataSnapshot) {
 
                     UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                    if(user == null)
+                    {
+                        Log.d(TAG, "This is a student, trying to access the professor side");
+                    }
+                    else
+                    {
+                        Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                        loadProfView();
+                    }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error)
-                {
+                public void onCancelled(DatabaseError error) {
                     // Failed to read value
                     Log.w(TAG, "Failed to read value.", error.toException());
                 }
@@ -123,29 +159,6 @@ public class MyClasses extends AppCompatActivity
             }
         });
 
-        // Retrieving data from database
-
-        //DatabaseReference studentsRef = FirebaseAuth.getInstance().getReference("students");
-        //mStudentRef.orderByChild("firstName").addValueEventListener(new ValueEventListener() {
-        //mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
-//        mStudentRef.addValueEventListener(new ValueEventListener()
-//        {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot)
-//            {
-//
-//                UserInformation user = dataSnapshot.getValue(UserInformation.class);
-//                Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error)
-//            {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-
     }
 
 
@@ -180,6 +193,14 @@ public class MyClasses extends AppCompatActivity
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void loadProfView()
+    {
+        Intent intent = new Intent(this, Pmain.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
