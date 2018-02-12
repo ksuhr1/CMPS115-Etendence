@@ -14,7 +14,8 @@ public class UserInformation
 
     }
 
-    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email){
+    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email)
+    {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentId = studentId;

@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -37,6 +38,11 @@ public class Pmain extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
+        TextView welcome = (TextView) findViewById(R.id.welcome);
+        //Gets details of the logged in user
+//            mUserId = mFirebaseUser.getUid();
+        welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
+
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
         addClass.setOnClickListener(new View.OnClickListener()
@@ -50,10 +56,10 @@ public class Pmain extends AppCompatActivity
         });
 
         final ArrayList<String> classArray = new ArrayList<String>();
-        classArray.add("gorp1");
-        classArray.add("gorp2");
-        classArray.add("gorp3");
-        classArray.add("gorp4");
+        classArray.add("Class 1");
+        classArray.add("Class 2");
+        classArray.add("Class 3");
+        classArray.add("Class 4");
         ListView list = (ListView) findViewById(R.id.listview);
         // Create the adapter to convert the array to views
         final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlistblue, classArray);

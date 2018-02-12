@@ -38,6 +38,8 @@ public class MyClasses extends AppCompatActivity
     private String mUserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
+    private DatabaseReference mProfRef;
+
     private static final String TAG = "My Classes";
 
     @Override
@@ -50,38 +52,15 @@ public class MyClasses extends AppCompatActivity
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStudentRef = mDatabase.child("students");
+        mProfRef = mDatabase.child("teachers");
 
-        if(mFirebaseUser == null)
-        {
-            //Not logged in, launch the Log in activity
-            loadLogInView();
-        }
-        else
-        {
-            mUserId = mFirebaseUser.getUid();
-            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
 
-                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                   //Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-                }
 
-                @Override
-                public void onCancelled(DatabaseError error)
-                {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
 
-            TextView welcome = (TextView) findViewById(R.id.title3);
+            TextView welcome = (TextView) findViewById(R.id.welcome);
             //Gets details of the logged in user
 //            mUserId = mFirebaseUser.getUid();
             welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
-        }
 
 
         //ADD CLASS BUTTON
@@ -99,10 +78,10 @@ public class MyClasses extends AppCompatActivity
 
         // ARRAY LOGIC
         final ArrayList<String> classArray = new ArrayList<String>();
-        classArray.add("gorp1");
-        classArray.add("gorp2");
-        classArray.add("gorp3");
-        classArray.add("gorp4");
+        classArray.add("Class 1");
+        classArray.add("Class 2");
+        classArray.add("Class 3");
+        classArray.add("Class 4");
         ListView list = (ListView) findViewById(R.id.listview);
         // Create the adapter to convert the array to views
         final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
@@ -123,32 +102,7 @@ public class MyClasses extends AppCompatActivity
             }
         });
 
-        // Retrieving data from database
-
-        //DatabaseReference studentsRef = FirebaseAuth.getInstance().getReference("students");
-        //mStudentRef.orderByChild("firstName").addValueEventListener(new ValueEventListener() {
-        //mDatabase.child(mUserId).addValueEventListener(new ValueEventListener() {
-//        mStudentRef.addValueEventListener(new ValueEventListener()
-//        {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot)
-//            {
-//
-//                UserInformation user = dataSnapshot.getValue(UserInformation.class);
-//                Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError error)
-//            {
-//                // Failed to read value
-//                Log.w(TAG, "Failed to read value.", error.toException());
-//            }
-//        });
-
     }
-
-
 
 
     @Override

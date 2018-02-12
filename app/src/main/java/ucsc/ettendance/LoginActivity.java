@@ -91,17 +91,6 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //TODO DELETE THIS METHOD WHEN PROF REDERECT LOGIC IS COMPLETE
-        Button prof = (Button) findViewById(R.id.prof);
-        prof.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(LoginActivity.this, Pmain.class);
-                startActivity(intent);
-            }
-        });
     }
 
     /**
@@ -159,7 +148,7 @@ public class LoginActivity extends AppCompatActivity {
                 //if authentication is successful
                 else
                 {
-                    Intent intent = new Intent(LoginActivity.this, MyClasses.class);
+                    Intent intent = new Intent(LoginActivity.this, splashScreen.class);
                     startActivity(intent);
                     finish();
                 }
