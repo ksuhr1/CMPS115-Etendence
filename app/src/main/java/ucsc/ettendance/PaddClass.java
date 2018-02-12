@@ -24,18 +24,18 @@ import com.google.firebase.database.FirebaseDatabase;
 public class PaddClass extends AppCompatActivity
 
 {
-    private static final String TAG = "ClassActivity";
+    //private static final String TAG = "ClassActivity";
     private static int result = 0;
     private EditText mClassNameView;
     private EditText mClassCodeView;
     private EditText mClassPINView;
 
-   //A
+
     private static FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
 
-    //A
+
     private DatabaseReference databaseReference;
 
     @Override
@@ -47,7 +47,7 @@ public class PaddClass extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
-        //A
+
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         mClassNameView = (EditText) findViewById(R.id.className);
@@ -93,7 +93,7 @@ public class PaddClass extends AppCompatActivity
             cancel = true;
         }
 
-        //A 2:27AM
+        //Checks to see if it fits the length constraint of the pin
         if(isPinShort(pin)){
             mClassPINView.setError("This PIN is too short");
             focusView = mClassPINView;
@@ -107,14 +107,14 @@ public class PaddClass extends AppCompatActivity
             focusView = mClassCodeView;
             cancel = true;
         }
-        //A 2:23AM
+        //Checks to see if the code is already taken
         if(isCodeValid(code)){
             mClassCodeView.setError("This code is already taken");
             focusView = mClassCodeView;
             cancel = true;
 
         }
-        //A 2:27AM
+        //Checks ot see if the code entered fits the length constraint
         if(isCodeShort(pin)){
             mClassCodeView.setError("This code is too short");
             focusView = mClassCodeView;
@@ -144,12 +144,12 @@ public class PaddClass extends AppCompatActivity
         }
     }
 
-    //A 2:50AM
-    //Check if the code is already taken for the class
+
+    //Check if the code is already taken for the class need to look throught the database in order to do that
     //Look on stack overflow for the error
     //NEED TO FIX THIS
     private static boolean isCodeValid(String code) {
-        Log.d(TAG,"inside CODE VALID");
+     //   Log.d(TAG,"inside CODE VALID");
        // mFirebaseAuth.fetchProvidersForCode("xxxxx").addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
         {
           //  @Override
@@ -171,14 +171,14 @@ public class PaddClass extends AppCompatActivity
 
     }
 
-    //Anisha 2:42am
+
     //the id length should be  6 characters
     private static boolean isPinShort(String pin)
     {
         return (pin.length() == 6);
     }
 
-    //Anisha 2:42am
+
     // the password length must be  5 characters
     private static boolean isCodeShort(String code)
     {
