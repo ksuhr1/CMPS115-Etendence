@@ -57,7 +57,7 @@ public class MyClasses extends AppCompatActivity
 
 
 
-            TextView welcome = (TextView) findViewById(R.id.title3);
+            TextView welcome = (TextView) findViewById(R.id.welcome);
             //Gets details of the logged in user
 //            mUserId = mFirebaseUser.getUid();
             welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());

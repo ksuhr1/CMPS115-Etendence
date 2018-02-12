@@ -16,6 +16,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -36,6 +37,11 @@ public class Pmain extends AppCompatActivity
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+
+        TextView welcome = (TextView) findViewById(R.id.welcome);
+        //Gets details of the logged in user
+//            mUserId = mFirebaseUser.getUid();
+        welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
