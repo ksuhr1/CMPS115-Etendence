@@ -34,8 +34,6 @@ public class PaddClass extends AppCompatActivity
     private static FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
-
-
     private DatabaseReference databaseReference;
 
     @Override
@@ -47,8 +45,9 @@ public class PaddClass extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
-
+        //initializing firebase authentication object
         databaseReference = FirebaseDatabase.getInstance().getReference();
+
 
         mClassNameView = (EditText) findViewById(R.id.className);
         mClassCodeView = (EditText) findViewById(R.id.classCode);

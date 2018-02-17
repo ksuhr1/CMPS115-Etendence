@@ -6,24 +6,6 @@
     android:layout_height="match_parent"
     tools:context="ucsc.ettendance.PaddClass">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
-        <View
-            android:id="@+id/myRectangleView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginTop="504dp"
-            android:background="@drawable/bluebuttonback"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="-20dp" />
-
-    </RelativeLayout>
-
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
@@ -70,7 +52,29 @@
         tools:text="Create Class" />
 
     <EditText
-        android:id="@+id/className"
+    android:id="@+id/className"
+    android:layout_width="275dp"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="8dp"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="8dp"
+    android:backgroundTint="@color/lightBlue"
+    android:ems="10"
+    android:hint="Course Name"
+    android:inputType="text"
+    android:singleLine="false"
+    android:textColor="@color/darkBlue"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintHorizontal_bias="0.505"
+    app:layout_constraintLeft_toLeftOf="parent"
+    app:layout_constraintRight_toRightOf="parent"
+    app:layout_constraintTop_toTopOf="parent"
+    app:layout_constraintVertical_bias="0.221" />
+
+
+    <EditText
+        android:id="@+id/classQuarter"
         android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -79,7 +83,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/lightBlue"
         android:ems="10"
-        android:hint="Class Name"
+        android:hint="Quarter"
         android:inputType="text"
         android:singleLine="false"
         android:textColor="@color/darkBlue"
@@ -88,7 +92,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.221" />
+        app:layout_constraintVertical_bias="0.374" />
 
     <EditText
         android:id="@+id/classCode"
@@ -109,7 +113,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.366" />
+        app:layout_constraintVertical_bias="0.545" />
 
     <EditText
         android:id="@+id/pin"
@@ -125,10 +129,11 @@
         android:inputType="number"
         android:textColor="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.706" />
 
 
 
