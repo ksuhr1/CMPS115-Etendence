@@ -12,21 +12,26 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class PaddClass extends AppCompatActivity
 
 {
-    //private static final String TAG = "ClassActivity";
+    private static final String TAG = "PaddClass";
     private static int result = 0;
     private EditText mClassNameView;
+    private EditText mQuarterTermView;
     private EditText mClassCodeView;
     private EditText mClassPINView;
 
@@ -34,7 +39,8 @@ public class PaddClass extends AppCompatActivity
     private static FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
 
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseClasses;
+    private DatabaseReference codeRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -46,10 +52,12 @@ public class PaddClass extends AppCompatActivity
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
         //initializing firebase authentication object
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseClasses = FirebaseDatabase.getInstance().getReference();
+        codeRef = databaseClasses.child("classes");
 
 
         mClassNameView = (EditText) findViewById(R.id.className);
+        mQuarterTermView = (EditText) findViewById(R.id.classQuarter);
         mClassCodeView = (EditText) findViewById(R.id.classCode);
         mClassPINView = (EditText) findViewById(R.id.pin);
         //ADD CLASS BUTTON
@@ -68,68 +76,82 @@ public class PaddClass extends AppCompatActivity
     private void checkValid()
     {
 
-
         // Reset errors.
         mClassNameView.setError(null);
+        mQuarterTermView.setError(null);
         mClassCodeView.setError(null);
         mClassPINView.setError(null);
 
         // Store values at the time of the login attempt.
-        String name = mClassNameView.getText().toString();
-        String code = mClassCodeView.getText().toString().trim();
-        String pin = mClassPINView.getText().toString().trim();
+        final String name = mClassNameView.getText().toString();
+        final String quarter = mQuarterTermView.getText().toString().trim();
+        final String code = mClassCodeView.getText().toString().trim();
+        final String pin = mClassPINView.getText().toString().trim();
 
         //A What is boolean cancel
-        boolean cancel = false;
+        boolean invalidField = false;
         View focusView = null;
 
 
-       //Checks if any of the fields are empty
-        if (TextUtils.isEmpty(pin))
-        {
-            mClassPINView.setError(getString(R.string.error_field_required));
-            focusView = mClassPINView;
-            cancel = true;
-        }
-
-        //Checks to see if it fits the length constraint of the pin
-        if(isPinShort(pin)){
-            mClassPINView.setError("This PIN is too short");
-            focusView = mClassPINView;
-            cancel = true;
-        }
-
-        // Check for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code) )
-        {
-            mClassCodeView.setError(getString(R.string.error_field_required));
-            focusView = mClassCodeView;
-            cancel = true;
-        }
-        //Checks to see if the code is already taken
-        if(isCodeValid(code)){
-            mClassCodeView.setError("This code is already taken");
-            focusView = mClassCodeView;
-            cancel = true;
-
-        }
-        //Checks ot see if the code entered fits the length constraint
-        if(isCodeShort(pin)){
-            mClassCodeView.setError("This code is too short");
-            focusView = mClassCodeView;
-            cancel = true;
-        }
-
-        // Check for a valid name
+        // Checks for a valid name
         if (TextUtils.isEmpty(name))
         {
             mClassNameView.setError(getString(R.string.error_field_required));
             focusView = mClassNameView;
-            cancel = true;
+            invalidField = true;
+        }
+
+        // Checks for a valid class code, if the user entered one.
+        if (TextUtils.isEmpty(code) )
+        {
+            mClassCodeView.setError(getString(R.string.error_field_required));
+            focusView = mClassCodeView;
+            invalidField = true;
+        }
+
+        //Checks to see if the code entered fits the length constraint
+        if(isCodeShort(pin)){
+            mClassCodeView.setError("This code is too short");
+            focusView = mClassCodeView;
+            invalidField = true;
+        }
+
+        //Checks if Quarter Term was entered
+        if(TextUtils.isEmpty(quarter))
+        {
+            mQuarterTermView.setError(getString(R.string.error_field_required));
+            focusView = mQuarterTermView;
+            invalidField = true;
+        }
+
+        //Add additional checks for Quarter, maybe change quarter to spinner
+
+        //Checks to see if the code is already taken
+//        if(isCodeValid(code)){
+//            Log.d(TAG,"CLASS CODE IS TAKEN: " + code);
+//            mClassCodeView.setError("This code is already taken");
+//            focusView = mClassCodeView;
+//            invalidField = true;
+//
+//        }
+
+        //Checks if a pin is entered, if not, sets an error msg
+        if (TextUtils.isEmpty(pin))
+        {
+            mClassPINView.setError(getString(R.string.error_field_required));
+            focusView = mClassPINView;
+            invalidField = true;
+        }
+
+        //Checks to see if pin fits the correct length constraints
+        if(isPinShort(pin)){
+            mClassPINView.setError("This PIN is too short");
+            focusView = mClassPINView;
+            invalidField = true;
         }
 
 
-        if (cancel)
+        if (invalidField)
         {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
@@ -137,38 +159,85 @@ public class PaddClass extends AppCompatActivity
         }
         else
         {
-            //TODO add logic to let professors add classes here
-            //TODO check if class is in database
-            finish();
+            codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                        if (data.child(code).exists()) {
+                          //  result =1;
+                            Log.d(TAG,"Same class code exists" + result);
+                            mClassCodeView.setError("This code is already taken");
+                            mClassCodeView.requestFocus();
+                           // focusView = mClassCodeView;
+                           // invalidField = true;
+                            //  mClassCodeView.setError("This code is already taken");
+                        } else {
+                            addCourseToDataBase(name, quarter, code, pin);
+                            Log.d(TAG,"Class code does not exist" + result);
+                            finish();
+                           // result = 0;
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
         }
+    }
+
+    //Helper function to add courses to Firebase
+    private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin)
+    {
+        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin);
+        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
+        Toast.makeText(getApplicationContext(), "Course" +classCode+"has been added", Toast.LENGTH_SHORT).show();
+
     }
 
 
     //Check if the code is already taken for the class need to look throught the database in order to do that
     //Look on stack overflow for the error
-    //NEED TO FIX THIS
-    private static boolean isCodeValid(String code) {
-     //   Log.d(TAG,"inside CODE VALID");
-       // mFirebaseAuth.fetchProvidersForCode("xxxxx").addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
-        {
-          //  @Override
-     //       public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-       //         if(task.isSuccessful()){
-         //           ///////// getProviders().size() will return size 1. if code is available.
-           //         result = task.getResult().getProviders().size();
-                }
-           // }
-       // });
-        if(result ==1)
-        {
-            return true;
-        }
-        else
-        {
-            return false;
-        }
+//    private boolean isCodeValid(final String code) {
+//
+//        codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot data : dataSnapshot.getChildren()) {
+//                    if (data.child(code).exists()) {
+//                        result =1;
+//                        Log.d(TAG,"Same class code exists" + result);
+//                      //  mClassCodeView.setError("This code is already taken");
+//                    } else {
+//                        Log.d(TAG,"Class code does not exist" + result);
+//                        result = 0;
+//                    }
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//
+//            }
+//        });
+//
+//        return
 
-    }
+//        if(result ==1){
+//            Log.d(TAG,"Result should be true = " + result);
+//            result = 0;
+//            return true;
+//        }
+//        else{
+//            Log.d(TAG,"Result should be false = " + result);
+//            return false;
+//        }
+   // }
 
 
     //the id length should be  6 characters
