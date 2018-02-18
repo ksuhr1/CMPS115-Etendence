@@ -111,7 +111,7 @@ public class PaddClass extends AppCompatActivity
 
         //Checks to see if the code entered fits the length constraint
         if(isCodeShort(pin)){
-            mClassCodeView.setError("This code is too short");
+            mClassCodeView.setError("The code must be at least 4 characters");
             focusView = mClassCodeView;
             invalidField = true;
         }
@@ -145,7 +145,7 @@ public class PaddClass extends AppCompatActivity
 
         //Checks to see if pin fits the correct length constraints
         if(isPinShort(pin)){
-            mClassPINView.setError("This PIN is too short");
+            mClassPINView.setError("The pin must be at least 4 numbers");
             focusView = mClassPINView;
             invalidField = true;
         }
@@ -164,18 +164,18 @@ public class PaddClass extends AppCompatActivity
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
                         if (data.child(code).exists()) {
-                          //  result =1;
+                            //  result =1;
                             Log.d(TAG,"Same class code exists" + result);
                             mClassCodeView.setError("This code is already taken");
                             mClassCodeView.requestFocus();
-                           // focusView = mClassCodeView;
-                           // invalidField = true;
+                            // focusView = mClassCodeView;
+                            // invalidField = true;
                             //  mClassCodeView.setError("This code is already taken");
                         } else {
                             addCourseToDataBase(name, quarter, code, pin);
                             Log.d(TAG,"Class code does not exist" + result);
                             finish();
-                           // result = 0;
+                            // result = 0;
                         }
 
                     }
@@ -193,9 +193,11 @@ public class PaddClass extends AppCompatActivity
     //Helper function to add courses to Firebase
     private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin)
     {
-        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin);
+        EnrolledStudents studentList = new EnrolledStudents(); // this was intended to save the studentList in the class upon creation, saves nothing tho
+        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, studentList);
         databaseClasses.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
-        Toast.makeText(getApplicationContext(), "Course" +classCode+"has been added", Toast.LENGTH_SHORT).show();
+//        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
+        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -237,20 +239,28 @@ public class PaddClass extends AppCompatActivity
 //            Log.d(TAG,"Result should be false = " + result);
 //            return false;
 //        }
-   // }
+    // }
 
 
-    //the id length should be  6 characters
+    //the pin length must be last least 4 characters
     private static boolean isPinShort(String pin)
     {
-        return (pin.length() == 6);
+        boolean tooShort = true;
+        if(pin.length() >= 4)
+            tooShort = false;
+
+        return (tooShort);
     }
 
 
-    // the password length must be  5 characters
+    // the code length must be at least 4 characters
     private static boolean isCodeShort(String code)
     {
-        return (code.length() == 5);
+        boolean tooShort = true;
+        if(code.length() >= 4)
+            tooShort = false;
+
+        return (tooShort);
     }
 
 
@@ -288,4 +298,3 @@ public class PaddClass extends AppCompatActivity
         startActivity(intent);
     }
 }
-

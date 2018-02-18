@@ -4,24 +4,31 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class AddClass extends AppCompatActivity
 {
-
+    private static final String TAG = "AddClass";
     private EditText mClassCodeView;
     private EditText mClassPINView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
+    private DatabaseReference codeRef;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -29,7 +36,11 @@ public class AddClass extends AppCompatActivity
         setContentView(R.layout.activity_add_class);
 
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        mFirebaseUser= mFirebaseAuth.getCurrentUser();
+
+        //initializing firebase authentication object
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        codeRef = mDatabase.child("classes");
 
         mClassCodeView = (EditText) findViewById(R.id.classCode);
         mClassPINView = (EditText) findViewById(R.id.password);
@@ -55,8 +66,8 @@ public class AddClass extends AppCompatActivity
         mClassPINView.setError(null);
 
         // Store values at the time of the class creation attempt.
-        String code = mClassCodeView.getText().toString();
-        String pin = mClassPINView.getText().toString();
+        final String code = mClassCodeView.getText().toString();
+        final String pin = mClassPINView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
@@ -75,19 +86,76 @@ public class AddClass extends AppCompatActivity
             focusView = mClassPINView;
             cancel = true;
         }
+        //checks for valid code length
+        if(isCodeShort(code))
+        {
+            mClassCodeView.setError("The code must be at least 4 characters");
+            focusView = mClassCodeView;
+            cancel = true;
+        }
+        //checks for valid pin length
+        if(isPinShort(pin))
+        {
+            mClassCodeView.setError("The pin must be at least 4 numbers");
+            focusView = mClassCodeView;
+            cancel = true;
+        }
         // There was an error; don't attempt login and focus the first
         // form field with an error.
         if (cancel)
         {
             focusView.requestFocus();
         }
-        else
+        else // logic for adding a user to the class
         {
+            codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot data : dataSnapshot.getChildren())
+                    {
+                        if (data.child(code).exists()) // if the inputted class code exists
+                        {
+                            if(data.child(pin).exists()) // if the pin associated with the class matches
+                            {
+                                // THIS IS NOT COMPLETE AND DOESN'T FUNCTION CORRECTLY
+                                // Idea: save user in a child called "Enrolled Students"
+                                // I think we need to get the UID of the professor/class in order to find the path to create/save that child.
+//                                EnrolledStudents student = new EnrolledStudents("just", "work", "email", "1234567");
+//                                data.child("Enrolled Students").setValue(student);
+//                                Log.d(TAG, "Pin matches class pin, student added.");
+//                                finish();
+                            }
+                        }
+                        else
+                        {
+                            mClassCodeView.setError("This code is already taken");
+                            mClassCodeView.requestFocus();
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
             //TODO add logic to let students add classes here
             //TODO check if class is in database
             //TODO add student to class child
             finish();
         }
+    }
+
+    //Helper function to add courses to Firebase
+    private void addStudentToClass(String classCode, String classPin)
+    {
+        EnrolledStudents student = new EnrolledStudents();
+        //mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
+        mDatabase.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(student);
+        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+
     }
 
     //log out button code
@@ -123,6 +191,19 @@ public class AddClass extends AppCompatActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    //the id length should be  6 characters
+    private static boolean isPinShort(String pin)
+    {
+        return (pin.length() < 4);
+    }
+
+
+    // the password length must be  5 characters
+    private static boolean isCodeShort(String code)
+    {
+        return (code.length() < 4);
     }
 
 }
