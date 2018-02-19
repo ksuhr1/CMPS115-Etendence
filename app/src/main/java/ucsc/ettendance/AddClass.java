@@ -63,6 +63,7 @@ public class AddClass extends AppCompatActivity
     {
         // Reset errors.
         mClassCodeView.setError(null);
+
         mClassPINView.setError(null);
 
         // Store values at the time of the class creation attempt.
@@ -121,10 +122,9 @@ public class AddClass extends AppCompatActivity
                                 // THIS IS NOT COMPLETE AND DOESN'T FUNCTION CORRECTLY
                                 // Idea: save user in a child called "Enrolled Students"
                                 // I think we need to get the UID of the professor/class in order to find the path to create/save that child.
-//                                EnrolledStudents student = new EnrolledStudents("just", "work", "email", "1234567");
-//                                data.child("Enrolled Students").setValue(student);
-//                                Log.d(TAG, "Pin matches class pin, student added.");
-//                                finish();
+                                addStudentToClass(code);
+                                Log.d(TAG, "Pin matches class pin, student added.");
+                                finish();
                             }
                         }
                         else
@@ -149,11 +149,11 @@ public class AddClass extends AppCompatActivity
     }
 
     //Helper function to add courses to Firebase
-    private void addStudentToClass(String classCode, String classPin)
+    private void addStudentToClass(String classCode)
     {
-        EnrolledStudents student = new EnrolledStudents();
+        EnrolledStudents student = new EnrolledStudents(  );
         //mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
-        mDatabase.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(student);
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(student);
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }

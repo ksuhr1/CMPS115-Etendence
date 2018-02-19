@@ -9,17 +9,19 @@ public class PclassInformation {
     public String classQuarter;
     public String classCode;
     public String classPin;
+    public String owner;
     public EnrolledStudents studentList;
 
     // Needed for Firebase
     public PclassInformation() {}
 
-    public PclassInformation(String className, String classQuarter, String classCode, String classPin, EnrolledStudents studentList)
+    public PclassInformation(String className, String classQuarter, String classCode, String classPin, String owner, EnrolledStudents studentList)
     {
         this.className = className;
         this.classQuarter = classQuarter;
         this.classCode = classCode;
         this.classPin = classPin;
+        this.owner = owner;
         this.studentList = studentList;
     }
 
@@ -38,6 +40,10 @@ public class PclassInformation {
     public String getClassPin()
     {
         return classPin;
+    }
+    public String getOwner()
+    {
+        return owner;
     }
     public EnrolledStudents getStudentList()
     {

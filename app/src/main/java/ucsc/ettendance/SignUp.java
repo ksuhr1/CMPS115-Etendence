@@ -96,7 +96,6 @@ public class SignUp extends AppCompatActivity
         final String firstName = loginInputFirstName.getText().toString().trim();
         final String lastName = loginInputLastName.getText().toString().trim();
         final CheckBox checkBox = (CheckBox) findViewById(R.id.checkBox); // reference to checkbox value
-
         if(!checkFirstName())
             return;
         if(!checkLastName())
@@ -127,7 +126,6 @@ public class SignUp extends AppCompatActivity
                 Log.d(TAG,"createUserWithEmail:onComplete:" + task.isSuccessful());
                 progressBar.setVisibility(View.GONE);
                 // If sign in fails, Log the message to the LogCat. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful())
                 {
@@ -142,8 +140,10 @@ public class SignUp extends AppCompatActivity
                     FirebaseUser user = auth.getCurrentUser();
                     if(user!=null)
                     {
+                        String fullname = firstName + " " + lastName;
+                        Log.d(TAG, "The fullname is " + fullname);
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                .setDisplayName(firstName)
+                                .setDisplayName(fullname)
                                 .build();
                         user.updateProfile(profileUpdates);
                     }
@@ -332,4 +332,5 @@ public class SignUp extends AppCompatActivity
         super.onResume();
         progressBar.setVisibility(View.GONE);
     }
+
 }

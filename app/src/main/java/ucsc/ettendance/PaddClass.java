@@ -194,8 +194,9 @@ public class PaddClass extends AppCompatActivity
     private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin)
     {
         EnrolledStudents studentList = new EnrolledStudents(); // this was intended to save the studentList in the class upon creation, saves nothing tho
-        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, studentList);
-        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
+        String fullname = mFirebaseUser.getDisplayName();
+        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, studentList);
+        databaseClasses.child("classes").child(classCode).setValue(classInformation);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
