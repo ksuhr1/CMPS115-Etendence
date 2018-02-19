@@ -6,6 +6,26 @@
     android:layout_height="match_parent"
     tools:context="ucsc.ettendance.PaddClass">
 
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="79dp">
+
+        <View
+            android:id="@+id/myRectangleView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="504dp"
+            android:background="@drawable/bluebuttonback"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-20dp" />
+
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
