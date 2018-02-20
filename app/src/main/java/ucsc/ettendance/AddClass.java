@@ -130,7 +130,11 @@ public class AddClass extends AppCompatActivity
                                     {
                                         addStudentToClass(code);
                                         Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
-                                        finish();
+                                        Intent i = new Intent(AddClass.this,MyClasses.class );
+                                        i.putExtra("classCode", code);
+                                        Log.d(TAG, code);
+                                        startActivity(i);
+                                      //  finish();
                                     }
                                     else
                                     {
@@ -171,6 +175,7 @@ public class AddClass extends AppCompatActivity
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+
     }
 
     //log out button code

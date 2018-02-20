@@ -8,11 +8,13 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -42,11 +44,35 @@ public class MyClasses extends AppCompatActivity
 
     private static final String TAG = "My Classes";
 
+    private ListView listView;
+    private ArrayAdapter<String> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+//        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
+
+
+       Intent intent = getIntent();
+       if(intent.getExtras() == null){
+
+       }
+       else{
+          Bundle extras = getIntent().getExtras();
+          String code = extras.getString("classCode");
+           ListView list = (ListView) findViewById(R.id.listview);
+           final ArrayList<String> classArray = new ArrayList<>();
+           classArray.add(code);
+           adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classArray);
+           list.setAdapter(adapter);
+           adapter.notifyDataSetChanged();
+          // Toast.makeText(getApplicationContext(), "Course " +code +" has been added", Toast.LENGTH_SHORT).show();
+       }
+      //  Bundle extras = getIntent().getExtras();
+      //  String classCode = extras.getString("classCode");
+       // Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
@@ -57,14 +83,14 @@ public class MyClasses extends AppCompatActivity
 
 
 
-            TextView welcome = (TextView) findViewById(R.id.welcome);
+            TextView welcome = findViewById(R.id.welcome);
             //Gets details of the logged in user
 //            mUserId = mFirebaseUser.getUid();
             welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
 
 
         //ADD CLASS BUTTON
-        Button addClass = (Button) findViewById(R.id.addClassButton);
+        Button addClass = findViewById(R.id.addClassButton);
         addClass.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -76,31 +102,39 @@ public class MyClasses extends AppCompatActivity
             }
         });
 
-        // ARRAY LOGIC
-        final ArrayList<String> classArray = new ArrayList<String>();
-        classArray.add("Class 1");
-        classArray.add("Class 2");
-        classArray.add("Class 3");
-        classArray.add("Class 4");
-        ListView list = (ListView) findViewById(R.id.listview);
-        // Create the adapter to convert the array to views
-        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
-        //final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
-        // Attach the adapter to a ListView
 
-        list.setAdapter(aa);
+//
 
-        /*IF ARRAY IS CLICKED*/
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
-            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-            {
-                Intent intent = new Intent(MyClasses.this, classPage.class);
-                String className = classArray.get(position);
-                intent.putExtra("className", className);
-                startActivity(intent);
-            }
-        });
+
+
+//        // ARRAY LOGIC
+//        final ArrayList<String> classArray = new ArrayList<String>();
+//        classArray.add("Class 1");
+//        classArray.add("Class 2");
+//        classArray.add("Class 3");
+//        classArray.add("Class 4");
+
+
+
+//        ListView list = (ListView) findViewById(R.id.listview);
+//        // Create the adapter to convert the array to views
+//        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
+//        //final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
+//        // Attach the adapter to a ListView
+//
+//        list.setAdapter(aa);
+
+//        /*IF ARRAY IS CLICKED*/
+//        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
+//        {
+//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+//            {
+//                Intent intent = new Intent(MyClasses.this, classPage.class);
+//                String className = classArray.get(position);
+//                intent.putExtra("className", className);
+//                startActivity(intent);
+//            }
+//        });
 
     }
 
