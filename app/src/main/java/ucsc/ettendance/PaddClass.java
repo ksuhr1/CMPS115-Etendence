@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +35,7 @@ public class PaddClass extends AppCompatActivity
     private EditText mQuarterTermView;
     private EditText mClassCodeView;
     private EditText mClassPINView;
+    private ProgressBar progressBar;
 
 
     private static FirebaseAuth mFirebaseAuth;
@@ -50,6 +52,8 @@ public class PaddClass extends AppCompatActivity
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         //initializing firebase authentication object
         databaseClasses = FirebaseDatabase.getInstance().getReference();
@@ -75,6 +79,7 @@ public class PaddClass extends AppCompatActivity
 
     private void checkValid()
     {
+        progressBar.setVisibility(View.VISIBLE);
 
         // Reset errors.
         mClassNameView.setError(null);
@@ -174,6 +179,7 @@ public class PaddClass extends AppCompatActivity
                         } else {
                             addCourseToDataBase(name, quarter, code, pin);
                             Log.d(TAG,"Class code does not exist" + result);
+                            progressBar.setVisibility(View.GONE);
                             finish();
                             // result = 0;
                         }

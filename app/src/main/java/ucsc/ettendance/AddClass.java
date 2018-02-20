@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ public class AddClass extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +39,9 @@ public class AddClass extends AppCompatActivity
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         //initializing firebase authentication object
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -59,7 +64,10 @@ public class AddClass extends AppCompatActivity
     }
 
     //checks if user entered valid information for class creation
-    private void checkValid() {
+    private void checkValid()
+    {
+
+        progressBar.setVisibility(View.VISIBLE);
         // Reset errors.
         mClassCodeView.setError(null);
 
@@ -109,49 +117,60 @@ public class AddClass extends AppCompatActivity
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String userKey = ds.getKey(); //gets all of classCodes
                         DatabaseReference userKeyDatabase = codeRef.child(userKey);
-                            ValueEventListener eventListener = new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot == null) {
-                                        Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
-                                    } else if (dataSnapshot.child("classCode").getValue().equals(code)) {
-                                        if (dataSnapshot.child("classPin").getValue().equals(pin)) {
-                                            addStudentToClass(code);
-                                            Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
-                                        } else {
-                                            mClassPINView.setError("Pin Number is incorrect");
-                                            mClassPINView.requestFocus();
-                                            //Toast.makeText(getApplicationContext(), "Pin Number is incorrect", Toast.LENGTH_LONG).show();
-                                        }
+                        ValueEventListener eventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot == null) {
+                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                                }
+
+                                else if(dataSnapshot.child("classCode").getValue().equals(code))
+                                {
+                                    if (dataSnapshot.child("classPin").getValue().equals(pin))
+                                    {
+                                        addStudentToClass(code);
+                                        Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                    else
+                                    {
+                                        mClassPINView.setError("Invalid PIN");
+                                        mClassPINView.requestFocus();
                                     }
                                 }
+//                                else if(!dataSnapshot.child("classCode").getValue().equals(code))
+//                                {
+//                                    mClassCodeView.setError("Invalid Class Code");
+//                                    mClassCodeView.requestFocus();
+//                                }
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                }
-                            };
+                                progressBar.setVisibility(View.GONE);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError)
+                            {
+                            }
+                        };
                         userKeyDatabase.addListenerForSingleValueEvent(eventListener);
                     }
-
                 }
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
-
+                public void onCancelled(DatabaseError databaseError)
+                {
                 }
             };
             codeRef.addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
-    //Helper function to add courses to Firebase
+    // Helper function to add courses to Firebase
     private void addStudentToClass(String classCode)
     {
-        EnrolledStudents student = new EnrolledStudents(  );
-       // mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(student);
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(mFirebaseUser.getUid());
+        // Looks in Enrolled Students child and adds the logged in student child along with the display name
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-        finish();
-
     }
 
     //log out button code
