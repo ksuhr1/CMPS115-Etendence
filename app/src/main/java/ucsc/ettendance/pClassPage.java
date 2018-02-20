@@ -3,8 +3,12 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -12,24 +16,70 @@ import com.google.firebase.auth.FirebaseUser;
 
 import org.w3c.dom.Text;
 
-public class pClassPage extends AppCompatActivity
-{
+public class pClassPage extends AppCompatActivity {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private int day;
+    private int month;
+    private int year;
+
+    private static final String TAG = "pClassPage";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        mFirebaseUser = mFirebaseAuth.getCurrentUser();
 
         final String className = getIntent().getExtras().getString("className");
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(className);
+
+
+
+        Button createDay = (Button) findViewById(R.id.newDayButton);
+        createDay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d(TAG,"The date selected is: "+getSelectedDate());
+                //TODO create logic to create day in database if it does not exist
+            }
+        });
+
+        Button dayPage = (Button) findViewById(R.id.dayButton);
+        dayPage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                Log.d(TAG,"The date selected is: "+getSelectedDate());
+                Intent intent = new Intent(pClassPage.this, DayView.class);
+                String day = getSelectedDate();
+                intent.putExtra("day", day);
+                startActivity(intent);
+            }
+        });
     }
+
+    public String getSelectedDate()
+    {
+        final DatePicker picker = (DatePicker) findViewById(R.id.datePicker);
+        day = picker.getDayOfMonth();
+        month = picker.getMonth() +1 ;
+        year = picker.getYear();
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        stringBuilder.append(month + "/");
+        stringBuilder.append(day + "/");
+        stringBuilder.append(year);
+
+        return stringBuilder.toString();
+    }
+
+
     //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
