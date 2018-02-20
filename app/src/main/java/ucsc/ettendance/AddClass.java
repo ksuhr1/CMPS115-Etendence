@@ -42,8 +42,8 @@ public class AddClass extends AppCompatActivity
         mDatabase = FirebaseDatabase.getInstance().getReference();
         codeRef = mDatabase.child("classes");
 
-        mClassCodeView = (EditText) findViewById(R.id.classCode);
-        mClassPINView = (EditText) findViewById(R.id.password);
+        mClassCodeView = (EditText) findViewById(R.id.studentCode);
+        mClassPINView = (EditText) findViewById(R.id.studentPassword);
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
@@ -59,8 +59,7 @@ public class AddClass extends AppCompatActivity
     }
 
     //checks if user entered valid information for class creation
-    private void checkValid()
-    {
+    private void checkValid() {
         // Reset errors.
         mClassCodeView.setError(null);
 
@@ -74,87 +73,88 @@ public class AddClass extends AppCompatActivity
         View focusView = null;
 
         // Check for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code) )
-        {
+        if (TextUtils.isEmpty(code)) {
             mClassCodeView.setError(getString(R.string.error_field_required));
             focusView = mClassCodeView;
             cancel = true;
         }
         //checks for valid pin, if user enter one
-        if (TextUtils.isEmpty(pin))
-        {
+        if (TextUtils.isEmpty(pin)) {
             mClassPINView.setError(getString(R.string.error_field_required));
             focusView = mClassPINView;
             cancel = true;
         }
         //checks for valid code length
-        if(isCodeShort(code))
-        {
+        if (isCodeShort(code)) {
             mClassCodeView.setError("The code must be at least 4 characters");
             focusView = mClassCodeView;
             cancel = true;
         }
         //checks for valid pin length
-        if(isPinShort(pin))
-        {
+        if (isPinShort(pin)) {
             mClassCodeView.setError("The pin must be at least 4 numbers");
             focusView = mClassCodeView;
             cancel = true;
         }
         // There was an error; don't attempt login and focus the first
         // form field with an error.
-        if (cancel)
-        {
+        if (cancel) {
             focusView.requestFocus();
         }
         else // logic for adding a user to the class
         {
-            addStudentToClass(code);
-            codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
-                    for (DataSnapshot data : dataSnapshot.getChildren())
-                    {
-                        if (data.child(code).exists()) // if the inputted class code exists
-                        {
-                            if(data.child(pin).exists()) // if the pin associated with the class matches
-                            {
-                                // THIS IS NOT COMPLETE AND DOESN'T FUNCTION CORRECTLY
-                                // Idea: save user in a child called "Enrolled Students"
-                                // I think we need to get the UID of the professor/class in order to find the path to create/save that child.
-                                //addStudentToClass(code);
-                                Log.d(TAG, "Pin matches class pin, student added.");
-                                Log.d(TAG, "Hey guy it worked");
-                                finish();
-                            }
-                        }
-                        else
-                        {
-                            mClassPINView.setError("This PIN doesnt match");
-                            mClassPINView.requestFocus();
-                        }
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String userKey = ds.getKey(); //gets all of classCodes
+                        DatabaseReference userKeyDatabase = codeRef.child(userKey);
+                        ValueEventListener eventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot == null) {
+                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                                }
+                                else if(dataSnapshot.child("classCode").getValue().equals(code))
+                                {
+                                    if (dataSnapshot.child("classPin").getValue().equals(pin))
+                                    {
+                                        addStudentToClass(code);
+                                        Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
+                                    }
+                                    else
+                                    {
+                                        mClassPINView.setError("Pin Number is incorrect");
+                                        mClassPINView.requestFocus();
+                                        //Toast.makeText(getApplicationContext(), "Pin Number is incorrect", Toast.LENGTH_LONG).show();
+                                    }
+                                }
 
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                            }
+                        };
+                        userKeyDatabase.addListenerForSingleValueEvent(eventListener);
                     }
                 }
-
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
-
                 }
-            });
-            //TODO add logic to let students add classes here
-            //TODO check if class is in database
-            //TODO add student to class child
+            };
+            codeRef.addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
-    // Helper function to add courses to Firebase
+    //Helper function to add courses to Firebase
     private void addStudentToClass(String classCode)
     {
-        // Looks in Enrolled Students child and the logged in student child along with the display name
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        EnrolledStudents student = new EnrolledStudents(  );
+       // mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(student);
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(mFirebaseUser.getUid());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+
     }
 
     //log out button code
