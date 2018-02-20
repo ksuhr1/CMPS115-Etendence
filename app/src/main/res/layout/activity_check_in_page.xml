@@ -4,26 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ucsc.ettendance.Pmain">
-
+    tools:context="ucsc.ettendance.log_in">
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
-
+        android:layout_height="match_parent">
         <View
             android:id="@+id/myRectangleView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
             android:layout_marginTop="504dp"
-            android:background="@drawable/bluebuttonback"
+            android:background="@drawable/buttonback"
+            android:layout_alignParentBottom="true"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
 
     </RelativeLayout>
-
 
     <TextView
         android:id="@+id/title"
@@ -33,9 +28,9 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:text="title"
+        android:text="Check In"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@color/lightBlue"
+        android:textColor="@color/mintGreen"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.048"
@@ -44,84 +39,52 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.015" />
 
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="9dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/newDayButton"
+        android:id="@+id/checkInButton"
         style="?android:attr/borderlessButtonStyle"
-        android:layout_width="170dp"
+        android:layout_width="400dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:layout_weight="0.5"
-        android:background="@drawable/bluebuttonback"
+        android:background="@drawable/buttonback"
         android:fontFamily="sans-serif"
-        android:text="+"
+        android:text="Check In"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light"
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.52"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="+" />
+        tools:text="Check In" />
 
-    <Button
-        android:id="@+id/dayButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="170dp"
+    <EditText
+        android:id="@+id/classCode"
+        android:layout_width="275dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        android:layout_weight="0.5"
-        android:background="@drawable/bluebuttonback"
-        android:fontFamily="sans-serif"
-        android:text="day"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/background_light"
-        android:textSize="36sp"
+        android:backgroundTint="@color/mintGreen"
+        android:ems="10"
+        android:hint="Daily Code"
+        android:inputType="text"
+        android:singleLine="false"
+        android:textColor="@color/colorAccent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="day" />
-
-    <View
-        android:id="@+id/myDivider"
-        android:layout_width="3dp"
-        android:layout_height="43dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="321dp"
-        android:background="@drawable/divider"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.501"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.273" />
 
 
 </android.support.constraint.ConstraintLayout>

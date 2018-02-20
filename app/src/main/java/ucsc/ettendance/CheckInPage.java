@@ -7,14 +7,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import org.w3c.dom.Text;
-
-public class classPage extends AppCompatActivity
+public class CheckInPage extends AppCompatActivity
 {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -23,27 +20,22 @@ public class classPage extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_class_page);
+        setContentView(R.layout.activity_check_in_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
-
-        final String className = getIntent().getExtras().getString("className");
-
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(className);
-
         Button checkIn = (Button) findViewById(R.id.checkInButton);
         checkIn.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(classPage.this, CheckInPage.class);
-                startActivity(intent);
+                //PUT CHECK IN LOGIC HERE
+               finish();
 
             }
         });
     }
+
 
     //log out button logic
     @Override
@@ -79,3 +71,6 @@ public class classPage extends AppCompatActivity
         startActivity(intent);
     }
 }
+
+
+

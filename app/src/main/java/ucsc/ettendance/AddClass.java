@@ -129,8 +129,8 @@ public class AddClass extends AppCompatActivity
                         }
                         else
                         {
-                            mClassCodeView.setError("This code is already taken");
-                            mClassCodeView.requestFocus();
+                            mClassPINView.setError("This PIN doesnt match");
+                            mClassPINView.requestFocus();
                         }
 
                     }
@@ -144,7 +144,6 @@ public class AddClass extends AppCompatActivity
             //TODO add logic to let students add classes here
             //TODO check if class is in database
             //TODO add student to class child
-            finish();
         }
     }
 

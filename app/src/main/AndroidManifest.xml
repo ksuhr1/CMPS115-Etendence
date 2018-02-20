@@ -34,8 +34,7 @@
         <activity
             android:name=".MyClasses"
             android:label=""
-            android:screenOrientation="portrait">
-        </activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Pmain"
             android:label=""
@@ -48,6 +47,8 @@
             android:theme="@style/AppThemeBlue" />
         <activity
             android:name=".pClassPage"
+            android:label=""
+            android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlue" />
         <activity android:name=".classPage" />
         <activity android:name=".splashScreen">
@@ -57,6 +58,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".CheckInPage" />
+        <activity android:name=".DayView"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlue"></activity>
     </application>
 
 </manifest>
