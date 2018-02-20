@@ -10,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,7 @@ public class AddClass extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
+    private ProgressBar progressBar;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -37,6 +39,9 @@ public class AddClass extends AppCompatActivity
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
 
         //initializing firebase authentication object
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -59,7 +64,10 @@ public class AddClass extends AppCompatActivity
     }
 
     //checks if user entered valid information for class creation
-    private void checkValid() {
+    private void checkValid()
+    {
+
+        progressBar.setVisibility(View.VISIBLE);
         // Reset errors.
         mClassCodeView.setError(null);
 
@@ -115,6 +123,7 @@ public class AddClass extends AppCompatActivity
                                 if (dataSnapshot == null) {
                                     Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
                                 }
+
                                 else if(dataSnapshot.child("classCode").getValue().equals(code))
                                 {
                                     if (dataSnapshot.child("classPin").getValue().equals(pin))
@@ -129,23 +138,27 @@ public class AddClass extends AppCompatActivity
                                         mClassPINView.requestFocus();
                                     }
                                 }
-                                else
-                                {
-                                    mClassCodeView.setError("Invalid Class Code");
-                                    mClassCodeView.requestFocus();
-                                }
+//                                else if(!dataSnapshot.child("classCode").getValue().equals(code))
+//                                {
+//                                    mClassCodeView.setError("Invalid Class Code");
+//                                    mClassCodeView.requestFocus();
+//                                }
+
+                                progressBar.setVisibility(View.GONE);
 
                             }
 
                             @Override
-                            public void onCancelled(DatabaseError databaseError) {
+                            public void onCancelled(DatabaseError databaseError)
+                            {
                             }
                         };
                         userKeyDatabase.addListenerForSingleValueEvent(eventListener);
                     }
                 }
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(DatabaseError databaseError)
+                {
                 }
             };
             codeRef.addListenerForSingleValueEvent(valueEventListener);
