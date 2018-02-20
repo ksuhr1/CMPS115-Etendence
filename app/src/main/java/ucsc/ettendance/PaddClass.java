@@ -199,9 +199,7 @@ public class PaddClass extends AppCompatActivity
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-
     }
-
 
     //Check if the code is already taken for the class need to look throught the database in order to do that
     //Look on stack overflow for the error

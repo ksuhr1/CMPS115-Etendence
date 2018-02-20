@@ -13,6 +13,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import org.w3c.dom.Text;
 
@@ -22,6 +24,8 @@ public class pClassPage extends AppCompatActivity {
     private int day;
     private int month;
     private int year;
+    private DatabaseReference mDatabase;
+    private DatabaseReference codeRef;
 
     private static final String TAG = "pClassPage";
 
@@ -31,6 +35,9 @@ public class pClassPage extends AppCompatActivity {
         setContentView(R.layout.activity_p_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        codeRef = mDatabase.child("classes");
 
         final String className = getIntent().getExtras().getString("className");
 
@@ -46,6 +53,7 @@ public class pClassPage extends AppCompatActivity {
             {
                 Log.d(TAG,"The date selected is: "+getSelectedDate());
                 //TODO create logic to create day in database if it does not exist
+                mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
             }
         });
 
@@ -72,8 +80,8 @@ public class pClassPage extends AppCompatActivity {
 
         StringBuilder stringBuilder = new StringBuilder();
 
-        stringBuilder.append(month + "/");
-        stringBuilder.append(day + "/");
+        stringBuilder.append(month + "-");
+        stringBuilder.append(day + "-");
         stringBuilder.append(year);
 
         return stringBuilder.toString();

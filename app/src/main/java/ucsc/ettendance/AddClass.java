@@ -109,6 +109,7 @@ public class AddClass extends AppCompatActivity
         }
         else // logic for adding a user to the class
         {
+            addStudentToClass(code);
             codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
@@ -122,8 +123,9 @@ public class AddClass extends AppCompatActivity
                                 // THIS IS NOT COMPLETE AND DOESN'T FUNCTION CORRECTLY
                                 // Idea: save user in a child called "Enrolled Students"
                                 // I think we need to get the UID of the professor/class in order to find the path to create/save that child.
-                                addStudentToClass(code);
+                                //addStudentToClass(code);
                                 Log.d(TAG, "Pin matches class pin, student added.");
+                                Log.d(TAG, "Hey guy it worked");
                                 finish();
                             }
                         }
@@ -147,14 +149,12 @@ public class AddClass extends AppCompatActivity
         }
     }
 
-    //Helper function to add courses to Firebase
+    // Helper function to add courses to Firebase
     private void addStudentToClass(String classCode)
     {
-        EnrolledStudents student = new EnrolledStudents(  );
-        //mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(classInformation);
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(student);
+        // Looks in Enrolled Students child and the logged in student child along with the display name
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-
     }
 
     //log out button code
