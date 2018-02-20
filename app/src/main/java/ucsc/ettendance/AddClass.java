@@ -109,55 +109,49 @@ public class AddClass extends AppCompatActivity
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
                         String userKey = ds.getKey(); //gets all of classCodes
                         DatabaseReference userKeyDatabase = codeRef.child(userKey);
-                        ValueEventListener eventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot == null) {
-                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
-                                }
-                                else if(dataSnapshot.child("classCode").getValue().equals(code))
-                                {
-                                    if (dataSnapshot.child("classPin").getValue().equals(pin))
-                                    {
-                                        addStudentToClass(code);
-                                        Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
-                                        finish();
-                                    }
-                                    else
-                                    {
-                                        mClassPINView.setError("Invalid PIN");
-                                        mClassPINView.requestFocus();
+                            ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot == null) {
+                                        Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                                    } else if (dataSnapshot.child("classCode").getValue().equals(code)) {
+                                        if (dataSnapshot.child("classPin").getValue().equals(pin)) {
+                                            addStudentToClass(code);
+                                            Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
+                                        } else {
+                                            mClassPINView.setError("Pin Number is incorrect");
+                                            mClassPINView.requestFocus();
+                                            //Toast.makeText(getApplicationContext(), "Pin Number is incorrect", Toast.LENGTH_LONG).show();
+                                        }
                                     }
                                 }
-                                else
-                                {
-                                    mClassCodeView.setError("Invalid Class Code");
-                                    mClassCodeView.requestFocus();
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
                                 }
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        };
+                            };
                         userKeyDatabase.addListenerForSingleValueEvent(eventListener);
                     }
+
                 }
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
+
                 }
             };
             codeRef.addListenerForSingleValueEvent(valueEventListener);
         }
     }
 
-    // Helper function to add courses to Firebase
+    //Helper function to add courses to Firebase
     private void addStudentToClass(String classCode)
     {
-        // Looks in Enrolled Students child and adds the logged in student child along with the display name
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        EnrolledStudents student = new EnrolledStudents(  );
+       // mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(student);
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(mFirebaseUser.getUid());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+        finish();
+
     }
 
     //log out button code
