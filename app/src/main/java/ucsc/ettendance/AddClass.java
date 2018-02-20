@@ -121,13 +121,18 @@ public class AddClass extends AppCompatActivity
                                     {
                                         addStudentToClass(code);
                                         Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
+                                        finish();
                                     }
                                     else
                                     {
-                                        mClassPINView.setError("Pin Number is incorrect");
+                                        mClassPINView.setError("Invalid PIN");
                                         mClassPINView.requestFocus();
-                                        //Toast.makeText(getApplicationContext(), "Pin Number is incorrect", Toast.LENGTH_LONG).show();
                                     }
+                                }
+                                else
+                                {
+                                    mClassCodeView.setError("Invalid Class Code");
+                                    mClassCodeView.requestFocus();
                                 }
 
                             }
@@ -147,14 +152,12 @@ public class AddClass extends AppCompatActivity
         }
     }
 
-    //Helper function to add courses to Firebase
+    // Helper function to add courses to Firebase
     private void addStudentToClass(String classCode)
     {
-        EnrolledStudents student = new EnrolledStudents(  );
-       // mDatabase.child("classes").child(mFirebaseUser.getUid()).child(classCode).setValue(student);
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").setValue(mFirebaseUser.getUid());
+        // Looks in Enrolled Students child and adds the logged in student child along with the display name
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-
     }
 
     //log out button code
