@@ -250,7 +250,7 @@ public class PaddClass extends AppCompatActivity
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
         databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
-        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
     }
 
     //the pin length must be last least 4 characters
