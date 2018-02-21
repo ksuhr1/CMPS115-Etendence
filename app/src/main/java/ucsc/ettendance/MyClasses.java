@@ -1,6 +1,8 @@
 package ucsc.ettendance;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MyClasses extends AppCompatActivity
@@ -41,6 +44,7 @@ public class MyClasses extends AppCompatActivity
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
     private DatabaseReference mProfRef;
+    private DatabaseReference mClassCodeRef;
 
     private static final String TAG = "My Classes";
 
@@ -48,54 +52,41 @@ public class MyClasses extends AppCompatActivity
     private ArrayAdapter<String> adapter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
-
-
-       Intent intent = getIntent();
-       if(intent.getExtras() == null){
-
-       }
-       else{
-          Bundle extras = getIntent().getExtras();
-          String code = extras.getString("classCode");
-           ListView list = (ListView) findViewById(R.id.listview);
-           final ArrayList<String> classArray = new ArrayList<>();
-           classArray.add(code);
-           adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classArray);
-           list.setAdapter(adapter);
-           adapter.notifyDataSetChanged();
-          // Toast.makeText(getApplicationContext(), "Course " +code +" has been added", Toast.LENGTH_SHORT).show();
-       }
-      //  Bundle extras = getIntent().getExtras();
-      //  String classCode = extras.getString("classCode");
-       // Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStudentRef = mDatabase.child("students");
         mProfRef = mDatabase.child("teachers");
+        mClassCodeRef = mDatabase.child("classCode");
 
 
 
 
-            TextView welcome = findViewById(R.id.welcome);
-            //Gets details of the logged in user
+
+
+
+
+
+
+
+
+
+        TextView welcome = findViewById(R.id.welcome);
+        //Gets details of the logged in user
 //            mUserId = mFirebaseUser.getUid();
-            welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
+        welcome.setText("Welcome " + mFirebaseUser.getDisplayName());
 
 
         //ADD CLASS BUTTON
         Button addClass = findViewById(R.id.addClassButton);
-        addClass.setOnClickListener(new View.OnClickListener()
-        {
+        addClass.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 Intent intent = new Intent(MyClasses.this, AddClass.class);
                 startActivity(intent);
 
@@ -106,16 +97,15 @@ public class MyClasses extends AppCompatActivity
 //
 
 
-
 //        // ARRAY LOGIC
 //        final ArrayList<String> classArray = new ArrayList<String>();
 //        classArray.add("Class 1");
 //        classArray.add("Class 2");
 //        classArray.add("Class 3");
 //        classArray.add("Class 4");
-
-
-
+//
+//
+//
 //        ListView list = (ListView) findViewById(R.id.listview);
 //        // Create the adapter to convert the array to views
 //        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
@@ -123,7 +113,7 @@ public class MyClasses extends AppCompatActivity
 //        // Attach the adapter to a ListView
 //
 //        list.setAdapter(aa);
-
+//
 //        /*IF ARRAY IS CLICKED*/
 //        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
 //        {
@@ -135,9 +125,15 @@ public class MyClasses extends AppCompatActivity
 //                startActivity(intent);
 //            }
 //        });
-
+//
+//    }
+//    private void LoadPreferences()
+//    {
+//        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+//        String data = sharedPreferences.getString("code", "");
+//        Toast.makeText(this,data, Toast.LENGTH_LONG).show();
+//    }
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)

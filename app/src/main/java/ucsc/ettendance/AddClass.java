@@ -1,6 +1,8 @@
 package ucsc.ettendance;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -21,6 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 public class AddClass extends AppCompatActivity
 {
     private static final String TAG = "AddClass";
@@ -31,6 +38,12 @@ public class AddClass extends AppCompatActivity
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
     private ProgressBar progressBar;
+    public static final String SHARED_PREFS = "sharedPrefs";
+    public static final String CODE = "code";
+    public static final String SWITCH1 = "switch1";
+    List<String> classes = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -129,12 +142,8 @@ public class AddClass extends AppCompatActivity
                                     if (dataSnapshot.child("classPin").getValue().equals(pin))
                                     {
                                         addStudentToClass(code);
-                                        Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
-                                        Intent i = new Intent(AddClass.this,MyClasses.class );
-                                        i.putExtra("classCode", code);
-                                        Log.d(TAG, code);
-                                        startActivity(i);
-                                      //  finish();
+                                        saveClasses(code);
+                                        finish();
                                     }
                                     else
                                     {
@@ -176,6 +185,21 @@ public class AddClass extends AppCompatActivity
         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
+    }
+    public void saveClasses(String classCode)
+    {
+    //    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(CODE, classCode);
+        editor.commit();
+        Intent i = new Intent(AddClass.this,MyClasses.class );
+        startActivity(i);
+        //Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
+//       Intent i = new Intent(AddClass.this,MyClasses.class );
+//       i.putExtra("classCode", code);
+////     Log.d(TAG, code);
+//       startActivity(i);
     }
 
     //log out button code
@@ -227,4 +251,3 @@ public class AddClass extends AppCompatActivity
     }
 
 }
-

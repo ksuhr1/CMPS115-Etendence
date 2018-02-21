@@ -37,7 +37,7 @@
             android:layout_alignParentStart="true"
             android:layout_below="@+id/title"
             android:divider="#5aa49f"
-            android:dividerHeight="2dp"
+            android:dividerHeight="1dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
