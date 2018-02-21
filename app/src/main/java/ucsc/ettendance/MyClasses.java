@@ -1,6 +1,8 @@
 package ucsc.ettendance;
 
 import android.content.Intent;
+import android.provider.ContactsContract;
+import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -26,6 +28,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MyClasses extends AppCompatActivity
@@ -41,6 +44,7 @@ public class MyClasses extends AppCompatActivity
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
     private DatabaseReference mProfRef;
+    private DatabaseReference mStudentID;
 
     private static final String TAG = "My Classes";
 
@@ -51,43 +55,67 @@ public class MyClasses extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//        requestWindowFeature(Window.FEATURE_NO_TITLE);
+//      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
-
-
-       Intent intent = getIntent();
-       if(intent.getExtras() == null){
-
-       }
-       else{
-          Bundle extras = getIntent().getExtras();
-          String code = extras.getString("classCode");
-           ListView list = (ListView) findViewById(R.id.listview);
-           final ArrayList<String> classArray = new ArrayList<>();
-           classArray.add(code);
-           adapter = new ArrayAdapter<>(this,R.layout.classlist, classArray);
-           list.setAdapter(adapter);
-           adapter.notifyDataSetChanged();
-          // Toast.makeText(getApplicationContext(), "Course " +code +" has been added", Toast.LENGTH_SHORT).show();
-       }
-      //  Bundle extras = getIntent().getExtras();
-      //  String classCode = extras.getString("classCode");
-       // Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         mStudentRef = mDatabase.child("students");
         mProfRef = mDatabase.child("teachers");
+        mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
+       // Log.d("mStudentRef", mStudentRef.toString());
+        Log.d("mStudentID", mStudentID.toString());
 
+        listView = (ListView) findViewById(R.id.listview);
+        final ArrayList<String> list = new ArrayList<>();
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String userKey = ds.getKey();
+                    //Looks at children userID and gets the keys
+                    //such as Enrolled classes, email, firstName etc.
+                    DatabaseReference userKeyDatabase = mStudentID.child(userKey);
+                    //Log.d("userKeyDatabase", userKeyDatabase.toString());
+                    ValueEventListener valueEventListener = new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                //Gets all classes in Enrolled Classes
+                                String enrolledClasses = data.getKey();
+                                list.add(enrolledClasses);
+                                Log.d("data children", data.getKey());
 
+                            }
+                           adapter = new ArrayAdapter<String>(MyClasses.this, R.layout.classlist, list);
+                           listView.setAdapter(adapter);
 
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
 
-            TextView welcome = findViewById(R.id.welcome);
-            //Gets details of the logged in user
-//            mUserId = mFirebaseUser.getUid();
-            welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
+                        }
 
+                    };
+                    userKeyDatabase.addListenerForSingleValueEvent(valueEventListener);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+        mStudentID.addListenerForSingleValueEvent(eventListener);
+
+        TextView welcome = findViewById(R.id.welcome);
+        //Gets details of the logged in user
+        welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
 
         //ADD CLASS BUTTON
         Button addClass = findViewById(R.id.addClassButton);
@@ -102,42 +130,20 @@ public class MyClasses extends AppCompatActivity
             }
         });
 
+        /*IF ARRAY IS CLICKED*/
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
+            {
+                Intent intent = new Intent(MyClasses.this, classPage.class);
+                String className = list.get(position);
+                intent.putExtra("className", className);
+                startActivity(intent);
+            }
+        });
 
-//
-
-
-
-//        // ARRAY LOGIC
-//        final ArrayList<String> classArray = new ArrayList<String>();
-//        classArray.add("Class 1");
-//        classArray.add("Class 2");
-//        classArray.add("Class 3");
-//        classArray.add("Class 4");
-
-
-
-//        ListView list = (ListView) findViewById(R.id.listview);
-//        // Create the adapter to convert the array to views
-//        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
-//        final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
-//        // Attach the adapter to a ListView
-//
-//        list.setAdapter(aa);
-
-//        /*IF ARRAY IS CLICKED*/
-//        list.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//        {
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-//            {
-//                Intent intent = new Intent(MyClasses.this, classPage.class);
-//                String className = classArray.get(position);
-//                intent.putExtra("className", className);
-//                startActivity(intent);
-//            }
-//        });
 
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
