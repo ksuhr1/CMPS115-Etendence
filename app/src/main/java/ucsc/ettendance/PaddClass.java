@@ -248,7 +248,7 @@ public class PaddClass extends AppCompatActivity
         String fullname = mFirebaseUser.getDisplayName();
         PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, studentList);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
-        databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(className);
+        databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
     }
