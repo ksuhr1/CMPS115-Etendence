@@ -71,6 +71,7 @@ public class pClassPage extends AppCompatActivity {
                 Intent intent = new Intent(pClassPage.this, DayView.class);
                 String day = getSelectedDate();
                 intent.putExtra("day", day);
+                intent.putExtra("classCode", className);
                 startActivity(intent);
             }
         });

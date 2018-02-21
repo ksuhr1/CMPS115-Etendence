@@ -151,16 +151,22 @@ public class PaddClass extends AppCompatActivity
         }
 
 
-        if (invalidField) {
+        if (invalidField)
+        {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else
+        {
 
-            codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            codeRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot data : dataSnapshot.getChildren())
+                    {
                         if (data.child(code).exists()){
                         //String userKey = data.getKey(); //gets all of classCodes
                         //DatabaseReference userKeyDatabase = codeRef.child(userKey);
@@ -172,7 +178,9 @@ public class PaddClass extends AppCompatActivity
                             // focusView = mClassCodeView;
                             // invalidField = true;
                             //  mClassCodeView.setError("This code is already taken");
-                        } else {
+                        }
+                        else
+                        {
                             addCourseToDataBase(name, quarter, code, pin);
                             Log.d(TAG, "Class code does not exist" + result);
                             progressBar.setVisibility(View.GONE);

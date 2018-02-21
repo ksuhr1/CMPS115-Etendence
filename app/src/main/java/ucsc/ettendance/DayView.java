@@ -15,6 +15,7 @@ public class DayView extends AppCompatActivity {
         setContentView(R.layout.activity_day_view);
 
         final String day = getIntent().getExtras().getString("day");
+        final String classCode = getIntent().getExtras().getString("classCode");
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(day);
@@ -27,6 +28,8 @@ public class DayView extends AppCompatActivity {
             public void onClick(View view)
             {
                 Intent intent = new Intent(DayView.this, pDayCode.class);
+                intent.putExtra("day", day);
+                intent.putExtra("classCode", classCode);
                 startActivity(intent);
 
             }
