@@ -77,8 +77,7 @@ public class PaddClass extends AppCompatActivity
         });
     }
 
-    private void checkValid()
-    {
+    private void checkValid() {
         progressBar.setVisibility(View.VISIBLE);
 
         // Reset errors.
@@ -99,31 +98,28 @@ public class PaddClass extends AppCompatActivity
 
 
         // Checks for a valid name
-        if (TextUtils.isEmpty(name))
-        {
+        if (TextUtils.isEmpty(name)) {
             mClassNameView.setError(getString(R.string.error_field_required));
             focusView = mClassNameView;
             invalidField = true;
         }
 
         // Checks for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code) )
-        {
+        if (TextUtils.isEmpty(code)) {
             mClassCodeView.setError(getString(R.string.error_field_required));
             focusView = mClassCodeView;
             invalidField = true;
         }
 
         //Checks to see if the code entered fits the length constraint
-        if(isCodeShort(pin)){
+        if (isCodeShort(pin)) {
             mClassCodeView.setError("The code must be at least 4 characters");
             focusView = mClassCodeView;
             invalidField = true;
         }
 
         //Checks if Quarter Term was entered
-        if(TextUtils.isEmpty(quarter))
-        {
+        if (TextUtils.isEmpty(quarter)) {
             mQuarterTermView.setError(getString(R.string.error_field_required));
             focusView = mQuarterTermView;
             invalidField = true;
@@ -141,36 +137,36 @@ public class PaddClass extends AppCompatActivity
 //        }
 
         //Checks if a pin is entered, if not, sets an error msg
-        if (TextUtils.isEmpty(pin))
-        {
+        if (TextUtils.isEmpty(pin)) {
             mClassPINView.setError(getString(R.string.error_field_required));
             focusView = mClassPINView;
             invalidField = true;
         }
 
         //Checks to see if pin fits the correct length constraints
-        if(isPinShort(pin)){
+        if (isPinShort(pin)) {
             mClassPINView.setError("The pin must be at least 4 numbers");
             focusView = mClassPINView;
             invalidField = true;
         }
 
 
-        if (invalidField)
-        {
+        if (invalidField) {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        }
-        else
-        {
+        } else {
+
             codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     for (DataSnapshot data : dataSnapshot.getChildren()) {
-                        if (data.child(code).exists()) {
+                        if (data.child(code).exists()){
+                        //String userKey = data.getKey(); //gets all of classCodes
+                        //DatabaseReference userKeyDatabase = codeRef.child(userKey);
+                        //if (dataSnapshot.child("classCode").getValue().equals(code)) {
                             //  result =1;
-                            Log.d(TAG,"Same class code exists" + result);
+                            Log.d(TAG, "Same class code exists" + result);
                             mClassCodeView.setError("This code is already taken");
                             mClassCodeView.requestFocus();
                             // focusView = mClassCodeView;
@@ -178,14 +174,16 @@ public class PaddClass extends AppCompatActivity
                             //  mClassCodeView.setError("This code is already taken");
                         } else {
                             addCourseToDataBase(name, quarter, code, pin);
-                            Log.d(TAG,"Class code does not exist" + result);
+                            Log.d(TAG, "Class code does not exist" + result);
                             progressBar.setVisibility(View.GONE);
                             finish();
                             // result = 0;
                         }
 
                     }
+
                 }
+
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {
@@ -193,6 +191,53 @@ public class PaddClass extends AppCompatActivity
                 }
             });
 
+            /*
+            ValueEventListener valueEventListener = new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        String userKey = ds.getKey(); //gets all of classCodes
+                        DatabaseReference userKeyDatabase = codeRef.child(userKey);
+                        ValueEventListener eventListener = new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot == null) {
+                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                                }
+
+                                else if(dataSnapshot.child("classCode").getValue().equals(code))
+                                {
+                                    Log.d(TAG,"Same class code exists" + result);
+                                    mClassCodeView.setError("This code is already taken");
+                                    mClassCodeView.requestFocus();
+                                }
+                                else
+                                {
+                                    addCourseToDataBase(name, quarter, code, pin);
+                                    Log.d(TAG,"Class code does not exist" + result);
+                                    progressBar.setVisibility(View.GONE);
+                                    finish();
+                                }
+
+                                progressBar.setVisibility(View.GONE);
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError)
+                            {
+                            }
+                        };
+                        userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+                    }
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError)
+                {
+                }
+            };
+            codeRef.addListenerForSingleValueEvent(valueEventListener);
+        }*/
         }
     }
 
@@ -203,49 +248,10 @@ public class PaddClass extends AppCompatActivity
         String fullname = mFirebaseUser.getDisplayName();
         PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, studentList);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
+        databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(className);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
     }
-
-    //Check if the code is already taken for the class need to look throught the database in order to do that
-    //Look on stack overflow for the error
-//    private boolean isCodeValid(final String code) {
-//
-//        codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                for (DataSnapshot data : dataSnapshot.getChildren()) {
-//                    if (data.child(code).exists()) {
-//                        result =1;
-//                        Log.d(TAG,"Same class code exists" + result);
-//                      //  mClassCodeView.setError("This code is already taken");
-//                    } else {
-//                        Log.d(TAG,"Class code does not exist" + result);
-//                        result = 0;
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//
-//            }
-//        });
-//
-//        return
-
-//        if(result ==1){
-//            Log.d(TAG,"Result should be true = " + result);
-//            result = 0;
-//            return true;
-//        }
-//        else{
-//            Log.d(TAG,"Result should be false = " + result);
-//            return false;
-//        }
-    // }
-
 
     //the pin length must be last least 4 characters
     private static boolean isPinShort(String pin)

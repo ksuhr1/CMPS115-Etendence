@@ -174,6 +174,7 @@ public class AddClass extends AppCompatActivity
     {
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        mDatabase.child("students").child(mFirebaseUser.getUid()).child("Enrolled Classes").child(classCode).setValue("");
         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
