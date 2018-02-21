@@ -53,11 +53,13 @@ public class pClassPage extends AppCompatActivity {
 
 
 
-        Button createDay = (Button) findViewById(R.id.newDayButton);
-        createDay.setOnClickListener(new View.OnClickListener() {
+        Button dayPage = (Button) findViewById(R.id.dayButton);
+        dayPage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
+                Log.d(TAG,"The date selected is: "+getSelectedDate());
+
                 progressBar.setVisibility(View.VISIBLE);
                 Log.d(TAG,"The date selected is: "+getSelectedDate());
                 //TODO create logic to create day in database if it does not exist
@@ -65,18 +67,11 @@ public class pClassPage extends AppCompatActivity {
 
                 Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
                 progressBar.setVisibility(View.GONE);
-            }
-        });
 
-        Button dayPage = (Button) findViewById(R.id.dayButton);
-        dayPage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                Log.d(TAG,"The date selected is: "+getSelectedDate());
                 Intent intent = new Intent(pClassPage.this, DayView.class);
                 String day = getSelectedDate();
                 intent.putExtra("day", day);
+                intent.putExtra("classCode", className);
                 startActivity(intent);
             }
         });

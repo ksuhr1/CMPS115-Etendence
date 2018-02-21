@@ -151,16 +151,22 @@ public class PaddClass extends AppCompatActivity
         }
 
 
-        if (invalidField) {
+        if (invalidField)
+        {
             // There was an error; don't attempt login and focus the first
             // form field with an error.
             focusView.requestFocus();
-        } else {
+        }
+        else
+        {
 
-            codeRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            codeRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
+                    for (DataSnapshot data : dataSnapshot.getChildren())
+                    {
                         if (data.child(code).exists()){
                         //String userKey = data.getKey(); //gets all of classCodes
                         //DatabaseReference userKeyDatabase = codeRef.child(userKey);
@@ -172,7 +178,9 @@ public class PaddClass extends AppCompatActivity
                             // focusView = mClassCodeView;
                             // invalidField = true;
                             //  mClassCodeView.setError("This code is already taken");
-                        } else {
+                        }
+                        else
+                        {
                             addCourseToDataBase(name, quarter, code, pin);
                             Log.d(TAG, "Class code does not exist" + result);
                             progressBar.setVisibility(View.GONE);
@@ -248,9 +256,9 @@ public class PaddClass extends AppCompatActivity
         String fullname = mFirebaseUser.getDisplayName();
         PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, studentList);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
-        databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(className);
+        databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);
 //        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
-        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
     }
 
     //the pin length must be last least 4 characters

@@ -59,10 +59,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".CheckInPage" />
-        <activity android:name=".DayView"
+        <activity
+            android:name=".DayView"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeBlue"></activity>
+            android:theme="@style/AppThemeBlue" />
+        <activity android:name=".pDayCode"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlue">
+
+        </activity>
     </application>
 
 </manifest>

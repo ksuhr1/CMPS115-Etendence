@@ -7,6 +7,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,24 +15,30 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class Pmain extends AppCompatActivity
 {
 
+    private static final String TAG = "Pmain";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    private DatabaseReference teacherRef;
+    private DatabaseReference classRef;
+    private PclassInformation classInformation;
+    private ListView list;
+    private ArrayAdapter<String> aa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -42,13 +49,59 @@ public class Pmain extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        teacherRef = mDatabase.child("teachers");
+        //classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes");
+        classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid());
+
+        list = (ListView) findViewById(R.id.listview);
+        final ArrayList<String>classArray = new ArrayList<>();
 
         TextView welcome = (TextView) findViewById(R.id.welcome);
-        //Gets details of the logged in user
-//            mUserId = mFirebaseUser.getUid();
+
         welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
 
+
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+
+                    String userKey = ds.getKey();
+                    DatabaseReference userKeyDatabase = classRef.child(userKey);
+                    ValueEventListener valueEventListener = new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                //String className = data.getValue(String.class);
+                                String className = data.getKey();
+                                classArray.add(className);
+                            }
+                            aa = new ArrayAdapter<String>(Pmain.this, R.layout.classlistblue, classArray);
+                            list.setAdapter(aa);
+
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    };
+                    userKeyDatabase.addListenerForSingleValueEvent(valueEventListener);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+        classRef.addListenerForSingleValueEvent(eventListener);
+
+        // Attach the adapter to a ListView
+        //list.setAdapter(aa);
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
         addClass.setOnClickListener(new View.OnClickListener()
@@ -61,16 +114,6 @@ public class Pmain extends AppCompatActivity
             }
         });
 
-        final ArrayList<String> classArray = new ArrayList<String>();
-        classArray.add("Class 1");
-        classArray.add("Class 2");
-        classArray.add("Class 3");
-        classArray.add("Class 4");
-        ListView list = (ListView) findViewById(R.id.listview);
-        // Create the adapter to convert the array to views
-        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlistblue, classArray);
-        // Attach the adapter to a ListView
-        list.setAdapter(aa);
 
         //IF ARRAY IS CLICKED
         list.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -83,6 +126,7 @@ public class Pmain extends AppCompatActivity
                     startActivity(intent);
             }
         });
+
     }
 
     //log out button logic
