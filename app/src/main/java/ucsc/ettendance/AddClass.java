@@ -3,6 +3,7 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -37,6 +39,9 @@ public class AddClass extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
+    private DatabaseReference classRef;
+    private DatabaseReference mStudentRef;
+    private DatabaseReference mStudentID;
     private ProgressBar progressBar;
     public static final String SHARED_PREFS = "sharedPrefs";
     public static final String CODE = "code";
@@ -59,9 +64,14 @@ public class AddClass extends AppCompatActivity
         //initializing firebase authentication object
         mDatabase = FirebaseDatabase.getInstance().getReference();
         codeRef = mDatabase.child("classes");
+        mStudentRef = mDatabase.child("students");
+        mStudentID = mStudentRef.child(mFirebaseUser.getUid());
+       // classRef = codeRef.child()
 
         mClassCodeView = (EditText) findViewById(R.id.studentCode);
         mClassPINView = (EditText) findViewById(R.id.studentPassword);
+      //  classRef = codeRef.child(mClassCodeView.toString());
+      //  Log.d("classRef", classRef.toString());
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
@@ -89,6 +99,8 @@ public class AddClass extends AppCompatActivity
         // Store values at the time of the class creation attempt.
         final String code = mClassCodeView.getText().toString();
         final String pin = mClassPINView.getText().toString();
+        classRef = codeRef.child(code);
+        Log.d("classRef", classRef.toString());
 
         boolean cancel = false;
         View focusView = null;
@@ -127,48 +139,84 @@ public class AddClass extends AppCompatActivity
             ValueEventListener valueEventListener = new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
+                    int count = 1;
+                    //ds is the class key and value including all its fields
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                        Log.d("DataSnapshot", ds.toString());
+                        //userKey are just the classNames
                         String userKey = ds.getKey(); //gets all of classCodes
-                        DatabaseReference userKeyDatabase = codeRef.child(userKey);
-                        ValueEventListener eventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot == null) {
-                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                        Log.d("UserKey", userKey);
+                        //if class code in database matches
+                        // with the class code the user inputted
+                        if(userKey.equals(code)){
+                            Log.d("KeySuccess", userKey);
+                            DatabaseReference userKeyDatabase = codeRef.child(userKey);
+                            Log.d("userKeyDatabaseSuccess", userKeyDatabase.toString());
+                            //Start eventListener on userKeyDatabase
+                            ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot == null)
+                                    {
+                                        Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
+                                    }
+                                    // Log.d("dataSnapshot",dataSnapshot.toString());
+                                    // Log.d("AddClassSnapshot", dataSnapshot.getKey().toString());
+                                    if(dataSnapshot.getKey().equals(code)){
+                                        Log.d("Get Key", dataSnapshot.getKey().toString());
+                                        String classPin = dataSnapshot.child("classPin").getValue().toString();
+
+                                         if (classPin.equals(pin))
+                                         {
+                                             //Maybe have check to see if student has alrady enrolled
+                                            addStudentToClass(code);
+//                                            Intent intent = new Intent(AddClass.this,MyClasses.class );
+//                                            startActivity(intent);
+                                        }
+                                        else
+                                         {
+                                           //  progressBar.setVisibility(View.GONE);
+                                             Log.d("Invalid Pin",pin);
+                                             mClassPINView.setError("Invalid Pin");
+                                             mClassPINView.requestFocus();
+                                             progressBar.setVisibility(View.GONE);
+
+                                         }
+                                    }
+
                                 }
 
-                                else if(dataSnapshot.child("classCode").getValue().equals(code))
+                                @Override
+                                public void onCancelled(DatabaseError databaseError)
                                 {
-                                    if (dataSnapshot.child("classPin").getValue().equals(pin))
-                                    {
-                                        addStudentToClass(code);
-                                        saveClasses(code);
-                                        finish();
-                                    }
-                                    else
-                                    {
-                                        mClassPINView.setError("Invalid PIN");
-                                        mClassPINView.requestFocus();
-                                    }
+
                                 }
-//                                else if(!dataSnapshot.child("classCode").getValue().equals(code))
-//                                {
-//                                    mClassCodeView.setError("Invalid Class Code");
-//                                    mClassCodeView.requestFocus();
-//                                }
-
-                                progressBar.setVisibility(View.GONE);
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError)
+                            };
+                            userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+                           // classRef.addListenerForSingleValueEvent(eventListener);
+                        }
+                        else
+                        {
+                            //Log.d("dataSnapshotChild", String.format("value= %d",dataSnapshot.getChildrenCount()));
+                            //Check if you've parsed through all the children in classes
+                            if(count >=  dataSnapshot.getChildrenCount())
                             {
+                                mClassCodeView.setError("Invalid Class Code");
+                                mClassCodeView.requestFocus();
+                                progressBar.setVisibility(View.GONE);
+                                Log.d("InvalidCode", code);
+                                Log.d("count", String.format("value = %d",count));
+                               // progressBar.setVisibility(View.GONE);
+
                             }
-                        };
-                        userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+                            Log.d("count", String.format("value = %d",count));
+                            count++;
+
+                        }
                     }
                 }
+
+
                 @Override
                 public void onCancelled(DatabaseError databaseError)
                 {
@@ -179,29 +227,73 @@ public class AddClass extends AppCompatActivity
     }
 
     // Helper function to add courses to Firebase
-    private void addStudentToClass(String classCode)
+    private void addStudentToClass(final String classCode)
     {
+        ValueEventListener eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String userKey = ds.getKey();
+                    //Looks at children userID and gets the keys
+                    //such as Enrolled classes, email, firstName etc.
+                    DatabaseReference userKeyDatabase = mStudentID.child(userKey);
+                    //Log.d("userKeyDatabase", userKeyDatabase.toString());
+                    ValueEventListener valueEventListener = new ValueEventListener()
+                    {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot)
+                        {
+                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                                //Gets all classes in Enrolled Classes
+                                String enrolledClasses = data.getKey();
+                                Log.d("data children", data.getKey());
+                                if(enrolledClasses.equals(classCode)){
+                                    Log.d("enrolledClasses", enrolledClasses);
+                                    progressBar.setVisibility(View.GONE);
+                                    Toast.makeText(getApplicationContext(), "You're already enrolled in "+classCode ,
+                                            Toast.LENGTH_LONG).show();
+                                  //  break;
+                                }
+                                else
+                                {
+                                    mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+                                    mStudentID.child("Enrolled Classes").child(classCode).setValue("");
+                                  //  break;
+                                }
+
+                            }
+                        }
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+
+                    };
+                    userKeyDatabase.addListenerForSingleValueEvent(valueEventListener);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        };
+        mStudentID.addListenerForSingleValueEvent(eventListener);
+
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-        mDatabase.child("students").child(mFirebaseUser.getUid()).child("Enrolled Classes").child(classCode).setValue("");
-        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+//        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+//        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
+
+       // progressBar.setVisibility(View.GONE);
+        //Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
-    public void saveClasses(String classCode)
-    {
-    //    SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences sharedPreferences = getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(CODE, classCode);
-        editor.commit();
-        Intent i = new Intent(AddClass.this,MyClasses.class );
-        startActivity(i);
-        //Toast.makeText(getApplicationContext(), "You're enrolled in " + code, Toast.LENGTH_LONG).show();
-//       Intent i = new Intent(AddClass.this,MyClasses.class );
-//       i.putExtra("classCode", code);
-////     Log.d(TAG, code);
-//       startActivity(i);
+    private void checkStudentStatus(String classCode){
+
     }
+
 
     //log out button code
     @Override
