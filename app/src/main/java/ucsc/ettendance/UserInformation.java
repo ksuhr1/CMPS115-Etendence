@@ -10,9 +10,7 @@ public class UserInformation
 
     // Needed for Firebase
     public UserInformation()
-    {
-
-    }
+    {}
 
     public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email)
     {

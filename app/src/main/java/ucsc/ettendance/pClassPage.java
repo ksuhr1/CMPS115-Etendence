@@ -9,7 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,7 +27,8 @@ public class pClassPage extends AppCompatActivity {
     private int month;
     private int year;
     private DatabaseReference mDatabase;
-    private DatabaseReference codeRef;
+    private ProgressBar progressBar;
+    private DatabaseReference dayRef;
 
     private static final String TAG = "pClassPage";
 
@@ -35,11 +38,15 @@ public class pClassPage extends AppCompatActivity {
         setContentView(R.layout.activity_p_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.GONE);
+
 
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        codeRef = mDatabase.child("classes");
+
 
         final String className = getIntent().getExtras().getString("className");
+        dayRef = mDatabase.child("classes").child(className);
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(className);
@@ -51,9 +58,13 @@ public class pClassPage extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
+                progressBar.setVisibility(View.VISIBLE);
                 Log.d(TAG,"The date selected is: "+getSelectedDate());
                 //TODO create logic to create day in database if it does not exist
                 mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
+
+                Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
+                progressBar.setVisibility(View.GONE);
             }
         });
 

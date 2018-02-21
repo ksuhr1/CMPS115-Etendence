@@ -65,7 +65,7 @@ public class MyClasses extends AppCompatActivity
            ListView list = (ListView) findViewById(R.id.listview);
            final ArrayList<String> classArray = new ArrayList<>();
            classArray.add(code);
-           adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, classArray);
+           adapter = new ArrayAdapter<>(this,R.layout.classlist, classArray);
            list.setAdapter(adapter);
            adapter.notifyDataSetChanged();
           // Toast.makeText(getApplicationContext(), "Course " +code +" has been added", Toast.LENGTH_SHORT).show();
@@ -119,7 +119,7 @@ public class MyClasses extends AppCompatActivity
 //        ListView list = (ListView) findViewById(R.id.listview);
 //        // Create the adapter to convert the array to views
 //        final ArrayAdapter aa = new ArrayAdapter<String>(this, R.layout.classlist, classArray);
-//        //final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
+//        final ArrayAdapter aa = new ArrayAdapter<String>(getApplicationContext(),R.layout.whitetext,classList);
 //        // Attach the adapter to a ListView
 //
 //        list.setAdapter(aa);
