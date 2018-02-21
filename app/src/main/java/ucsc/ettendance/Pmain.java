@@ -20,6 +20,8 @@ import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -28,6 +30,8 @@ public class Pmain extends AppCompatActivity
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private DatabaseReference teacherRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -37,6 +41,8 @@ public class Pmain extends AppCompatActivity
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        teacherRef = mDatabase.child("teachers");
 
         TextView welcome = (TextView) findViewById(R.id.welcome);
         //Gets details of the logged in user
