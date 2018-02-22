@@ -125,17 +125,6 @@ public class PaddClass extends AppCompatActivity
             invalidField = true;
         }
 
-        //Add additional checks for Quarter, maybe change quarter to spinner
-
-        //Checks to see if the code is already taken
-//        if(isCodeValid(code)){
-//            Log.d(TAG,"CLASS CODE IS TAKEN: " + code);
-//            mClassCodeView.setError("This code is already taken");
-//            focusView = mClassCodeView;
-//            invalidField = true;
-//
-//        }
-
         //Checks if a pin is entered, if not, sets an error msg
         if (TextUtils.isEmpty(pin)) {
             mClassPINView.setError(getString(R.string.error_field_required));
@@ -165,27 +154,52 @@ public class PaddClass extends AppCompatActivity
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
+                    // Counter to iterate through all the childs in classes
+                    int counter = 1;
                     for (DataSnapshot data : dataSnapshot.getChildren())
                     {
-                        if (data.child(code).exists()){
-                        //String userKey = data.getKey(); //gets all of classCodes
-                        //DatabaseReference userKeyDatabase = codeRef.child(userKey);
-                        //if (dataSnapshot.child("classCode").getValue().equals(code)) {
-                            //  result =1;
-                            Log.d(TAG, "Same class code exists" + result);
-                            mClassCodeView.setError("This code is already taken");
-                            mClassCodeView.requestFocus();
-                            // focusView = mClassCodeView;
-                            // invalidField = true;
-                            //  mClassCodeView.setError("This code is already taken");
+
+                        // gets all classcodes inside class child
+                        String classKeys = data.getKey();
+
+                        if (classKeys.equals(code))
+                        {
+                           DatabaseReference userKeyDatabase = codeRef.child(classKeys);
+
+                            ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    if(dataSnapshot.getKey().equals(code))
+                                    {
+                                        mClassCodeView.setError("This class code is already taken");
+                                        mClassCodeView.requestFocus();
+                                        progressBar.setVisibility(View.GONE);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            };
+                            userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+
+
                         }
                         else
                         {
-                            addCourseToDataBase(name, quarter, code, pin);
-                            Log.d(TAG, "Class code does not exist" + result);
-                            progressBar.setVisibility(View.GONE);
-                            finish();
-                            // result = 0;
+
+                            if(counter >= dataSnapshot.getChildrenCount())
+                            {
+                                addCourseToDataBase(name, quarter, code, pin);
+                                Log.d(TAG, "Class code doesn't exist so this works");
+                                progressBar.setVisibility(View.GONE);
+                                finish();
+
+                            }
+                            Log.d("counter", String.format("value = %d",counter));
+                            counter++;
                         }
 
                     }
@@ -198,67 +212,16 @@ public class PaddClass extends AppCompatActivity
 
                 }
             });
-
-            /*
-            ValueEventListener valueEventListener = new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                        String userKey = ds.getKey(); //gets all of classCodes
-                        DatabaseReference userKeyDatabase = codeRef.child(userKey);
-                        ValueEventListener eventListener = new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot == null) {
-                                    Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
-                                }
-
-                                else if(dataSnapshot.child("classCode").getValue().equals(code))
-                                {
-                                    Log.d(TAG,"Same class code exists" + result);
-                                    mClassCodeView.setError("This code is already taken");
-                                    mClassCodeView.requestFocus();
-                                }
-                                else
-                                {
-                                    addCourseToDataBase(name, quarter, code, pin);
-                                    Log.d(TAG,"Class code does not exist" + result);
-                                    progressBar.setVisibility(View.GONE);
-                                    finish();
-                                }
-
-                                progressBar.setVisibility(View.GONE);
-
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError)
-                            {
-                            }
-                        };
-                        userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-                    }
-                }
-                @Override
-                public void onCancelled(DatabaseError databaseError)
-                {
-                }
-            };
-            codeRef.addListenerForSingleValueEvent(valueEventListener);
-        }*/
         }
     }
 
     //Helper function to add courses to Firebase
     private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin)
     {
-        EnrolledStudents studentList = new EnrolledStudents(); // this was intended to save the studentList in the class upon creation, saves nothing tho
         String fullname = mFirebaseUser.getDisplayName();
-        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, studentList);
+        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
         databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);
-//        databaseClasses.child("classes").child(mFirebaseUser.getUid()).child("Enrolled Students").setValue(studentList);
-        //Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
     }
 
     //the pin length must be last least 4 characters
@@ -268,7 +231,7 @@ public class PaddClass extends AppCompatActivity
         if(pin.length() >= 4)
             tooShort = false;
 
-        return (tooShort);
+        return tooShort;
     }
 
 
@@ -279,7 +242,7 @@ public class PaddClass extends AppCompatActivity
         if(code.length() >= 4)
             tooShort = false;
 
-        return (tooShort);
+        return tooShort;
     }
 
 
