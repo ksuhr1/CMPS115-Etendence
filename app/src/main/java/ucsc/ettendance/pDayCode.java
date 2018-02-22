@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -24,6 +25,7 @@ public class pDayCode extends AppCompatActivity
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
+    private DatabaseReference directRef;
     private String day, classCode;
     private static final String TAG = "pDayCode";
 
@@ -40,6 +42,9 @@ public class pDayCode extends AppCompatActivity
         // Strings inherited from previous activities
         day = getIntent().getExtras().getString("day");
         classCode = getIntent().getExtras().getString("classCode");
+
+        directRef = mDatabase.child("classes").child(classCode).child("Days of Attendance");
+
 
         mAttendanceCodeView = (EditText) findViewById(R.id.classCode);
 
@@ -84,32 +89,45 @@ public class pDayCode extends AppCompatActivity
         }
         else
         {
-            codeRef.addListenerForSingleValueEvent(new ValueEventListener()
+
+            directRef.addListenerForSingleValueEvent(new ValueEventListener()
             {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    for (DataSnapshot data : dataSnapshot.getChildren())
-                    {
-                        if (data.child(classCode).child("Days of Attendances").child(day).exists())
-                        {
-                            codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
-                            Log.d(TAG, "Should've done something!");
-                        }
-                        else
-                        {
-                            Log.d(TAG, "Why wouldn't it exist?");
-                            Log.d(TAG, data.child(classCode).child("Days of Attendances").child(day).toString());
-                            codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
-//                            progressBar.setVisibility(View.GONE);
-                            finish();
-                            // result = 0;
-                        }
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
 
+                        // gets all dates inside Days of Attendance child
+                        String dateKeys = data.getKey();
+
+                        if (dateKeys.equals(day))
+                        {
+                            DatabaseReference userKeyDatabase = directRef.child(dateKeys);
+
+                            ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    if (dataSnapshot.getKey().equals(day))
+                                    {
+                                        Log.d(TAG,"This date has already been made, so lets modify it");
+                                        codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
+                                        Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            };
+                            userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+
+
+                        }
                     }
-
                 }
-
 
                 @Override
                 public void onCancelled(DatabaseError databaseError) {

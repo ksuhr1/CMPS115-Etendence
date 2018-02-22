@@ -15,8 +15,11 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -28,7 +31,8 @@ public class pClassPage extends AppCompatActivity {
     private int year;
     private DatabaseReference mDatabase;
     private ProgressBar progressBar;
-    private DatabaseReference dayRef;
+    private DatabaseReference directRef;
+    private DatabaseReference classRef;
 
     private static final String TAG = "pClassPage";
 
@@ -41,12 +45,14 @@ public class pClassPage extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
 
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
 
 
+        // className is the same as classCode here
         final String className = getIntent().getExtras().getString("className");
-        dayRef = mDatabase.child("classes").child(className);
+
+        classRef = mDatabase.child("classes").child(className);
+
 
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(className);
@@ -58,14 +64,127 @@ public class pClassPage extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Log.d(TAG,"The date selected is: "+getSelectedDate());
+                directRef = mDatabase.child("classes").child(className).child("Days of Attendance");
 
                 progressBar.setVisibility(View.VISIBLE);
                 Log.d(TAG,"The date selected is: "+getSelectedDate());
-                //TODO create logic to create day in database if it does not exist
-                mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
 
-                Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
+                // This ValueEventListener is specifically for making the initial days of attendance child or else the directRef one will not work.
+                classRef.addListenerForSingleValueEvent(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot)
+                    {
+                        // Counter to iterate through all the childs in classes
+                        int counter = 1;
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                            // gets all child inside the className child
+                            String classKeys = data.getKey();
+
+                            if (classKeys.equals("Days of Attendance"))
+                            {
+                                DatabaseReference userKeyDatabase = directRef.child(classKeys);
+
+                                ValueEventListener eventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot)
+                                    {
+                                        if (dataSnapshot.getKey().equals("Days of Attendance"))
+                                        {
+                                            Log.d(TAG,"Days of Attendance has already been made");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                };
+                                userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+
+                            }
+                            else
+                            {
+                                // if we checked every single child and Days of Attendance child does not exist
+                                if (counter >= dataSnapshot.getChildrenCount())
+                                {
+                                    mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
+                                    Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
+                                    Log.d(TAG, "First creation of the Days of Attendance child, date code doesn't exist");
+
+                                }
+                                //Log.d("counter", String.format("value = %d", counter));
+                                counter++;
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+                directRef.addListenerForSingleValueEvent(new ValueEventListener()
+                {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        // Counter to iterate through all the childs in classes
+                        int counter = 1;
+                        for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                            // gets all dates inside Days of Attendance child
+                            String dateKeys = data.getKey();
+
+                            if (dateKeys.equals(getSelectedDate()))
+                            {
+                                DatabaseReference userKeyDatabase = directRef.child(dateKeys);
+
+                                ValueEventListener eventListener = new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot)
+                                    {
+                                        if (dataSnapshot.getKey().equals(getSelectedDate()))
+                                        {
+                                            Log.d(TAG,"This date has already been made");
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                };
+                                userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+
+
+                            }
+                            else
+                            {
+
+                                if (counter >= dataSnapshot.getChildrenCount())
+                                {
+                                    mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
+                                    Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
+                                    Log.d(TAG, "Date code doesn't exist so this works");
+
+                                }
+                                Log.d("counter", String.format("value = %d", counter));
+                                counter++;
+                            }
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
                 progressBar.setVisibility(View.GONE);
 
                 Intent intent = new Intent(pClassPage.this, DayView.class);
