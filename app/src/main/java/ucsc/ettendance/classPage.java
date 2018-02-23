@@ -39,6 +39,8 @@ public class classPage extends AppCompatActivity
             public void onClick(View view)
             {
                 Intent intent = new Intent(classPage.this, CheckInPage.class);
+                intent.putExtra("className", className);
+
                 startActivity(intent);
 
             }

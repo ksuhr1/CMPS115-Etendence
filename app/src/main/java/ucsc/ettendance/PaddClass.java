@@ -221,6 +221,7 @@ public class PaddClass extends AppCompatActivity
         String fullname = mFirebaseUser.getDisplayName();
         PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
+        databaseClasses.child("classes").child(classCode).child("Days of Attendance").child("NULL").setValue("NULL");
         databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);
     }
 

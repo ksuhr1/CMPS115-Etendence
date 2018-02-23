@@ -78,7 +78,7 @@ public class pDayCode extends AppCompatActivity
         // checks if code is too short and throws error if it is
         if(isCodeTooShort(dayCode))
         {
-            mAttendanceCodeView.setError(getString(R.string.error_field_required));
+            mAttendanceCodeView.setError("The attendance code must be at least 4 characters");
             focusView = mAttendanceCodeView;
             cancel = true;
         }
@@ -112,6 +112,7 @@ public class pDayCode extends AppCompatActivity
                                     {
                                         Log.d(TAG,"This date has already been made, so lets modify it");
                                         codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
+                                        directRef.child("NULL").removeValue();
                                         Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
                                         finish();
                                     }
