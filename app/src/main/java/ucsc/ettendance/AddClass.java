@@ -125,8 +125,8 @@ public class AddClass extends AppCompatActivity
         }
         //checks for valid pin length
         if (isPinShort(pin)) {
-            mClassCodeView.setError("The pin must be at least 4 numbers");
-            focusView = mClassCodeView;
+            mClassPINView.setError("The PIN must be at least 4 numbers");
+            focusView = mClassPINView;
             cancel = true;
         }
         // There was an error; don't attempt login and focus the first

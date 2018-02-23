@@ -45,7 +45,7 @@
         app:layout_constraintVertical_bias="0.015" />
 
     <Button
-        android:id="@+id/absentButton"
+        android:id="@+id/presentButton"
         android:layout_width="312dp"
         android:layout_height="46dp"
         android:layout_alignParentLeft="true"
@@ -56,7 +56,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bluebuttonback"
-        android:text="Absent Students"
+        android:text="Present Students"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

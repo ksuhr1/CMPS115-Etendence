@@ -35,5 +35,20 @@ public class DayView extends AppCompatActivity {
             }
         });
 
+        //SET CODE BUTTON
+        Button presentButton = findViewById(R.id.presentButton);
+        presentButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(DayView.this, pPresentStudents.class);
+                intent.putExtra("day", day);
+                intent.putExtra("classCode", classCode);
+                startActivity(intent);
+
+            }
+        });
+
     }
 }

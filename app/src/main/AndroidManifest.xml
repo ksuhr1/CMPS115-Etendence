@@ -64,12 +64,15 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlue" />
-        <activity android:name=".pDayCode"
+        <activity
+            android:name=".pDayCode"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeBlue">
-
-        </activity>
+            android:theme="@style/AppThemeBlue"></activity>
+        <activity android:name=".pPresentStudents"
+                android:label=""
+                android:screenOrientation="portrait"
+                android:theme="@style/AppThemeBlue"></activity>
     </application>
 
 </manifest>

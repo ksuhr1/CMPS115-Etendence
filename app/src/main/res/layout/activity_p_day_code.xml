@@ -76,7 +76,7 @@
         android:backgroundTint="@color/lightBlue"
         android:ems="10"
         android:hint="Daily Code"
-        android:inputType="text"
+        android:inputType="number"
         android:singleLine="false"
         android:textColor="@color/darkBlue"
         app:layout_constraintBottom_toBottomOf="parent"
