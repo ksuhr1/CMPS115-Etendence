@@ -65,5 +65,18 @@ public class DayView extends AppCompatActivity {
             }
         });
 
+        //ANNOUCEMENT BUTTON
+        Button announceButton = findViewById(R.id.announceButton);
+        announceButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(DayView.this, pSetAnnouncement.class);
+                intent.putExtra("day", day);
+                intent.putExtra("classCode", classCode);
+                startActivity(intent);
+            }
+        });
     }
 }
