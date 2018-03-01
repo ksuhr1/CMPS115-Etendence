@@ -26,11 +26,16 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class pMap extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks , GoogleApiClient.OnConnectionFailedListener, LocationListener
 {
@@ -43,12 +48,28 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
     Marker attendanceMarker;
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng classLatLng;
+    private FirebaseAuth mFirebaseAuth;
+    private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private DatabaseReference classRef;
+    private String classCode;
+
+
+    private static final String TAG = "pMap";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_map);
+
+        mFirebaseAuth = FirebaseAuth.getInstance();
+        mFirebaseUser= mFirebaseAuth.getCurrentUser();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        classCode = getIntent().getExtras().getString("classCode");
+        classRef = mDatabase.child("classes").child(classCode);
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
 
@@ -64,7 +85,11 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
             {
                 if (attendanceMarker != null)
                 {
-                    Log.d("LAT LONG:",classLatLng.toString());
+                    // Add Lat and Long into Database and make LatLng object later
+                    classRef.child("classLat").setValue(classLatLng.latitude);
+                    classRef.child("classLong").setValue(classLatLng.longitude);
+
+                    Log.d(TAG,"LAT LONG: " + classLatLng.toString());
                     finish();
                 }
                 else
@@ -73,7 +98,6 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
                 }
             }
         });
-
 
     }
 
@@ -141,11 +165,12 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
                 {
                     attendanceMarker.remove();
                 }
+
                 classLatLng = new LatLng(latLng.latitude, latLng.longitude);
                 MarkerOptions options = new MarkerOptions().position(
                             new LatLng(latLng.latitude, latLng.longitude)).title("Attendance Location");
+                options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                 attendanceMarker = mGoogleMap.addMarker(options);
-
 
             }
         });

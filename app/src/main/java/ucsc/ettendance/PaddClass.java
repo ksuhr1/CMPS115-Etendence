@@ -192,13 +192,13 @@ public class PaddClass extends AppCompatActivity
 
                             if(counter >= dataSnapshot.getChildrenCount())
                             {
-                                addCourseToDataBase(name, quarter, code, pin);
+                                addCourseToDataBase(name, quarter, code, pin, 0, 0);
                                 Log.d(TAG, "Class code doesn't exist so this works");
                                 progressBar.setVisibility(View.GONE);
                                 finish();
 
                             }
-                            Log.d("counter", String.format("value = %d",counter));
+                            //Log.d("counter", String.format("value = %d",counter));
                             counter++;
                         }
 
@@ -216,10 +216,10 @@ public class PaddClass extends AppCompatActivity
     }
 
     //Helper function to add courses to Firebase
-    private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin)
+    private void addCourseToDataBase(String className, String classQuarter, String classCode, String classPin, double classLat, double classLong)
     {
         String fullname = mFirebaseUser.getDisplayName();
-        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname);
+        PclassInformation classInformation = new PclassInformation(className,classQuarter,classCode, classPin, fullname, classLat, classLong);
         databaseClasses.child("classes").child(classCode).setValue(classInformation);
         databaseClasses.child("classes").child(classCode).child("Days of Attendance").child("NULL").setValue("NULL");
         databaseClasses.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes").child(classCode).setValue(classCode);

@@ -99,7 +99,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bluebuttonback"
-        android:text="Set Map Boundary"
+        android:text="Set Location"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

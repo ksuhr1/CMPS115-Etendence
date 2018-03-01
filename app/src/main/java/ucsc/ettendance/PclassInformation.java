@@ -10,17 +10,21 @@ public class PclassInformation {
     public String classCode;
     public String classPin;
     public String owner;
+    public double classLat;
+    public double classLong;
 
     // Needed for Firebase
     public PclassInformation() {}
 
-    public PclassInformation(String className, String classQuarter, String classCode, String classPin, String owner)
+    public PclassInformation(String className, String classQuarter, String classCode, String classPin, String owner, double classLat, double classLong)
     {
         this.className = className;
         this.classQuarter = classQuarter;
         this.classCode = classCode;
         this.classPin = classPin;
         this.owner = owner;
+        this.classLat = classLat;
+        this.classLong = classLong;
     }
 
     public String getClassName()
@@ -43,4 +47,13 @@ public class PclassInformation {
     {
         return owner;
     }
+    public double getClassLat()
+    {
+        return classLat;
+    }
+    public double getClassLong()
+    {
+        return classLong;
+    }
+
 }
