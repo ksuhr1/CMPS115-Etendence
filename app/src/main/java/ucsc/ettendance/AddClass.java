@@ -168,10 +168,11 @@ public class AddClass extends AppCompatActivity
 
                                          if (classPin.equals(pin))
                                          {
-                                             //Maybe have check to see if student has alrady enrolled
+                                             //Maybe have check to see if student has already enrolled
+                                             //Got this check in addStudentToClass
                                             addStudentToClass(code);
-//                                            Intent intent = new Intent(AddClass.this,MyClasses.class );
-//                                            startActivity(intent);
+                                            Intent intent = new Intent(AddClass.this,MyClasses.class );
+                                            startActivity(intent);
                                         }
                                         else
                                          {
@@ -282,12 +283,13 @@ public class AddClass extends AppCompatActivity
         };
         mStudentID.addListenerForSingleValueEvent(eventListener);
 
+        //*****Code Below actually adds the class to DB***
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
-//        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-//        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
 
-       // progressBar.setVisibility(View.GONE);
-        //Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+        progressBar.setVisibility(View.GONE);
+        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
     private void checkStudentStatus(String classCode){

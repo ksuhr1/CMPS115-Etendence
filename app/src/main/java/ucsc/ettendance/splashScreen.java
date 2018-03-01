@@ -67,6 +67,7 @@ public class splashScreen extends AppCompatActivity {
                     if (user == null)
                     {
                         Log.d(TAG, "This is a professor, trying to access the student side");
+                        loadLogInView();
                     }
                     else
                     {
@@ -92,6 +93,7 @@ public class splashScreen extends AppCompatActivity {
                     UserInformation user = dataSnapshot.getValue(UserInformation.class);
                     if (user == null) {
                         Log.d(TAG, "This is a student, trying to access the professor side");
+                        loadLogInView();
                     } else {
                         Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
                         loadProfView(); // load professor page

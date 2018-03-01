@@ -5,6 +5,7 @@ public class UserInformation
     public String firstName;
     public String lastName;
     public String studentId;
+    public String password;
     public boolean isProfessor;
     public String email;
 
@@ -12,13 +13,14 @@ public class UserInformation
     public UserInformation()
     {}
 
-    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email)
+    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email, String password)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentId = studentId;
         this.isProfessor = isProfessor;
         this.email = email;
+        this.password = password;
     }
 
     public String getFirstName()
@@ -44,6 +46,7 @@ public class UserInformation
     {
         return email;
     }
+    public String getPassword() { return password;}
 
     //public UserInformation() { }
 
