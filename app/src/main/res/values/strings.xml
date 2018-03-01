@@ -41,4 +41,5 @@
     <string name="btn_link_to_signup">Don\'t have an account, Signup !!</string>
     <string name="my_classes">My Classes</string>
     <string name="welcome">welcome</string>
+    <string name="title_activity_p_map">Map</string>
 </resources>
