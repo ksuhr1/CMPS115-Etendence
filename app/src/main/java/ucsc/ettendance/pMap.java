@@ -203,6 +203,7 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
         mGoogleApiClient.connect();
     }
 
+   //This method will be invoked asynchronously when the connect request has successfully completed
     @Override
     public void onConnected(Bundle bundle)
     {
@@ -217,18 +218,22 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
         }
     }
 
+    //Called when the client is temporarily in a disconnected state
     @Override
     public void onConnectionSuspended(int i) {}
 
+    //Called when there was an error connecting the client to the service
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {}
 
+    //Called when the location has changed
     @Override
     public void onLocationChanged(Location location)
     {
 
     }
 
+    //Verifies that there is a location permission in the Android Manifest xml
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private void checkLocationPermission()
     {
@@ -273,6 +278,7 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
         }
     }
 
+    //Pass the user response
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults)

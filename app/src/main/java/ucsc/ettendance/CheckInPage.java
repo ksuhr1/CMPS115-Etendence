@@ -200,6 +200,11 @@ public class CheckInPage extends AppCompatActivity
         return stringBuilder.toString();
     }
 
+    //Pulling the students location
+
+
+
+
     //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -208,6 +213,7 @@ public class CheckInPage extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
 
     //log out button logic
     @Override
