@@ -1,5 +1,6 @@
 package ucsc.ettendance;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.provider.ContactsContract;
 import android.renderscript.Sampler;
@@ -57,6 +58,10 @@ public class MyClasses extends AppCompatActivity
         super.onCreate(savedInstanceState);
 //      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.titlebar);
+        TextView title = (TextView) findViewById(R.id.className);
+        title.setText("My Classes");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
