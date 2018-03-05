@@ -128,18 +128,14 @@ public class pDayCode extends AppCompatActivity
                                                 for(DataSnapshot dt: dataSnapshot.getChildren()){
                                                     enrolledStudents.add(String.valueOf(dt.getValue()));
                                                     Log.d("enrolledStudentsArray", enrolledStudents.toString());
+                                                    //adds all the enrolled students to Attendance List and
+                                                    //defaults value to False
                                                     for(int i =0; i< enrolledStudents.size(); i++){
                                                         codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").child(enrolledStudents.get(i)).setValue("false");
 
                                                     }
 
-                                                   // final String idNames = dt.getKey();
-
-                                                    //Log.d("idNames", idNames);
-                                                    // codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").setValue(idNames);
-
                                                 }
-                                              //  codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").setKey(enrolledStudents);
 
                                             }
 
@@ -148,11 +144,6 @@ public class pDayCode extends AppCompatActivity
 
                                             }
                                         });
-
-
-//                                        codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List");
-//                                        directRef.child("NULL").removeValue();
-//                                        Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
                                         finish();
                                     }
                                 }
