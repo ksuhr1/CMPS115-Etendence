@@ -1,5 +1,6 @@
 package ucsc.ettendance;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -44,18 +45,31 @@ public class pClassPage extends AppCompatActivity {
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         progressBar.setVisibility(View.GONE);
-
         mDatabase = FirebaseDatabase.getInstance().getReference();
-
 
         // className is the same as classCode here
         final String className = getIntent().getExtras().getString("className");
 
         classRef = mDatabase.child("classes").child(className);
-
-
-        TextView title = (TextView) findViewById(R.id.title);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.titlebar);
+        TextView title = (TextView) findViewById(R.id.className);
         title.setText(className);
+
+        // TextView actionBarTitle = (TextView) .findViewById(R.id.text_actionbar_title);
+
+      //  getSupportActionBar().setTitle(className);
+
+      //  final ActionBar actionBar = getActionBar();
+       // actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+
+       // TextView title = new TextView(getSupportActionBar().getThemedContext());
+        //title.setText(className);
+//        actionBar.setCustomView(title);
+
+//
+//        TextView title = (TextView) findViewById(R.id.title);
+//        title.setText(className);
 
 
 
