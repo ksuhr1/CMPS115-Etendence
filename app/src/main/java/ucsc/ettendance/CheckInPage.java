@@ -138,7 +138,8 @@ public class CheckInPage extends AppCompatActivity
                                                 else if(attCode.equals(attendanceCode))
                                                 {
                                                     Log.d(TAG, "This date has already been made, so this student will join");
-                                                    directRef.child(getCurrentDay()).child("Present Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+                                                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
+                                                   // directRef.child(getCurrentDay()).child("Present Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
                                                     Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
                                                     finish();
                                                 }

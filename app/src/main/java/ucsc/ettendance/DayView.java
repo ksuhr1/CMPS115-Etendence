@@ -50,6 +50,22 @@ public class DayView extends AppCompatActivity {
             }
         });
 
+        //ABSENT STUDENTS BUTTON
+        Button absentButton = findViewById(R.id.absentButton);
+        absentButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(DayView.this, pAbsentStudents.class);
+                intent.putExtra("day", day);
+                intent.putExtra("classCode", classCode);
+                startActivity(intent);
+
+            }
+        });
+
+
         //MAP BUTTON
         Button mapButton = findViewById(R.id.mapButton);
         mapButton.setOnClickListener(new View.OnClickListener()
