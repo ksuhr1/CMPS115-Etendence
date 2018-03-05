@@ -28,6 +28,8 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.Circle;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -46,6 +48,8 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
     GoogleApiClient mGoogleApiClient;
     Location mLastLocation;
     Marker attendanceMarker;
+    Circle circleMarker;
+
     private FusedLocationProviderClient mFusedLocationClient;
     private LatLng classLatLng;
     private FirebaseAuth mFirebaseAuth;
@@ -151,7 +155,8 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
                         // Got last known location. In some rare situations this can be null.
                         if (location != null)
                         {
-                            // Logic to handle location object
+                            // Zoom in on current location in map
+                            mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(),location.getLongitude()), 14.0f));
                         }
                     }
                 });
@@ -161,15 +166,27 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
             public void onMapClick(LatLng latLng)
             {
 
+                // Preventing duplication of marks and circle
                 if (attendanceMarker != null)
                 {
                     attendanceMarker.remove();
+                    circleMarker.remove();
                 }
+
 
                 classLatLng = new LatLng(latLng.latitude, latLng.longitude);
                 MarkerOptions options = new MarkerOptions().position(
                             new LatLng(latLng.latitude, latLng.longitude)).title("Attendance Location");
                 options.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+                // Boundary circle
+                circleMarker = mGoogleMap.addCircle(new CircleOptions()
+                        .center(classLatLng)
+                        .radius(22)
+                        .strokeWidth(5)
+                        .strokeColor(0x786973cf)
+                        .fillColor(0x32848ff5));
+
                 attendanceMarker = mGoogleMap.addMarker(options);
 
             }
@@ -209,21 +226,6 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
     @Override
     public void onLocationChanged(Location location)
     {
-//        mLastLocation = location;
-//        if (mCurrLocationMarker != null) {
-//            mCurrLocationMarker.remove();
-//        }
-//
-//        //Place current location marker
-//        LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(latLng);
-//        markerOptions.title("Current Position");
-//        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-//        mCurrLocationMarker = mGoogleMap.addMarker(markerOptions);
-//
-//        //move map camera
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,11));
 
     }
 
