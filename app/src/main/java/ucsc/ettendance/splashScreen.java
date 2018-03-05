@@ -67,7 +67,7 @@ public class splashScreen extends AppCompatActivity {
                     if (user == null)
                     {
                         Log.d(TAG, "This is a professor, trying to access the student side");
-                        loadLogInView();
+                        //loadLogInView();
                     }
                     else
                     {

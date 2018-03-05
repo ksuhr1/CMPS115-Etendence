@@ -3,21 +3,36 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
+
+import java.util.ArrayList;
 
 public class classPage extends AppCompatActivity
 {
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
+    private DatabaseReference mDatabase;
+    private DatabaseReference announceRef;
+    private ListView list;
+    private ArrayAdapter<String> aa;
+    private ArrayList<String> announceArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,6 +47,37 @@ public class classPage extends AppCompatActivity
         TextView title = (TextView) findViewById(R.id.title);
         title.setText(className);
 
+        list = (ListView) findViewById(R.id.listview);
+        announceArray = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        announceRef = mDatabase.child("classes").child(className).child("Announcements");
+
+        ValueEventListener eventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String announceDate = ds.getKey();
+                    String announcement = ds.getValue().toString();
+                    announceArray.add(announceDate + "\n" + announcement);
+                    //announceDate + ": " +
+                    Log.d("classPage", announceDate + ": " + announcement);
+                }
+                aa = new ArrayAdapter<String>(classPage.this, R.layout.classlist, announceArray);
+                list.setAdapter(aa);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+
+        };
+        announceRef.addListenerForSingleValueEvent(eventListener);
+
         Button checkIn = (Button) findViewById(R.id.checkInButton);
         checkIn.setOnClickListener(new View.OnClickListener()
         {
@@ -39,7 +85,7 @@ public class classPage extends AppCompatActivity
             public void onClick(View view)
             {
                 Intent intent = new Intent(classPage.this, CheckInPage.class);
-                intent.putExtra("className", className);
+                intent.putExtra("classCode", className);
 
                 startActivity(intent);
 

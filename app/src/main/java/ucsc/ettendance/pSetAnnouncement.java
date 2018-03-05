@@ -18,7 +18,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class pSetAnnouncement extends AppCompatActivity {
 
-    private EditText mAnnouncementSubjectView, mAnnouncementTextView;
+    private EditText mAnnouncementTextView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase, codeRef;
@@ -38,7 +38,6 @@ public class pSetAnnouncement extends AppCompatActivity {
         day = getIntent().getExtras().getString("day");
         classCode = getIntent().getExtras().getString("classCode");
 
-        mAnnouncementSubjectView = (EditText) findViewById(R.id.announceSubject);
         mAnnouncementTextView = (EditText) findViewById(R.id.announceText);
 
         //SEND ANNOUCEMENT BUTTON
@@ -55,14 +54,12 @@ public class pSetAnnouncement extends AppCompatActivity {
 
     public void setAnnouncement()
     {
-        mAnnouncementSubjectView.setError(null);
         mAnnouncementTextView.setError(null);
-        final String annoucementSubject = mAnnouncementSubjectView.getText().toString();
         final String annoucementText = mAnnouncementTextView.getText().toString();
 
         // Create/traverse to Accouncements child, create or add to selected day child, and create the
         // announcement with the announcement text.
-        codeRef.child(classCode).child("Announcements").child(day).child(annoucementSubject).setValue(annoucementText);
+        codeRef.child(classCode).child("Announcements").child(day).setValue(annoucementText);
         Log.d(TAG,"Add announcement to Firebase");
         Toast.makeText(getApplicationContext(), "Created Annoucement for "+ day, Toast.LENGTH_LONG).show();
         finish();

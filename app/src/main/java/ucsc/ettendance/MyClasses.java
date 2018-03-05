@@ -65,7 +65,7 @@ public class MyClasses extends AppCompatActivity
         mProfRef = mDatabase.child("teachers");
         mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
        // Log.d("mStudentRef", mStudentRef.toString());
-        Log.d("mStudentID", mStudentID.toString());
+        Log.d("mStudentID: ", mStudentID.toString());
 
         listView = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
@@ -88,7 +88,7 @@ public class MyClasses extends AppCompatActivity
                                 //Gets all classes in Enrolled Classes
                                 String enrolledClasses = data.getKey();
                                 list.add(enrolledClasses);
-                                Log.d("data children", data.getKey());
+                                Log.d("data children: ", data.getKey());
 
                             }
                            adapter = new ArrayAdapter<String>(MyClasses.this, R.layout.classlist, list);

@@ -19,33 +19,12 @@
             tools:layout_editor_absoluteX="-20dp" />
 
         <EditText
-            android:id="@+id/announceSubject"
-            android:layout_width="325dp"
-            android:layout_height="50dp"
-            android:layout_above="@+id/announceText"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="51dp"
-            android:autoLink="all"
-            android:backgroundTint="@color/lightBlue"
-            android:ems="10"
-            android:hint="Announcement Subject"
-            android:inputType="textShortMessage"
-            android:singleLine="true"
-            android:textColor="@color/darkBlue"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.511"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.235" />
-
-        <EditText
             android:id="@+id/announceText"
             android:layout_width="325dp"
             android:layout_height="90dp"
-            android:layout_alignLeft="@+id/announceSubject"
-            android:layout_alignStart="@+id/announceSubject"
-            android:layout_centerVertical="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="166dp"
             android:autoLink="all"
             android:backgroundTint="@color/lightBlue"
             android:ems="10"
