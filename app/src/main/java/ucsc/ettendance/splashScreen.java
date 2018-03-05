@@ -29,8 +29,6 @@ public class splashScreen extends AppCompatActivity {
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
     private DatabaseReference mProfRef;
-    final Boolean[] isProf = {true};
-    final Boolean[] isStudent = {true};
 
     private static final String TAG = "Splash Screen";
 
@@ -70,7 +68,6 @@ public class splashScreen extends AppCompatActivity {
                         } else {
                             Log.d("StudentRef", "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
                             loadStudentView(); // load student page
-                            isProf[0] = false;
                             Log.d("loadStudentView", user.getFirstName());
                         }
 
