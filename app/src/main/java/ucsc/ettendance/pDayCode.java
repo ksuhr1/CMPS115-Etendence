@@ -18,6 +18,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 public class pDayCode extends AppCompatActivity
 {
     private EditText mAttendanceCodeView;
@@ -26,8 +28,10 @@ public class pDayCode extends AppCompatActivity
     private DatabaseReference mDatabase;
     private DatabaseReference codeRef;
     private DatabaseReference directRef;
+    private DatabaseReference enrolledRef;
     private String day, classCode;
     private static final String TAG = "pDayCode";
+    ArrayList<String> enrolledStudents = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +48,7 @@ public class pDayCode extends AppCompatActivity
         classCode = getIntent().getExtras().getString("classCode");
 
         directRef = mDatabase.child("classes").child(classCode).child("Days of Attendance");
+        enrolledRef = mDatabase.child("classes").child(classCode).child("Enrolled Students");
 
 
         mAttendanceCodeView = (EditText) findViewById(R.id.classCode);
@@ -103,6 +108,8 @@ public class pDayCode extends AppCompatActivity
                         if (dateKeys.equals(day))
                         {
                             DatabaseReference userKeyDatabase = directRef.child(dateKeys);
+                            //   Log.d("userkey",userKeyDatabase.toString());
+
 
                             ValueEventListener eventListener = new ValueEventListener() {
                                 @Override
@@ -110,10 +117,42 @@ public class pDayCode extends AppCompatActivity
                                 {
                                     if (dataSnapshot.getKey().equals(day))
                                     {
+
                                         Log.d(TAG,"This date has already been made, so lets modify it");
                                         codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
                                         directRef.child("NULL").removeValue();
                                         Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
+                                        enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot dt: dataSnapshot.getChildren()){
+                                                    enrolledStudents.add(String.valueOf(dt.getValue()));
+                                                    Log.d("enrolledStudentsArray", enrolledStudents.toString());
+                                                    for(int i =0; i< enrolledStudents.size(); i++){
+                                                        codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").child(enrolledStudents.get(i)).setValue("false");
+
+                                                    }
+
+                                                   // final String idNames = dt.getKey();
+
+                                                    //Log.d("idNames", idNames);
+                                                    // codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").setValue(idNames);
+
+                                                }
+                                              //  codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").setKey(enrolledStudents);
+
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+
+//                                        codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List");
+//                                        directRef.child("NULL").removeValue();
+//                                        Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
                                         finish();
                                     }
                                 }
@@ -124,8 +163,6 @@ public class pDayCode extends AppCompatActivity
                                 }
                             };
                             userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-
-
                         }
                     }
                 }
