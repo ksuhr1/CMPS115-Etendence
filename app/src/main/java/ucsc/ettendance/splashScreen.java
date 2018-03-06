@@ -51,67 +51,64 @@ public class splashScreen extends AppCompatActivity {
             //Not logged in, launch the Log in activity
             loadLogInView();
         }
-        else
-        {
+        else {
+
             mUserId = mFirebaseUser.getUid();
+            //  mUserProfStatus(mUserId);
+            Log.d("mUserId", mUserId);
 
-            /*if(mProfRef.child(mUserId) == null)
-            {*/
-            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
+                mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    if (user == null)
-                    {
-                        Log.d(TAG, "This is a professor, trying to access the student side");
-                        //loadLogInView();
+                        UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                        if (user == null) {
+                            Log.d(TAG, "This is a professor, trying to access the student side");
+                            loadProfView();
+                        } else {
+                            Log.d("StudentRef", "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                            loadStudentView(); // load student page
+                            Log.d("loadStudentView", user.getFirstName());
+                        }
+
                     }
-                    else
-                    {
-                        Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-                        loadStudentView(); // load student page
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w(TAG, "Failed to read value.", error.toException());
                     }
-                }
+                });
 
-                @Override
-                public void onCancelled(DatabaseError error)
-                {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
+                mProfRef.child(mUserId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
 
-            mProfRef.child(mUserId).addValueEventListener(new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot)
-                {
 
-                    UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    if (user == null) {
-                        Log.d(TAG, "This is a student, trying to access the professor side");
-                        loadLogInView();
-                    } else {
-                        Log.d(TAG, "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
-                        loadProfView(); // load professor page
+                        UserInformation user = dataSnapshot.getValue(UserInformation.class);
+                        if (user == null) {
+                            Log.d(TAG, "This is a student, trying to access the professor side");
+                            loadStudentView();
+                        } else {
+                            Log.d("ProfRef", "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
+                            loadProfView(); // load professor page
+                        }
                     }
-                }
 
-                @Override
-                public void onCancelled(DatabaseError error)
-                {
-                    // Failed to read value
-                    Log.w(TAG, "Failed to read value.", error.toException());
-                }
-            });
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+                        // Failed to read value
+                        Log.w(TAG, "Failed to read value.", error.toException());
+                    }
+                });
 
-            ProgressBar prog = (ProgressBar) findViewById(R.id.progressBar);
-            prog.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+                ProgressBar prog = (ProgressBar) findViewById(R.id.progressBar);
+                prog.getIndeterminateDrawable().setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
+
         }
     }
+
+
 
     private void loadLogInView()
     {

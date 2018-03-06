@@ -127,6 +127,7 @@ public class SignUp extends AppCompatActivity
                 progressBar.setVisibility(View.GONE);
                 // If sign in fails, Log the message to the LogCat. If sign in succeeds
                 // signed in user can be handled in the listener.
+
                 if (!task.isSuccessful())
                 {
                     Log.d(TAG,"Authentication failed." + task.getException());
@@ -135,11 +136,9 @@ public class SignUp extends AppCompatActivity
                     focusView.requestFocus();
                     //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
                 }
-                else
-                {
+                else {
                     FirebaseUser user = auth.getCurrentUser();
-                    if(user!=null)
-                    {
+                    if (user != null) {
                         String fullname = firstName + " " + lastName;
                         Log.d(TAG, "The fullname is " + fullname);
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -147,25 +146,43 @@ public class SignUp extends AppCompatActivity
                                 .build();
                         user.updateProfile(profileUpdates);
                     }
-                    if(!isProfessor)
-                    {
+                    if (!isProfessor) {
+                        sendEmailVerification();
                         databaseReference.child("students").child(user.getUid()).setValue(userInformation);
-                        //databaseReference.child(user.getUid()).setValue(userInformation);
-                        Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(SignUp.this, MyClasses.class));
+                       // Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(SignUp.this, LoginActivity.class));
+                       // startActivity(new Intent(SignUp.this, MyClasses.class));
                         finish();
-                    }
-                    else
-                    {
+                    } else {
+                        sendEmailVerification();
                         databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
-                        //databaseReference.child(user.getUid()).setValue(userInformation);
-                        Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
-                        startActivity(new Intent(SignUp.this, Pmain.class));
+                      // Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(SignUp.this, LoginActivity.class));
                         finish();
                     }
                 }
             }
         });
+    }
+
+    //sends email verification
+    private void sendEmailVerification() {
+        final FirebaseUser user = auth.getCurrentUser();
+        if(user != null){
+            user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(SignUp.this, "Verification email sent", Toast.LENGTH_SHORT).show();
+                        FirebaseAuth.getInstance().signOut();
+                    }
+                    else{
+                        Toast.makeText(SignUp.this, "Failed to send verification email", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        }
+
     }
 
     private boolean checkEmail()

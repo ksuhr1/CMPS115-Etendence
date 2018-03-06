@@ -39,7 +39,9 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.ProviderQueryResult;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private EditText loginInputEmail, loginInputPassword;
     private static FirebaseAuth auth = FirebaseAuth.getInstance();
+    private static FirebaseUser user = auth.getInstance().getCurrentUser();
     private static int result = 0;
     View focusView = null;
 
@@ -117,11 +120,12 @@ public class LoginActivity extends AppCompatActivity {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
                 progressBar.setVisibility(View.GONE);
-                if (!task.isSuccessful())
+                if(!task.isSuccessful())
                 {
                     //checks if email is in database
                     auth.fetchProvidersForEmail(email).addOnCompleteListener(new OnCompleteListener<ProviderQueryResult>()
                     {
+
                         @Override
                         public void onComplete(@NonNull Task<ProviderQueryResult> task)
                         {
@@ -148,14 +152,28 @@ public class LoginActivity extends AppCompatActivity {
                 //if authentication is successful
                 else
                 {
-                    Intent intent = new Intent(LoginActivity.this, splashScreen.class);
-                    startActivity(intent);
-                    finish();
+                    checkEmailVerification();
                 }
             }
         });
     }
 
+    private void checkEmailVerification() {
+       FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+       Boolean emailFlag = firebaseUser.isEmailVerified();
+       Log.d("emailFlag", emailFlag.toString());
+       startActivity(new Intent (LoginActivity.this, splashScreen.class));
+       finish();
+//       if(emailFlag){
+//            startActivity(new Intent (LoginActivity.this, splashScreen.class));
+//            finish();
+//       }
+//       else {
+//           Toast.makeText(this, "Verify your email address", Toast.LENGTH_LONG).show();
+//           auth.signOut(); //signs out user until user verifies, will ask to login again
+//       }
+
+    }
     //checks to make sure that the emails field is not empty nor is it invalid
     private boolean checkEmail()
     {

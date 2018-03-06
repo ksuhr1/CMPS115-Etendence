@@ -45,6 +45,10 @@ public class Pmain extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pmain);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.titlebar);
+        TextView title = (TextView) findViewById(R.id.className);
+        title.setText("My Classes");
 
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();

@@ -15,7 +15,8 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0">
+        app:layout_constraintVertical_bias="1.0"
+        android:background="@drawable/greendarkskyheadermdpi">
 
         <View
             android:id="@+id/myRectangleView"
@@ -23,27 +24,9 @@
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
             android:layout_marginTop="504dp"
-            android:background="@drawable/greengrad"
+            android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
-
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="400dp"
-            android:layout_height="274dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/title"
-            android:layout_marginLeft="20dp"
-            android:layout_marginStart="20dp"
-            android:divider="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome"
-            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/imageView21"
@@ -54,7 +37,24 @@
             android:layout_alignParentStart="true"
             android:layout_marginBottom="341dp"
             android:scaleType="centerCrop"
-            app:srcCompat="@drawable/header" />
+            />
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:layout_above="@+id/addClassButton"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:background="#f7fbf5"
+            android:divider="@null"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/welcome"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/welcome"
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView21"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="25dp"
+            android:layout_marginBottom="60dp"
             android:shadowColor="#000"
             android:shadowDx="-3"
             android:shadowDy="-3"
@@ -78,35 +78,6 @@
             app:layout_constraintRight_toRightOf="parent"
             tools:layout_editor_absoluteY="175dp" />
 
-        <TextView
-            android:id="@+id/title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/welcome"
-            android:background="@drawable/greengrad"
-            android:fontFamily="sans-serif"
-            android:paddingBottom="8dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="8dp"
-            android:text="@string/my_classes"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="@android:color/white"
-            android:textSize="25sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
-
-        <ImageView
-            android:id="@+id/imageView2"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_above="@+id/welcome"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="23dp"
-            app:srcCompat="@mipmap/ic_launcher_userforeground" />
 
         <Button
             android:id="@+id/addClassButton"
@@ -116,6 +87,7 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_weight="0.5"
+            android:background="@drawable/greengrad"
             android:fontFamily="sans-serif"
             android:text="@string/addClass"
             android:textAlignment="center"
