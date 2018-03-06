@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -52,6 +53,11 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
     private static final String TAG = "CheckInPage";
     private String classCode;
     private EditText dailyCodeView;
+    private Location studentLocation;
+    private DatabaseReference classRef;
+    private double pLat;
+    private double pLon;
+    private boolean professorLocationFound = false;
 
     //Used in order to grab the location
      private LocationManager locationManager;
@@ -85,132 +91,235 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+         studentLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
 
         //In the case that the location is changed
-        onLocationChanged(location);
+        onLocationChanged(studentLocation); //IS CRASHING PUT BACK IN
         //studentRef = mDatabase.child("students").child(mFirebaseUser.getUid());
 
         dailyCodeView = (EditText) findViewById(R.id.classCode);
+
+        getProfessorLocation();
+        compareLocations();
+
 
 
         Button checkIn = (Button) findViewById(R.id.checkInButton);
         checkIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final String attendanceCode = dailyCodeView.getText().toString();
 
-                Log.d(TAG, "Current day is: " + getCurrentDay());
                 directRef = mDatabase.child("classes").child(classCode).child("Days of Attendance");
+                //checkCode();
+                Log.d(TAG,"DISTANCE BETWEEN LOCATIONS = " + compareLocations() +" miles");
 
-                //PUT CHECK IN LOGIC HERE
-                // Check in logic:
-                // 1) Check if student is actually in enrolled classes, i.e look in Enrolled Classes child if the class exists
-                //    Don't have to do this cause listview shouldn't show classes that aren't enrolled
-                // 2) Check current day if Professor has made the certain day, then check the attendance code
-                // 3) If successful, enroll into child called Present Students. Else, display error if the day hasn't been made, or invalid code
-
-                dailyCodeView.setError(null);
-
-                boolean cancel = false;
-                View focusView = null;
-
-                if (TextUtils.isEmpty(attendanceCode)) {
-                    dailyCodeView.setError(getString(R.string.error_field_required));
-                    focusView = dailyCodeView;
-                    cancel = true;
+                //if could not find distance
+                if(compareLocations() == -1)
+                {
+                    Log.d(TAG,"Couldn't find location");
                 }
 
-                //Log.d(TAG,"attendancecode is: " + attendanceCode);
-                // checks if code is too short and throws error if it is
-                if (isCodeTooShort(attendanceCode)) {
-                    dailyCodeView.setError("Code must be at least 4 characters");
-                    focusView = dailyCodeView;
-                    cancel = true;
+                //if close to classroom
+                else if(compareLocations() <= .05)
+                {
+                    Log.d(TAG,"Close to location");
+
+                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
+                    Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
+                    finish();
+
                 }
 
-
-                if (cancel) {
-                    focusView.requestFocus();
-                } else {
-                    directRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            // Counter to iterate through all the childs in classes
-                            int counter = 1;
-                            for (DataSnapshot data : dataSnapshot.getChildren()) {
-
-                                // gets all dates inside Days of Attendance child
-                                String dateKeys = data.getKey();
-
-                                if (dateKeys.equals(getCurrentDay())) {
-
-                                    DatabaseReference userKeyDatabase = directRef.child(dateKeys);
-
-                                    ValueEventListener eventListener = new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
-                                            if (dataSnapshot.getKey().equals(getCurrentDay())) {
-                                                // Attendance Code that user inputted compared with the Database entered Attendance Code
-                                                Object attendanceObj = dataSnapshot.child("Attendance Code").getValue();
-                                                //String attCode = dataSnapshot.child("Attendance Code").getValue().toString();
-                                                String attCode = "";
-                                                if (attendanceObj != null) {
-                                                    attCode = attendanceObj.toString();
-
-                                                }
-                                                if (attCode == "") {
-                                                    Log.d(TAG, "The day has been set, but it's currently null.");
-                                                    dailyCodeView.setError("Your professor has not made today an attendance day yet.");
-                                                    dailyCodeView.requestFocus();
-                                                } else if (attCode.equals(attendanceCode)) {
-                                                    Log.d(TAG, "This date has already been made, so this student will join");
-                                                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
-                                                    // directRef.child(getCurrentDay()).child("Present Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-                                                    Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
-                                                    finish();
-                                                } else {
-                                                    dailyCodeView.setError("Invalid Attendance Code");
-                                                    dailyCodeView.requestFocus();
-                                                }
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    };
-                                    userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-                                } else {
-
-                                    if (counter >= dataSnapshot.getChildrenCount()) {
-                                        Toast.makeText(getApplicationContext(), "Your professor has not made " + getCurrentDay() + " an attendance day.", Toast.LENGTH_LONG).show();
-                                        Log.d(TAG, "Your professor has not made today an attendance day.");
-                                    }
-                                    //Log.d("counter", String.format("value = %d", counter));
-                                    counter++;
-                                }
-
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
+                //if far from classroom
+                else
+                {
+                    Log.d(TAG,"Not Close Enough");
+                    Toast.makeText(getApplicationContext(), "You are not close enough to the classroom", Toast.LENGTH_LONG).show();
                 }
-
             }
+
         });
 
+    }
+
+    public void checkCode()
+    {
+        final String attendanceCode = dailyCodeView.getText().toString();
+
+        Log.d(TAG, "Current day is: " + getCurrentDay());
+        directRef = mDatabase.child("classes").child(classCode).child("Days of Attendance");
+
+        //PUT CHECK IN LOGIC HERE
+        // Check in logic:
+        // 1) Check if student is actually in enrolled classes, i.e look in Enrolled Classes child if the class exists
+        //    Don't have to do this cause listview shouldn't show classes that aren't enrolled
+        // 2) Check current day if Professor has made the certain day, then check the attendance code
+        // 3) If successful, enroll into child called Present Students. Else, display error if the day hasn't been made, or invalid code
+
+        dailyCodeView.setError(null);
+
+        boolean cancel = false;
+        View focusView = null;
+
+        if (TextUtils.isEmpty(attendanceCode)) {
+            dailyCodeView.setError(getString(R.string.error_field_required));
+            focusView = dailyCodeView;
+            cancel = true;
+        }
+
+        //Log.d(TAG,"attendancecode is: " + attendanceCode);
+        // checks if code is too short and throws error if it is
+        if (isCodeTooShort(attendanceCode)) {
+            dailyCodeView.setError("Code must be at least 4 characters");
+            focusView = dailyCodeView;
+            cancel = true;
+        }
 
 
+        if (cancel) {
+            focusView.requestFocus();
+        } else {
+            directRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    // Counter to iterate through all the childs in classes
+                    int counter = 1;
+                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+
+                        // gets all dates inside Days of Attendance child
+                        String dateKeys = data.getKey();
+
+                        if (dateKeys.equals(getCurrentDay())) {
+
+                            DatabaseReference userKeyDatabase = directRef.child(dateKeys);
+
+                            ValueEventListener eventListener = new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getKey().equals(getCurrentDay())) {
+                                        // Attendance Code that user inputted compared with the Database entered Attendance Code
+                                        Object attendanceObj = dataSnapshot.child("Attendance Code").getValue();
+                                        //String attCode = dataSnapshot.child("Attendance Code").getValue().toString();
+                                        String attCode = "";
+                                        if (attendanceObj != null) {
+                                            attCode = attendanceObj.toString();
+
+                                        }
+                                        if (attCode == "") {
+                                            Log.d(TAG, "The day has been set, but it's currently null.");
+                                            dailyCodeView.setError("Your professor has not made today an attendance day yet.");
+                                            dailyCodeView.requestFocus();
+                                        } else if (attCode.equals(attendanceCode)) {
+                                            Log.d(TAG, "This date has already been made, so this student will join");
+                                            directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
+                                            // directRef.child(getCurrentDay()).child("Present Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+                                            Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
+                                            finish();
+                                        } else {
+                                            dailyCodeView.setError("Invalid Attendance Code");
+                                            dailyCodeView.requestFocus();
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            };
+                            userKeyDatabase.addListenerForSingleValueEvent(eventListener);
+                        } else {
+
+                            if (counter >= dataSnapshot.getChildrenCount()) {
+                                Toast.makeText(getApplicationContext(), "Your professor has not made " + getCurrentDay() + " an attendance day.", Toast.LENGTH_LONG).show();
+                                Log.d(TAG, "Your professor has not made today an attendance day.");
+                            }
+                            //Log.d("counter", String.format("value = %d", counter));
+                            counter++;
+                        }
+
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }
+    }
+
+    public void getProfessorLocation()
+    {
+        classRef = mDatabase.child("classes").child(classCode);
+
+
+        ValueEventListener eventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String key = ds.getKey();
+                    if(key.equals("classLat"))
+                    {
+                        pLat = (double) ds.getValue();
+                        professorLocationFound = true;
+
+                    }
+                    if(key.equals("classLong"))
+                    {
+                        pLon = (double) ds.getValue();
+                        professorLocationFound = true;
+
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+
+        };
+        classRef.addListenerForSingleValueEvent(eventListener);
 
     }
 
 
+
+    public double compareLocations()
+    {
+        if(studentLocation != null && professorLocationFound)
+        {
+            double dist = calculateDistance(studentLocation.getLatitude(),studentLocation.getLongitude(),pLat,pLon);
+            return dist;
+        }
+        return -1;
+    }
+
+    private double calculateDistance(double lat1, double lng1, double lat2, double lng2)
+    {
+
+        double earthRadius = 3958.75; // in miles, change to 6371 for kilometer output
+
+        double dLat = Math.toRadians(lat2-lat1);
+        double dLng = Math.toRadians(lng2-lng1);
+
+        double sindLat = Math.sin(dLat / 2);
+        double sindLng = Math.sin(dLng / 2);
+
+        double a = Math.pow(sindLat, 2) + Math.pow(sindLng, 2)
+                * Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2));
+
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+        double dist = earthRadius * c;
+
+        return dist; // output distance, in MILES
+    }
 
     // Returns string of current day
     public String getCurrentDay() {
