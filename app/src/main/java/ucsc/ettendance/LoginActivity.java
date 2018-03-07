@@ -164,14 +164,6 @@ public class LoginActivity extends AppCompatActivity {
        Log.d("emailFlag", emailFlag.toString());
        startActivity(new Intent (LoginActivity.this, splashScreen.class));
        finish();
-//       if(emailFlag){
-//            startActivity(new Intent (LoginActivity.this, splashScreen.class));
-//            finish();
-//       }
-//       else {
-//           Toast.makeText(this, "Verify your email address", Toast.LENGTH_LONG).show();
-//           auth.signOut(); //signs out user until user verifies, will ask to login again
-//       }
 
     }
     //checks to make sure that the emails field is not empty nor is it invalid

@@ -24,7 +24,6 @@ public class splashScreen extends AppCompatActivity {
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    //private FirebaseDatabase mDatabase;
     private String mUserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
@@ -37,6 +36,7 @@ public class splashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        //Authenticating Firebase
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -54,9 +54,9 @@ public class splashScreen extends AppCompatActivity {
         else {
 
             mUserId = mFirebaseUser.getUid();
-            //  mUserProfStatus(mUserId);
             Log.d("mUserId", mUserId);
 
+            //Checks on if the user is a professor and is trying to access the student view
                 mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -80,6 +80,7 @@ public class splashScreen extends AppCompatActivity {
                     }
                 });
 
+            //Checks on if the user is a student is and is trying to access the professor view
                 mProfRef.child(mUserId).addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -109,7 +110,7 @@ public class splashScreen extends AppCompatActivity {
     }
 
 
-
+//Allows for the loading of the log-in page
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);
@@ -118,6 +119,7 @@ public class splashScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Allows for loading the professor view of the app
     private void loadProfView()
     {
         Intent intent = new Intent(this, Pmain.class);
@@ -126,6 +128,7 @@ public class splashScreen extends AppCompatActivity {
         startActivity(intent);
     }
 
+    //Allows for loading the student view of the app
     private void loadStudentView()
     {
         Intent intent = new Intent(this, MyClasses.class);

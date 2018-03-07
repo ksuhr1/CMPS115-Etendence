@@ -44,7 +44,6 @@ public class pPresentStudents extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes");
         classRef = mDatabase.child("classes").child(classCode).child("Days of Attendance").child(day).child("Attendance List");
 
         list = (ListView) findViewById(R.id.listview);
@@ -71,9 +70,7 @@ public class pPresentStudents extends AppCompatActivity {
                         studentArray.add(studentName);
                     }
 
-                  //  String userKey = ds.getKey();
-                  //  DatabaseReference userKeyDatabase = classRef.child(userKey);
-//
+
                 }
                 aa = new ArrayAdapter<String>(pPresentStudents.this, R.layout.studentlistblue, studentArray);
                 list.setAdapter(aa);
@@ -89,7 +86,7 @@ public class pPresentStudents extends AppCompatActivity {
         classRef.addListenerForSingleValueEvent(eventListener);
         if(studentArray.isEmpty())
         {
-          //  warn.setText("No students present yet");
+
         }
     }
 

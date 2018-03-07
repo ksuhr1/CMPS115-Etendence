@@ -48,7 +48,6 @@ public class pAbsentStudents extends AppCompatActivity {
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes");
         classRef = mDatabase.child("classes").child(classCode).child("Days of Attendance").child(day).child("Attendance List");
 
         list = (ListView) findViewById(R.id.absentStudListView);
@@ -75,9 +74,6 @@ public class pAbsentStudents extends AppCompatActivity {
                         studentArray.add(studentName);
                     }
 
-                    //  String userKey = ds.getKey();
-                    //  DatabaseReference userKeyDatabase = classRef.child(userKey);
-//
                 }
                 aa = new ArrayAdapter<String>(pAbsentStudents.this, R.layout.studentlistblue, studentArray);
                 list.setAdapter(aa);

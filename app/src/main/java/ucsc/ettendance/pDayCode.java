@@ -108,7 +108,7 @@ public class pDayCode extends AppCompatActivity
                         if (dateKeys.equals(day))
                         {
                             DatabaseReference userKeyDatabase = directRef.child(dateKeys);
-                            //   Log.d("userkey",userKeyDatabase.toString());
+
 
 
                             ValueEventListener eventListener = new ValueEventListener() {

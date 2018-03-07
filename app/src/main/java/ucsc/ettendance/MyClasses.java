@@ -56,7 +56,6 @@ public class MyClasses extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.titlebar);
@@ -69,7 +68,6 @@ public class MyClasses extends AppCompatActivity
         mStudentRef = mDatabase.child("students");
         mProfRef = mDatabase.child("teachers");
         mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
-       // Log.d("mStudentRef", mStudentRef.toString());
         Log.d("mStudentID: ", mStudentID.toString());
 
         listView = (ListView) findViewById(R.id.listview);
@@ -83,7 +81,6 @@ public class MyClasses extends AppCompatActivity
                     //Looks at children userID and gets the keys
                     //such as Enrolled classes, email, firstName etc.
                     DatabaseReference userKeyDatabase = mStudentID.child(userKey);
-                    //Log.d("userKeyDatabase", userKeyDatabase.toString());
                     ValueEventListener valueEventListener = new ValueEventListener()
                     {
                         @Override
