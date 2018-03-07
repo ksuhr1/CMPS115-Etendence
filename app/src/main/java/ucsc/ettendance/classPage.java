@@ -59,9 +59,9 @@ public class classPage extends AppCompatActivity
             {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    String announceDate = ds.getKey();
-                    String announcement = ds.getValue().toString();
-                    announceArray.add(announceDate + "\n" + announcement);
+                    String announceDate = ds.getKey(); // key of announcement, should be a date
+                    String announcement = ds.getValue().toString(); // actual announcement text
+                    announceArray.add(announceDate + "\n" + announcement + "\n"); // adds the announcement date and text to the list view
                     //announceDate + ": " +
                     Log.d("classPage", announceDate + ": " + announcement);
                 }
