@@ -1,5 +1,6 @@
 package ucsc.ettendance;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -43,9 +44,14 @@ public class classPage extends AppCompatActivity
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
         final String className = getIntent().getExtras().getString("className");
+//        TextView title = (TextView) findViewById(R.id.title);
+//        title.setText("Announcements");
 
-        TextView title = (TextView) findViewById(R.id.title);
-        title.setText(className);
+        getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+        getSupportActionBar().setCustomView(R.layout.titlebar);
+        TextView titleBar = (TextView) findViewById(R.id.className);
+        titleBar.setText(className);
+
 
         list = (ListView) findViewById(R.id.listview);
         announceArray = new ArrayList<>();
@@ -65,7 +71,7 @@ public class classPage extends AppCompatActivity
                     //announceDate + ": " +
                     Log.d("classPage", announceDate + ": " + announcement);
                 }
-                aa = new ArrayAdapter<String>(classPage.this, R.layout.classlist, announceArray);
+                aa = new ArrayAdapter<String>(classPage.this, R.layout.class_page_list, announceArray);
                 list.setAdapter(aa);
             }
 

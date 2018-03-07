@@ -57,7 +57,7 @@ public class pAbsentStudents extends AppCompatActivity {
         TextView warn = (TextView) findViewById(R.id.noStudents);
 
         TextView tv = (TextView)findViewById(R.id.title);
-        tv.setText("Present students for "+day);
+        tv.setText("Absent students for "+day);
 
         ValueEventListener eventListener = new ValueEventListener()
         {

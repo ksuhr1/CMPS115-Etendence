@@ -4,9 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
-    android:gravity="center_vertical"
     android:paddingLeft="15dp"
     android:hint="announcement"
-    android:textColor="@color/colorPrimaryDark"
+    android:textColor="@color/white"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:textSize="28sp"/>
