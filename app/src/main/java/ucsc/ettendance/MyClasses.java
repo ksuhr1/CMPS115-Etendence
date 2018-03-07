@@ -40,7 +40,6 @@ public class MyClasses extends AppCompatActivity
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    //private FirebaseDatabase mDatabase;
     private String mUserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
@@ -70,6 +69,8 @@ public class MyClasses extends AppCompatActivity
         mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
         Log.d("mStudentID: ", mStudentID.toString());
 
+
+        //Put the classes that are added into a list view
         listView = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
         ValueEventListener eventListener = new ValueEventListener() {

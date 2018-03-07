@@ -87,7 +87,7 @@ public class pDayCode extends AppCompatActivity
             focusView = mAttendanceCodeView;
             cancel = true;
         }
-        //
+
         if(cancel)
         {
             focusView.requestFocus();

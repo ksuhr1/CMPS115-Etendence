@@ -329,14 +329,14 @@ public class AddClass extends AppCompatActivity
         startActivity(intent);
     }
 
-    //the id length should be atleast 4 characters
+    //checks that the id length should be atleast 4 characters
     private static boolean isPinShort(String pin)
     {
         return (pin.length() < 4);
     }
 
 
-    // the password should be atleast 4 characters
+    // checks that the password should be atleast 4 characters
     private static boolean isCodeShort(String code)
     {
         return (code.length() < 4);

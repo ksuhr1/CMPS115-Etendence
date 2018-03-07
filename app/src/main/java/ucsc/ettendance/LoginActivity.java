@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     /**
-     * Validating form
+     * Validating form for email
      */
     private void submitForm()
     {
@@ -158,6 +158,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //verifies that the email is valid
     private void checkEmailVerification() {
        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
        Boolean emailFlag = firebaseUser.isEmailVerified();

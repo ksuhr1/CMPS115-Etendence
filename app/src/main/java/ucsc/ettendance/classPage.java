@@ -111,6 +111,7 @@ public class classPage extends AppCompatActivity
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
+        //once you logout it should be loaded back to the log in view
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_logout) {
             mFirebaseAuth.signOut();
@@ -119,6 +120,7 @@ public class classPage extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
+    //Allows to load the log in view of the app
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);

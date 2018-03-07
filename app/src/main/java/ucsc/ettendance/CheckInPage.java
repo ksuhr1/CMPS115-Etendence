@@ -48,7 +48,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    //private DatabaseReference studentRef;
     private DatabaseReference directRef;
     private static final String TAG = "CheckInPage";
     private String classCode;
@@ -245,6 +244,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         }
     }
 
+    //Grabs the location of the professor
     public void getProfessorLocation()
     {
         classRef = mDatabase.child("classes").child(classCode);
@@ -285,7 +285,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
     }
 
 
-
+//Compares the student location with the professor location to ensure that the student is within the paramenters of the classroom
     public double compareLocations()
     {
         if(studentLocation != null && professorLocationFound)
@@ -296,6 +296,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         return -1;
     }
 
+    //calculate the distance for the students and professor location
     private double calculateDistance(double lat1, double lng1, double lat2, double lng2)
     {
 

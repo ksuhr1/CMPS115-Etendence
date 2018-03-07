@@ -27,6 +27,7 @@ public class PclassInformation {
         this.classLong = classLong;
     }
 
+    //Information needed to store all this in database
     public String getClassName()
     {
         return className;

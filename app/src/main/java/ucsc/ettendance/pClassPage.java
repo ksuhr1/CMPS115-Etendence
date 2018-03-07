@@ -195,6 +195,7 @@ public class pClassPage extends AppCompatActivity {
         });
     }
 
+    //In order to get the selected date from the calendar
     public String getSelectedDate()
     {
         final DatePicker picker = (DatePicker) findViewById(R.id.datePicker);
