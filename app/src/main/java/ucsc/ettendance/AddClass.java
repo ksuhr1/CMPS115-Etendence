@@ -66,12 +66,11 @@ public class AddClass extends AppCompatActivity
         codeRef = mDatabase.child("classes");
         mStudentRef = mDatabase.child("students");
         mStudentID = mStudentRef.child(mFirebaseUser.getUid());
-       // classRef = codeRef.child()
+
 
         mClassCodeView = (EditText) findViewById(R.id.studentCode);
         mClassPINView = (EditText) findViewById(R.id.studentPassword);
-      //  classRef = codeRef.child(mClassCodeView.toString());
-      //  Log.d("classRef", classRef.toString());
+
 
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
@@ -160,8 +159,7 @@ public class AddClass extends AppCompatActivity
                                     {
                                         Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
                                     }
-                                    // Log.d("dataSnapshot",dataSnapshot.toString());
-                                    // Log.d("AddClassSnapshot", dataSnapshot.getKey().toString());
+
                                     if(dataSnapshot.getKey().equals(code)){
                                         Log.d("Get Key", dataSnapshot.getKey().toString());
                                         String classPin = dataSnapshot.child("classPin").getValue().toString();
@@ -194,11 +192,11 @@ public class AddClass extends AppCompatActivity
                                 }
                             };
                             userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-                           // classRef.addListenerForSingleValueEvent(eventListener);
+
                         }
                         else
                         {
-                            //Log.d("dataSnapshotChild", String.format("value= %d",dataSnapshot.getChildrenCount()));
+
                             //Check if you've parsed through all the children in classes
                             if(count >=  dataSnapshot.getChildrenCount())
                             {
@@ -207,7 +205,7 @@ public class AddClass extends AppCompatActivity
                                 progressBar.setVisibility(View.GONE);
                                 Log.d("InvalidCode", code);
                                 Log.d("count", String.format("value = %d",count));
-                               // progressBar.setVisibility(View.GONE);
+
 
                             }
                             Log.d("count", String.format("value = %d",count));
@@ -239,7 +237,6 @@ public class AddClass extends AppCompatActivity
                     //Looks at children userID and gets the keys
                     //such as Enrolled classes, email, firstName etc.
                     DatabaseReference userKeyDatabase = mStudentID.child(userKey);
-                    //Log.d("userKeyDatabase", userKeyDatabase.toString());
                     ValueEventListener valueEventListener = new ValueEventListener()
                     {
                         @Override
@@ -332,14 +329,14 @@ public class AddClass extends AppCompatActivity
         startActivity(intent);
     }
 
-    //the id length should be  6 characters
+    //checks that the id length should be atleast 4 characters
     private static boolean isPinShort(String pin)
     {
         return (pin.length() < 4);
     }
 
 
-    // the password length must be  5 characters
+    // checks that the password should be atleast 4 characters
     private static boolean isCodeShort(String code)
     {
         return (code.length() < 4);

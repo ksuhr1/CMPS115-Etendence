@@ -23,31 +23,39 @@ public class UserInformation
         this.password = password;
     }
 
+    //Returns the first name of user
     public String getFirstName()
     {
         return firstName;
     }
+
+    //Returns the last name of the user
     public String getLastName()
     {
         return lastName;
     }
 
+    //Returns the student ID of the student
     public String getStudentId()
     {
         return studentId;
     }
 
+    //Returns the boolean that is based on if the user is a professor or student
     public boolean isProfessor()
     {
         return isProfessor;
     }
 
+    //Return user email
     public String getEmail()
     {
         return email;
     }
+
+    //Return user password
     public String getPassword() { return password;}
 
-    //public UserInformation() { }
+
 
 }

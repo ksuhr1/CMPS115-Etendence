@@ -56,21 +56,6 @@ public class pClassPage extends AppCompatActivity {
         TextView title = (TextView) findViewById(R.id.className);
         title.setText(className);
 
-        // TextView actionBarTitle = (TextView) .findViewById(R.id.text_actionbar_title);
-
-      //  getSupportActionBar().setTitle(className);
-
-      //  final ActionBar actionBar = getActionBar();
-       // actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-
-       // TextView title = new TextView(getSupportActionBar().getThemedContext());
-        //title.setText(className);
-//        actionBar.setCustomView(title);
-
-//
-//        TextView title = (TextView) findViewById(R.id.title);
-//        title.setText(className);
-
 
 
         Button dayPage = (Button) findViewById(R.id.dayButton);
@@ -128,7 +113,6 @@ public class pClassPage extends AppCompatActivity {
                                     Log.d(TAG, "First creation of the Days of Attendance child, date code doesn't exist");
 
                                 }
-                                //Log.d("counter", String.format("value = %d", counter));
                                 counter++;
                             }
 
@@ -211,6 +195,7 @@ public class pClassPage extends AppCompatActivity {
         });
     }
 
+    //In order to get the selected date from the calendar
     public String getSelectedDate()
     {
         final DatePicker picker = (DatePicker) findViewById(R.id.datePicker);

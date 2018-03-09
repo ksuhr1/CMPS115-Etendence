@@ -53,7 +53,6 @@ public class Pmain extends AppCompatActivity
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        //classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid()).child("Created Classes");
         classRef = mDatabase.child("teachers").child(mFirebaseUser.getUid());
 
         list = (ListView) findViewById(R.id.listview);
@@ -78,7 +77,6 @@ public class Pmain extends AppCompatActivity
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
                             for(DataSnapshot data: dataSnapshot.getChildren()){
-                                //String className = data.getValue(String.class);
                                 String className = data.getKey();
                                 classArray.add(className);
                             }
@@ -104,8 +102,7 @@ public class Pmain extends AppCompatActivity
         };
         classRef.addListenerForSingleValueEvent(eventListener);
 
-        // Attach the adapter to a ListView
-        //list.setAdapter(aa);
+
         //ADD CLASS BUTTON
         Button addClass = (Button) findViewById(R.id.addClassButton);
         addClass.setOnClickListener(new View.OnClickListener()

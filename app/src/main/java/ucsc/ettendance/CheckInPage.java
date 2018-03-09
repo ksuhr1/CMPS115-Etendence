@@ -48,7 +48,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    //private DatabaseReference studentRef;
     private DatabaseReference directRef;
     private static final String TAG = "CheckInPage";
     private String classCode;
@@ -110,7 +109,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
             public void onClick(View view) {
 
                 directRef = mDatabase.child("classes").child(classCode).child("Days of Attendance");
-                //checkCode();
                 Log.d(TAG,"DISTANCE BETWEEN LOCATIONS = " + compareLocations() +" miles");
 
                 //if could not find distance
@@ -119,7 +117,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                     Log.d(TAG,"Couldn't find location");
                 }
 
-                //if close to classroom
+                //if the location is within the parameters of the classroom
                 else if(compareLocations() <= .05)
                 {
                     Log.d(TAG,"Close to location");
@@ -130,7 +128,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
                 }
 
-                //if far from classroom
+                //if location is not within the parameters of classroom
                 else
                 {
                     Log.d(TAG,"Not Close Enough");
@@ -167,7 +165,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
             cancel = true;
         }
 
-        //Log.d(TAG,"attendancecode is: " + attendanceCode);
         // checks if code is too short and throws error if it is
         if (isCodeTooShort(attendanceCode)) {
             dailyCodeView.setError("Code must be at least 4 characters");
@@ -212,7 +209,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                                         } else if (attCode.equals(attendanceCode)) {
                                             Log.d(TAG, "This date has already been made, so this student will join");
                                             directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
-                                            // directRef.child(getCurrentDay()).child("Present Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
                                             Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
                                             finish();
                                         } else {
@@ -234,7 +230,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                                 Toast.makeText(getApplicationContext(), "Your professor has not made " + getCurrentDay() + " an attendance day.", Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Your professor has not made today an attendance day.");
                             }
-                            //Log.d("counter", String.format("value = %d", counter));
                             counter++;
                         }
 
@@ -249,6 +244,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         }
     }
 
+    //Grabs the location of the professor
     public void getProfessorLocation()
     {
         classRef = mDatabase.child("classes").child(classCode);
@@ -289,7 +285,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
     }
 
 
-
+//Compares the student location with the professor location to ensure that the student is within the paramenters of the classroom
     public double compareLocations()
     {
         if(studentLocation != null && professorLocationFound)
@@ -300,6 +296,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         return -1;
     }
 
+    //calculate the distance for the students and professor location
     private double calculateDistance(double lat1, double lng1, double lat2, double lng2)
     {
 

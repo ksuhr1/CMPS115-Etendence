@@ -198,7 +198,6 @@ public class PaddClass extends AppCompatActivity
                                 finish();
 
                             }
-                            //Log.d("counter", String.format("value = %d",counter));
                             counter++;
                         }
 

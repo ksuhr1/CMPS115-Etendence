@@ -134,7 +134,6 @@ public class SignUp extends AppCompatActivity
                     loginInputEmail.setError(getString(R.string.error_invalid_email));
                     focusView = loginInputEmail;
                     focusView.requestFocus();
-                    //Toast.makeText(getApplicationContext(), "This email is already registered!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     FirebaseUser user = auth.getCurrentUser();
@@ -149,14 +148,11 @@ public class SignUp extends AppCompatActivity
                     if (!isProfessor) {
                         sendEmailVerification();
                         databaseReference.child("students").child(user.getUid()).setValue(userInformation);
-                       // Toast.makeText(getApplicationContext(), "Information Saved as a student..", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(SignUp.this, LoginActivity.class));
-                       // startActivity(new Intent(SignUp.this, MyClasses.class));
                         finish();
                     } else {
                         sendEmailVerification();
                         databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
-                      // Toast.makeText(getApplicationContext(), "Information Saved as a teacher..", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(SignUp.this, LoginActivity.class));
                         finish();
                     }
@@ -307,7 +303,7 @@ public class SignUp extends AppCompatActivity
             @Override
             public void onComplete(@NonNull Task<ProviderQueryResult> task) {
                 if(task.isSuccessful()){
-                    ///////// getProviders().size() will return size 1. if email ID is available.
+                    // getProviders().size() will return size 1. if email ID is available.
                      result = task.getResult().getProviders().size();
                 }
             }
