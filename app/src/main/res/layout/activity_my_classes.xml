@@ -32,29 +32,20 @@
             android:id="@+id/imageView21"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="341dp"
-            android:scaleType="centerCrop"
-            />
+            android:layout_alignTop="@+id/listView"
+            android:layout_marginTop="66dp"
+            android:scaleType="centerCrop" />
 
-        <ListView
-            android:id="@+id/listview"
+        <com.baoyz.swipemenulistview.SwipeMenuListView
+            android:id="@+id/listView"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_above="@+id/addClassButton"
+            android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:background="#f7fbf5"
-            android:divider="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="218dp" />
 
         <TextView
             android:id="@+id/welcome"

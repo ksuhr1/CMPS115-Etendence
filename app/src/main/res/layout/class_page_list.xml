@@ -5,6 +5,8 @@
     android:layout_height="wrap_content"
     android:textAppearance="?android:attr/textAppearanceListItemSmall"
     android:paddingLeft="15dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
     android:hint="announcement"
     android:textColor="@color/white"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"

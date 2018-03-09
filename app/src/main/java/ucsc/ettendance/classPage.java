@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -24,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 public class classPage extends AppCompatActivity
 {
@@ -34,6 +37,7 @@ public class classPage extends AppCompatActivity
     private ListView list;
     private ArrayAdapter<String> aa;
     private ArrayList<String> announceArray;
+    List<String> items;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -54,6 +58,7 @@ public class classPage extends AppCompatActivity
 
 
         list = (ListView) findViewById(R.id.listview);
+
         announceArray = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
         announceRef = mDatabase.child("classes").child(className).child("Announcements");
@@ -67,7 +72,19 @@ public class classPage extends AppCompatActivity
                 {
                     String announceDate = ds.getKey(); // key of announcement, should be a date
                     String announcement = ds.getValue().toString(); // actual announcement text
-                    announceArray.add(announceDate + "\n" + announcement + "\n"); // adds the announcement date and text to the list view
+                    announceArray.add(announceDate + "\n" + announcement+"\n" ); // adds the announcement date and text to the list view
+                  //  String[] items = announceArray.split(",");
+//                    String temp = announceArray.toString();
+//                    String choice = temp.substring(1, temp.length()-1);
+//                    String[] arrayList = choice.split("/n");
+//                    Log.d("choice",choice);
+//                    Log.d("announceArray", temp);
+//                    for(int i = 0; i < announceArray.size(); i++){
+//                        int remainder = i% 4;
+//
+//
+//                    }
+
                     //announceDate + ": " +
                     Log.d("classPage", announceDate + ": " + announcement);
                 }
