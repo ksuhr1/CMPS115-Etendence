@@ -166,15 +166,13 @@ public class AddClass extends AppCompatActivity
 
                                          if (classPin.equals(pin))
                                          {
-                                             //Maybe have check to see if student has already enrolled
-                                             //Got this check in addStudentToClass
+                                             //See if student has already enrolled
                                             addStudentToClass(code);
                                             Intent intent = new Intent(AddClass.this,MyClasses.class );
                                             startActivity(intent);
                                         }
                                         else
                                          {
-                                           //  progressBar.setVisibility(View.GONE);
                                              Log.d("Invalid Pin",pin);
                                              mClassPINView.setError("Invalid Pin");
                                              mClassPINView.requestFocus();
@@ -206,7 +204,6 @@ public class AddClass extends AppCompatActivity
                                 Log.d("InvalidCode", code);
                                 Log.d("count", String.format("value = %d",count));
 
-
                             }
                             Log.d("count", String.format("value = %d",count));
                             count++;
@@ -228,9 +225,11 @@ public class AddClass extends AppCompatActivity
     // Helper function to add courses to Firebase
     private void addStudentToClass(final String classCode)
     {
-        ValueEventListener eventListener = new ValueEventListener() {
+        ValueEventListener eventListener = new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
                     String userKey = ds.getKey();
@@ -242,22 +241,32 @@ public class AddClass extends AppCompatActivity
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                            // Counter to iterate through all the childs in classes
+                            int counter = 1;
+                            for(DataSnapshot data: dataSnapshot.getChildren())
+                            {
                                 //Gets all classes in Enrolled Classes
                                 String enrolledClasses = data.getKey();
                                 Log.d("data children", data.getKey());
-                                if(enrolledClasses.equals(classCode)){
+
+                                if(enrolledClasses.equals(classCode))
+                                {
                                     Log.d("enrolledClasses", enrolledClasses);
                                     progressBar.setVisibility(View.GONE);
                                     Toast.makeText(getApplicationContext(), "You're already enrolled in "+classCode ,
                                             Toast.LENGTH_LONG).show();
-                                  //  break;
                                 }
                                 else
                                 {
-                                    mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-                                    mStudentID.child("Enrolled Classes").child(classCode).setValue("");
-                                  //  break;
+
+                                    if(counter >= dataSnapshot.getChildrenCount())
+                                    {
+                                        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+                                        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
+                                        progressBar.setVisibility(View.GONE);
+                                        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
+                                    }
+                                    counter++;
                                 }
 
                             }
@@ -273,23 +282,23 @@ public class AddClass extends AppCompatActivity
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
 
         };
         mStudentID.addListenerForSingleValueEvent(eventListener);
 
-        //*****Code Below actually adds the class to DB***
+
+        // **This is an example of how to add the person into the class**
+
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        /*mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         mStudentID.child("Enrolled Classes").child(classCode).setValue("");
 
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-
-    }
-    private void checkStudentStatus(String classCode){
+        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();*/
 
     }
 
