@@ -158,12 +158,11 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    //verifies that the email is valid
+    //verifies that the email verification was confirmed
     private void checkEmailVerification() {
        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
        Boolean emailFlag = firebaseUser.isEmailVerified();
        Log.d("emailFlag", emailFlag.toString());
-       startActivity(new Intent (LoginActivity.this, splashScreen.class));
        if(emailFlag) {
            startActivity(new Intent (LoginActivity.this, splashScreen.class));
            finish();
