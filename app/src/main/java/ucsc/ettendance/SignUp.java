@@ -113,7 +113,7 @@ public class SignUp extends AppCompatActivity
         if (checkBox.isChecked())
             isProfessor = true;
         //Sets user info
-        final UserInformation userInformation = new UserInformation(firstName,lastName,studentId, isProfessor, email, password);
+        final UserInformation userInformation = new UserInformation(firstName,lastName,studentId, isProfessor, email);
         //displays progress bar
         progressBar.setVisibility(View.VISIBLE);
         //authenticate user

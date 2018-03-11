@@ -13,14 +13,13 @@ public class UserInformation
     public UserInformation()
     {}
 
-    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email, String password)
+    public UserInformation(String firstName, String lastName, String studentId, boolean isProfessor, String email)
     {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentId = studentId;
         this.isProfessor = isProfessor;
         this.email = email;
-        this.password = password;
     }
 
     //Returns the first name of user
@@ -52,10 +51,4 @@ public class UserInformation
     {
         return email;
     }
-
-    //Return user password
-    public String getPassword() { return password;}
-
-
-
 }
