@@ -97,7 +97,9 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="AIzaSyCaW6wyjE7FeSMsk4GLz4y8HOSgjto5OrQ"/>
+
+        <!--android:value="@string/google_maps_key" />-->
 
         <activity
             android:name=".pMap"

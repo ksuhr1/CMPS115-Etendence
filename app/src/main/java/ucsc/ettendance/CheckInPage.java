@@ -71,7 +71,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser = mFirebaseAuth.getCurrentUser();
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        classCode = getIntent().getExtras().getString("className");
+        classCode = getIntent().getExtras().getString("classCode");
 
         //Setting up the locationManager
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -93,7 +93,14 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
          studentLocation = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
 
         //In the case that the location is changed
-        onLocationChanged(studentLocation); //IS CRASHING PUT BACK IN
+        if(studentLocation == null)
+        {
+            Log.d(TAG,"Location is null..");
+        }
+        else
+        {
+            onLocationChanged(studentLocation); //IS CRASHING PUT BACK IN
+        }
         //studentRef = mDatabase.child("students").child(mFirebaseUser.getUid());
 
         dailyCodeView = (EditText) findViewById(R.id.classCode);
@@ -115,6 +122,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 if(compareLocations() == -1)
                 {
                     Log.d(TAG,"Couldn't find location");
+                    Toast.makeText(getApplicationContext(), "Couldn't find your location.", Toast.LENGTH_LONG).show();
+
                 }
 
                 //if the location is within the parameters of the classroom
@@ -260,15 +269,70 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                     String key = ds.getKey();
                     if(key.equals("classLat"))
                     {
-                        pLat = (double) ds.getValue();
-                        professorLocationFound = true;
+//                        try
+//                        {
+//                            if(((long)ds.getValue()) == 0)
+//                            {
+//                                Toast.makeText(getApplicationContext(), "Your professor has not set a classroom location yet!", Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }
+//                        catch(Exception e)
+//                        {
+//                            pLat = (double) ds.getValue();
+//                            professorLocationFound = true;
+//                        }
+                        if(((double)ds.getValue()) == 0.0)
+                        {
+                            Toast.makeText(getApplicationContext(), "Your professor has not set a classroom location yet!", Toast.LENGTH_LONG).show();
+
+                        }
+                        else
+                        {
+                            Log.d(TAG, "professorLocationFound: " + professorLocationFound);
+                            pLat = (double) ds.getValue();
+                            professorLocationFound = true;
+                            Log.d(TAG, "after professorLocationFound: " + professorLocationFound);
+
+                        }
 
                     }
                     if(key.equals("classLong"))
                     {
-                        pLon = (double) ds.getValue();
-                        professorLocationFound = true;
+//                        if(((long)ds.getValue()) == 0)
+//                        {
+//                            Log.d(TAG, "Professor has not set a classroom location yet.");
+//                        }
+//                        else
+//                        {
+//                            pLon = (double) ds.getValue();
+//                            professorLocationFound = true;
+//                        }
+//                        try
+//                        {
+//                            if(((long)ds.getValue()) == 0)
+//                            {
+//                                Toast.makeText(getApplicationContext(), "Your professor has not set a classroom location yet!", Toast.LENGTH_LONG).show();
+//
+//                            }
+//                        }
+//                        catch(Exception e)
+//                        {
+//                            pLat = (double) ds.getValue();
+//                            professorLocationFound = true;
+//                        }
+                        if(((double)ds.getValue()) == 0.0)
+                        {
+                            Toast.makeText(getApplicationContext(), "Your professor has not set a classroom location yet!", Toast.LENGTH_LONG).show();
 
+                        }
+                        else
+                        {
+                            pLon = (double) ds.getValue();
+                            Log.d(TAG, "professorLocationFound: " + professorLocationFound);
+
+                            professorLocationFound = true;
+                        }
                     }
                 }
             }

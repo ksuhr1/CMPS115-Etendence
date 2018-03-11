@@ -2,11 +2,14 @@ package ucsc.ettendance;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.provider.ContactsContract;
 import android.renderscript.Sampler;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -53,6 +56,7 @@ public class MyClasses extends AppCompatActivity
     private DatabaseReference mProfRef;
     private DatabaseReference directRef;
     private DatabaseReference mStudentID;
+    private static final int LOCATION_REQUEST_CODE = 101;
 
     private static final String TAG = "My Classes";
 
@@ -78,6 +82,17 @@ public class MyClasses extends AppCompatActivity
         mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
        // Log.d("mStudentRef", mStudentRef.toString());
         Log.d("mStudentID: ", mStudentID.toString());
+
+        // Permissions check right when the app loads in
+        int permission = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permission != PackageManager.PERMISSION_GRANTED)
+        {
+            Log.d(TAG, "Permission for location denied");
+            makeRequest();
+        }
+
 
       //  listView = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
@@ -275,5 +290,14 @@ public class MyClasses extends AppCompatActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    // Make request to user to ask for permissions
+    protected void makeRequest()
+    {
+        Log.d(TAG, "permissions: makeRequest ran");
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                LOCATION_REQUEST_CODE);
     }
 }

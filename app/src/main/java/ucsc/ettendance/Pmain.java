@@ -2,9 +2,12 @@ package ucsc.ettendance;
 
 import android.app.ActionBar;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,6 +42,8 @@ public class Pmain extends AppCompatActivity
     private PclassInformation classInformation;
     private ListView list;
     private ArrayAdapter<String> aa;
+    private static final int LOCATION_REQUEST_CODE = 101;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +66,16 @@ public class Pmain extends AppCompatActivity
         TextView welcome = (TextView) findViewById(R.id.welcome);
 
         welcome.setText("Welcome "+ mFirebaseUser.getDisplayName());
+
+        // Permissions check right when the app loads in
+        int permission = ContextCompat.checkSelfPermission(this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION);
+
+        if (permission != PackageManager.PERMISSION_GRANTED)
+        {
+            Log.d(TAG, "Permission for location denied");
+            makeRequest();
+        }
 
 
         ValueEventListener eventListener = new ValueEventListener() {
@@ -164,5 +179,14 @@ public class Pmain extends AppCompatActivity
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
+    }
+
+    // Make request to user to ask for permissions
+    protected void makeRequest()
+    {
+        Log.d(TAG, "permissions: makeRequest ran");
+        ActivityCompat.requestPermissions(this,
+                new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                LOCATION_REQUEST_CODE);
     }
 }

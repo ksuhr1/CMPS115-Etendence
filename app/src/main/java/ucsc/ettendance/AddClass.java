@@ -259,14 +259,10 @@ public class AddClass extends AppCompatActivity
                                 else
                                 {
 
-                                    if(counter >= dataSnapshot.getChildrenCount())
-                                    {
                                         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
                                         mStudentID.child("Enrolled Classes").child(classCode).setValue("");
                                         progressBar.setVisibility(View.GONE);
                                         Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-                                    }
-                                    counter++;
                                 }
 
                             }

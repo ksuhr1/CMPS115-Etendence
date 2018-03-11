@@ -192,7 +192,7 @@ public class PaddClass extends AppCompatActivity
 
                             if(counter >= dataSnapshot.getChildrenCount())
                             {
-                                addCourseToDataBase(name, quarter, code, pin, 0, 0);
+                                addCourseToDataBase(name, quarter, code, pin, 0.0, 0.0);
                                 Log.d(TAG, "Class code doesn't exist so this works");
                                 progressBar.setVisibility(View.GONE);
                                 finish();
