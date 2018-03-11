@@ -104,7 +104,7 @@ public class Pmain extends AppCompatActivity
 
 
         //ADD CLASS BUTTON
-        Button addClass = (Button) findViewById(R.id.addClassButton);
+        Button addClass = (Button) findViewById(R.id.createClassButton);
         addClass.setOnClickListener(new View.OnClickListener()
         {
             @Override

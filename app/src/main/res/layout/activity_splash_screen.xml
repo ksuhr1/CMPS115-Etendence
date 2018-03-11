@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ucsc.ettendance.splashScreen"
-    android:background="@color/mintGreen"
+    android:background="@color/colorPrimary"
     >
 
     <ImageView

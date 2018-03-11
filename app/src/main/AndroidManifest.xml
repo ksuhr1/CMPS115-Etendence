@@ -104,10 +104,12 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlue" />
-        <activity android:name=".pSetAnnouncement"
+        <activity
+            android:name=".pSetAnnouncement"
             android:label=""
             android:screenOrientation="portrait"
-            android:theme="@style/AppThemeBlue"></activity>
+            android:theme="@style/AppThemeBlue" />
+        <activity android:name=".test"></activity>
     </application>
 
 </manifest>

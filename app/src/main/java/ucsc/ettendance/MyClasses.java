@@ -135,7 +135,7 @@ public class MyClasses extends AppCompatActivity
                                     // set item width
                                     deleteItem.setWidth(170);
                                     // set a icon
-                                    deleteItem.setIcon(R.drawable.cast_ic_notification_small_icon);
+                                    deleteItem.setIcon(R.drawable.delete);
 //                                    deleteItem.setIcon(R.drawable.ic_trash);
                                     // add to menu
                                     menu.addMenuItem(deleteItem);

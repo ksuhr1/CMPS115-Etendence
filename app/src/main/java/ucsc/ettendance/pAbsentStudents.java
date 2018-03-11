@@ -50,13 +50,14 @@ public class pAbsentStudents extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         classRef = mDatabase.child("classes").child(classCode).child("Days of Attendance").child(day).child("Attendance List");
 
-        list = (ListView) findViewById(R.id.absentStudListView);
+        list = (ListView) findViewById(R.id.listview);
         final ArrayList<String> studentArray = new ArrayList<>();
 
-        TextView warn = (TextView) findViewById(R.id.noStudents);
 
         TextView tv = (TextView)findViewById(R.id.title);
-        tv.setText("Absent students for "+day);
+        tv.setText("Absent students for");
+        TextView tv2 = (TextView)findViewById(R.id.title2);
+        tv2.setText(day);
 
         ValueEventListener eventListener = new ValueEventListener()
         {
@@ -71,7 +72,7 @@ public class pAbsentStudents extends AppCompatActivity {
                     String status = ds.getValue().toString();
                     String isPresent = "false";
                     if(status.equals(isPresent)) {
-                        studentArray.add(studentName);
+                        studentArray.add("  "+studentName);
                     }
 
                 }
