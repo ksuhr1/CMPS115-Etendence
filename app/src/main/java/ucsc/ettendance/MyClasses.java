@@ -162,34 +162,24 @@ public class MyClasses extends AppCompatActivity
                                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
                                     switch (index) {
                                         case 0:
-                                            listView2.setOnItemClickListener(new AdapterView.OnItemClickListener()
-                                            {
-                                                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-                                                {
-                                                    Intent intent = new Intent(MyClasses.this, classPage.class);
-                                                    String className = list.get(position);
-                                                    intent.putExtra("className", className);
-                                                    startActivity(intent);
-                                                }
-                                            });
-                                            break;
-                                        //trash image from swipe view
-                                        //deletes user from enrolled classes
-                                        //deletes user from database
-                                        case 1:
+                                            Log.d("view", String.valueOf(position));
+                                            Intent intent = new Intent(MyClasses.this, classPage.class);
                                             String className = list.get(position);
+                                            intent.putExtra("className", className);
+                                            startActivity(intent);
+                                            break;
+                                        //When you click on trash can, deletes class from all
+                                        //respectable positions
+                                        case 1:
+                                            className = list.get(position);
                                             directRef = mDatabase.child("classes");
                                             mStudentID.child("Enrolled Classes").child(className).removeValue();
                                             Log.d("className", className);
                                             directRef.child(className).child("Enrolled Students").child(mFirebaseUser.getUid()).removeValue();
                                             list.remove(className);
                                             adapter.notifyDataSetChanged();
-
-                                            //   Log.d("delete", String.valueOf(position));
-                                            // delete
                                             break;
                                     }
-                                    // false : close the menu; true : not close the menu
                                     return false;
                                 }
                             });
@@ -204,8 +194,6 @@ public class MyClasses extends AppCompatActivity
                                     startActivity(intent);
                                 }
                             });
-
-                            // listView.setAdapter(adapter);
 
                         }
                         @Override
@@ -242,20 +230,6 @@ public class MyClasses extends AppCompatActivity
 
             }
         });
-
-//        /*IF ARRAY IS CLICKED*/
-//        listView2.setOnItemClickListener(new AdapterView.OnItemClickListener()
-//        {
-//            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)
-//            {
-//                Intent intent = new Intent(MyClasses.this, classPage.class);
-//                String className = list.get(position);
-//                intent.putExtra("className", className);
-//                startActivity(intent);
-//            }
-//        });
-
-
     }
 
     @Override
