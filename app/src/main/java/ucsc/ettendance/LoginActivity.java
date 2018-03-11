@@ -164,8 +164,14 @@ public class LoginActivity extends AppCompatActivity {
        Boolean emailFlag = firebaseUser.isEmailVerified();
        Log.d("emailFlag", emailFlag.toString());
        startActivity(new Intent (LoginActivity.this, splashScreen.class));
-       finish();
-
+       if(emailFlag) {
+           startActivity(new Intent (LoginActivity.this, splashScreen.class));
+           finish();
+       }
+       else {
+           Toast.makeText(this, "Verify your email address", Toast.LENGTH_LONG).show();
+           auth.signOut(); //keep this or else it logs in the user
+       }
     }
     //checks to make sure that the emails field is not empty nor is it invalid
     private boolean checkEmail()

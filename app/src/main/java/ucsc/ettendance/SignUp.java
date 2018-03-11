@@ -169,7 +169,7 @@ public class SignUp extends AppCompatActivity
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(SignUp.this, "Verification email sent", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignUp.this, "Email verification sent", Toast.LENGTH_SHORT).show();
                         FirebaseAuth.getInstance().signOut();
                     }
                     else{
