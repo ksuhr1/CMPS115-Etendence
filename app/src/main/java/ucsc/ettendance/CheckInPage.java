@@ -109,6 +109,10 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                             studentLocation = location;
                             Log.d(TAG, location.toString());
                         }
+                        else
+                        {
+                            Log.d(TAG, "STUDENT LOCATION IS NULL");
+                        }
                     }
                 });
 
@@ -130,6 +134,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 if(compareLocations() == -1)
                 {
                     Log.d(TAG,"Couldn't find location");
+                    Toast.makeText(getApplicationContext(), "Could not find location", Toast.LENGTH_LONG).show();
                 }
 
                 //if the location is within the parameters of the classroom
@@ -137,9 +142,9 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 {
                     Log.d(TAG,"Close to location");
 
-                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
-                    Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
-                    finish();
+//                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
+//                    Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
+                    checkCode();
 
                 }
 
@@ -147,7 +152,7 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 else
                 {
                     Log.d(TAG,"Not Close Enough");
-                    Toast.makeText(getApplicationContext(), "You are not close enough to the classroom", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "You are not close enough to the classroom.", Toast.LENGTH_LONG).show();
                 }
             }
 
