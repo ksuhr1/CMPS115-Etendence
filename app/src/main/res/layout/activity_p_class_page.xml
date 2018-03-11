@@ -11,7 +11,6 @@
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp"
-        android:background="@drawable/purpleskymdpi"
         >
 
         <View
@@ -19,7 +18,6 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="504dp"
             android:background="@drawable/bluebuttonback"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
@@ -56,7 +54,7 @@
         android:layout_weight="0.5"
         android:background="@drawable/bluebuttonback"
         android:fontFamily="sans-serif"
-        android:text="Check Attendance"
+        android:text="Select Day"
         android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textColor="@android:color/background_light"
@@ -67,7 +65,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        tools:text="Check Attendance" />
+        tools:text="Select Day" />
 
     <ProgressBar
         android:id="@+id/progressBar"

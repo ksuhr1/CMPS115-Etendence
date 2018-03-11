@@ -4,92 +4,62 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:theme="@style/AppTheme.NoActionBar">
+    tools:context="ucsc.ettendance.test">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:background="@drawable/darkpurpleskyheadermdpi">
+        app:layout_constraintVertical_bias="0.0">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignLeft="@+id/createClassButton"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/createClassButton"
+            android:layout_marginTop="174dp" />
 
         <View
             android:id="@+id/myRectangleView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="504dp"
-            android:background="@drawable/bluebuttonback"
+            android:background="@color/lightBlue"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
 
-        <ImageView
-            android:id="@+id/imageView21"
+
+        <View
+            android:id="@+id/myRectangleView4"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="341dp"
-            android:scaleType="centerCrop"
-            />
-
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_above="@+id/addClassButton"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:background="#f0f1fa"
-            android:divider="@null"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome"
-            app:layout_constraintVertical_bias="1.0" />
-
-        <TextView
-            android:id="@+id/welcome"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView21"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="60dp"
-            android:shadowColor="#000"
-            android:shadowDx="-3"
-            android:shadowDy="-3"
-            android:shadowRadius="2"
-            android:text="@string/welcome"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="@android:color/white"
-            android:textSize="24sp"
-            android:textStyle="bold"
-            app:layout_constraintHorizontal_bias="0.345"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            tools:layout_editor_absoluteY="175dp" />
-
+            android:layout_alignParentTop="true"
+            android:background="@color/lightBlue"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-20dp" />
 
         <Button
-            android:id="@+id/addClassButton"
+            android:id="@+id/createClassButton"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="400dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_alignBottom="@+id/myRectangleView"
+            android:layout_alignTop="@+id/myRectangleView"
             android:layout_centerHorizontal="true"
             android:layout_weight="0.5"
             android:background="@drawable/bluebuttonback"
             android:fontFamily="sans-serif"
-            android:text="@string/addClass"
+            android:gravity="center"
+            android:text="Create a Class"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@android:color/background_light"
@@ -98,12 +68,46 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/myRectangleView"
             app:layout_constraintVertical_bias="1.0"
-            tools:text="@string/addClass" />
+            tools:text="Create a Class" />
+
+        <ImageView
+            android:id="@+id/studentBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/proffinalsmall"
+            tools:layout_editor_absoluteY="0dp" />
 
 
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/welcome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="108dp"
+        android:shadowColor="#000"
+        android:shadowDx="-3"
+        android:shadowDy="-3"
+        android:shadowRadius="2"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
 
 </android.support.constraint.ConstraintLayout>

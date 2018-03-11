@@ -25,7 +25,7 @@
         android:layout_height="wrap_content"
         android:text="Add a Class"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@color/mintGreen"
+        android:textColor="@color/colorPrimary"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="8dp"

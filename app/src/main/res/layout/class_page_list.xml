@@ -8,6 +8,6 @@
     android:paddingTop="8dp"
     android:paddingBottom="8dp"
     android:hint="announcement"
-    android:textColor="@color/white"
+    android:textColor="@color/colorPrimaryDark"
     android:minHeight="?android:attr/listPreferredItemHeightSmall"
     android:textSize="28sp"/>

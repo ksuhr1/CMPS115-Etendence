@@ -37,6 +37,8 @@ public class classPage extends AppCompatActivity
     private ListView list;
     private ArrayAdapter<String> aa;
     private ArrayList<String> announceArray;
+    private DatabaseReference classRef;
+    private String classTitle;
     List<String> items;
 
     @Override
@@ -58,6 +60,8 @@ public class classPage extends AppCompatActivity
 
 
         list = (ListView) findViewById(R.id.listview);
+
+        final TextView classTextView = (TextView) findViewById(R.id.classtitle);
 
         announceArray = new ArrayList<>();
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -99,7 +103,41 @@ public class classPage extends AppCompatActivity
             }
 
         };
+
         announceRef.addListenerForSingleValueEvent(eventListener);
+
+        //code to pull class info
+
+        classRef = mDatabase.child("classes").child(className);
+
+
+        ValueEventListener infoEventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String key = ds.getKey();
+                    if(key.equals("className"))
+                    {
+                        classTitle = (String) ds.getValue();
+                        classTextView.setText(classTitle);
+                        Log.d("classpage","TITLE"+classTitle);
+                    }
+                 }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+
+        };
+        classRef.addListenerForSingleValueEvent(infoEventListener);
+
+
 
         Button checkIn = (Button) findViewById(R.id.checkInButton);
         checkIn.setOnClickListener(new View.OnClickListener()

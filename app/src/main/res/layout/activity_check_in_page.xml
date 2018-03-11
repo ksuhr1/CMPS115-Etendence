@@ -30,7 +30,7 @@
         android:layout_marginTop="8dp"
         android:text="Check In"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-        android:textColor="@color/mintGreen"
+        android:textColor="@color/colorPrimary"
         android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintHorizontal_bias="0.048"

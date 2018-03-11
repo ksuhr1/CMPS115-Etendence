@@ -4,95 +4,130 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ucsc.ettendance.classPage"
-    >
+    tools:context="ucsc.ettendance.test">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp"
-        android:background="@drawable/northernlightsmdpi">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0">
+
+        <ListView
+            android:id="@+id/listview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="174dp" />
 
         <View
             android:id="@+id/myRectangleView"
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="504dp"
-            android:background="@drawable/buttonback"
+            android:background="@color/colorPrimary"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
 
 
-        <ListView
-            android:id="@+id/listview"
-            android:layout_width="wrap_content"
-            android:layout_height="370dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:divider="#1d293a"
-            android:dividerHeight="2dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/welcome"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <TextView
-            android:id="@+id/announce"
+        <View
+            android:id="@+id/myRectangleView4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:background="@color/colorPrimary"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-20dp" />
+
+        <Button
+            android:id="@+id/checkInButton"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="400dp"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/myRectangleView"
+            android:layout_alignTop="@+id/myRectangleView"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="0.5"
+            android:background="@drawable/buttonback"
             android:fontFamily="sans-serif"
-            android:paddingBottom="8dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="8dp"
-            android:shadowColor="#000"
-            android:shadowDx="-3"
-            android:shadowDy="-3"
-            android:shadowRadius="2"
-            android:text="Announcements"
-            android:textAllCaps="true"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display2"
-            android:textColor="@android:color/white"
-            android:textSize="27sp"
-            android:textStyle="bold"
+            android:gravity="center"
+            android:text="@string/checkin"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textColor="@android:color/background_light"
+            android:textSize="36sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent" />
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@id/myRectangleView"
+            app:layout_constraintVertical_bias="1.0"
+            tools:text="@string/checkin" />
+
+        <ImageView
+            android:id="@+id/studentBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/studfinalsmall"
+            tools:layout_editor_absoluteY="0dp" />
+
 
     </RelativeLayout>
 
-
-    <Button
-        android:id="@+id/checkInButton"
-        style="?android:attr/borderlessButtonStyle"
-        android:layout_width="400dp"
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_weight="0.5"
-        android:background="@drawable/buttonback"
-        android:fontFamily="sans-serif"
-        android:text="@string/checkin"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        android:textColor="@android:color/background_light"
-        android:textSize="36sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.52"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        tools:text="@string/checkin" />
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="108dp"
+        android:shadowColor="#000"
+        android:shadowDx="-3"
+        android:shadowDy="-3"
+        android:shadowRadius="2"
+        android:text="announcements"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
+    <TextView
+        android:id="@+id/classtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="40dp"
+        android:shadowColor="#000"
+        android:shadowDx="-3"
+        android:shadowDy="-3"
+        android:shadowRadius="2"
+        android:textAllCaps="true"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display2"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/relativeLayout" />
 
 </android.support.constraint.ConstraintLayout>
