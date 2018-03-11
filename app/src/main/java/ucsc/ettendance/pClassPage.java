@@ -167,6 +167,7 @@ public class pClassPage extends AppCompatActivity {
                                     mDatabase.child("classes").child(className).child("Days of Attendance").child(getSelectedDate()).setValue("NULL");
                                     directRef.child("NULL").removeValue();
                                     Toast.makeText(getApplicationContext(), "Created attendance day for "+getSelectedDate(), Toast.LENGTH_LONG).show();
+                                    directRef.child(getSelectedDate()).child("Attendance List").setValue("NULL");
                                     Log.d(TAG, "Date code doesn't exist so this works");
 
                                 }

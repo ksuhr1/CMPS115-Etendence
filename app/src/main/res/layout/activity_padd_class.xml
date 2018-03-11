@@ -124,7 +124,7 @@
         android:layout_marginTop="8dp"
         android:backgroundTint="@color/lightBlue"
         android:ems="10"
-        android:hint="Class Code (ex. CMPS115)"
+        android:hint="Class Code (ex. CMPS115w18)"
         android:inputType="text"
         android:singleLine="false"
         android:textColor="@color/darkBlue"

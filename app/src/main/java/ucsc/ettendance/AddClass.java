@@ -251,10 +251,10 @@ public class AddClass extends AppCompatActivity
 
                                 if(enrolledClasses.equals(classCode))
                                 {
-                                    Log.d("enrolledClasses", enrolledClasses);
+                                    Log.d(TAG,"enrolledClasses, already enrolled in: " + enrolledClasses);
                                     progressBar.setVisibility(View.GONE);
-                                    Toast.makeText(getApplicationContext(), "You're already enrolled in "+classCode ,
-                                            Toast.LENGTH_LONG).show();
+                                    //Toast.makeText(getApplicationContext(), "You're already enrolled in "+classCode ,
+                                    //        Toast.LENGTH_LONG).show();
                                 }
                                 else
                                 {
