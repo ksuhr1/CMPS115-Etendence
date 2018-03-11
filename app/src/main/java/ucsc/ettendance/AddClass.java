@@ -290,15 +290,12 @@ public class AddClass extends AppCompatActivity
         };
         mStudentID.addListenerForSingleValueEvent(eventListener);
 
-
-        // **This is an example of how to add the person into the class**
-
+        //THIS ADDS STUDENT IN CLASS
         // Looks in Enrolled Students child and adds the logged in student child along with the display name
-        /*mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         mStudentID.child("Enrolled Classes").child(classCode).setValue("");
-
         progressBar.setVisibility(View.GONE);
-        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();*/
+       // Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
 
