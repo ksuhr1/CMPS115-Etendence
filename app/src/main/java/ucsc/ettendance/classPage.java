@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.baoyz.swipemenulistview.SwipeMenuListView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -22,10 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class classPage extends AppCompatActivity
@@ -50,8 +46,6 @@ public class classPage extends AppCompatActivity
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
 
         final String className = getIntent().getExtras().getString("className");
-//        TextView title = (TextView) findViewById(R.id.title);
-//        title.setText("Announcements");
 
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.titlebar);
@@ -59,7 +53,15 @@ public class classPage extends AppCompatActivity
         titleBar.setText(className);
 
 
-        list = (ListView) findViewById(R.id.listview);
+       // list = (ListView) findViewById(R.id.listview);
+        ArrayList<AnnouncementModel> arrayOfAnnouncements = new ArrayList<AnnouncementModel>();
+        final AnnouncementAdapter adapter2 = new AnnouncementAdapter(this, arrayOfAnnouncements);
+        final ListView listView2 = (ListView) findViewById(R.id.listview);
+
+
+//        AnnouncementModel newUser = new AnnouncementModel("Nathan","SanDiego");
+//        adapter2.add(newUser);
+
 
         final TextView classTextView = (TextView) findViewById(R.id.classtitle);
 
@@ -76,9 +78,10 @@ public class classPage extends AppCompatActivity
                 {
                     String announceDate = ds.getKey(); // key of announcement, should be a date
                     String announcement = ds.getValue().toString(); // actual announcement text
-                    announceArray.add(announceDate + "\n" + announcement+"\n" ); // adds the announcement date and text to the list view
+                    AnnouncementModel newUser = new AnnouncementModel(announceDate,announcement);
+                    adapter2.add(newUser);
+                  //  announceArray.add(announceDate + "\n" + announcement+"\n" ); // adds the announcement date and text to the list view
                   //  String[] items = announceArray.split(",");
-//                    String temp = announceArray.toString();
 //                    String choice = temp.substring(1, temp.length()-1);
 //                    String[] arrayList = choice.split("/n");
 //                    Log.d("choice",choice);
@@ -92,8 +95,10 @@ public class classPage extends AppCompatActivity
                     //announceDate + ": " +
                     Log.d("classPage", announceDate + ": " + announcement);
                 }
-                aa = new ArrayAdapter<String>(classPage.this, R.layout.class_page_list, announceArray);
-                list.setAdapter(aa);
+                listView2.setAdapter(adapter2);
+
+            //    aa = new ArrayAdapter<String>(classPage.this, R.layout.class_page_list, announceArray);
+            //    list.setAdapter(aa);
             }
 
             @Override
