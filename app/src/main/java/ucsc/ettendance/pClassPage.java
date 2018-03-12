@@ -222,6 +222,7 @@ public class pClassPage extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
+
     //more log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
@@ -232,20 +233,32 @@ public class pClassPage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout)
-        {
+        if (id == R.id.action_logout) {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
-    //takes user to log in screen if logout button is pressed
+
+    //takes user to log in screen when log out button is pressed
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void loadHelpView()
+    {
+        //PROFESSOR HELP
+        Intent intent = new Intent(this, pHelp.class);
         startActivity(intent);
     }
 }

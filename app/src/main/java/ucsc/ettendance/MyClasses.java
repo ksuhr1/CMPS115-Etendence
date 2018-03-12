@@ -254,9 +254,21 @@ public class MyClasses extends AppCompatActivity
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    private void loadHelpView()
+    {
+        //STUDENT HELP
+        Intent intent = new Intent(this, studentHelp.class);
+        startActivity(intent);
+    }
+
 
     private void loadLogInView()
     {

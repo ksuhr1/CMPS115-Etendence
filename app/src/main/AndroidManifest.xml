@@ -109,6 +109,19 @@
             android:label=""
             android:screenOrientation="portrait"
             android:theme="@style/AppThemeBlue" />
+        <activity
+            android:name=".pAnnouncementPage"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlue" />
+        <activity android:name=".studentHelp" />
+        <activity
+            android:name=".pHelp"
+            android:label=""
+            android:screenOrientation="portrait"
+            android:theme="@style/AppThemeBlue">
+
+        </activity>
     </application>
 
 </manifest>

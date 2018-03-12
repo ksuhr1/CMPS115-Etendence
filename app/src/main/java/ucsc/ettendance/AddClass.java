@@ -43,9 +43,7 @@ public class AddClass extends AppCompatActivity
     private DatabaseReference mStudentRef;
     private DatabaseReference mStudentID;
     private ProgressBar progressBar;
-    public static final String SHARED_PREFS = "sharedPrefs";
-    public static final String CODE = "code";
-    public static final String SWITCH1 = "switch1";
+
     List<String> classes = new ArrayList<>();
 
 
@@ -90,9 +88,9 @@ public class AddClass extends AppCompatActivity
     {
 
         progressBar.setVisibility(View.VISIBLE);
+
         // Reset errors.
         mClassCodeView.setError(null);
-
         mClassPINView.setError(null);
 
         // Store values at the time of the class creation attempt.
@@ -105,62 +103,75 @@ public class AddClass extends AppCompatActivity
         View focusView = null;
 
         // Check for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code)) {
+        if (TextUtils.isEmpty(code))
+        {
             mClassCodeView.setError(getString(R.string.error_field_required));
             focusView = mClassCodeView;
             cancel = true;
         }
         //checks for valid pin, if user enter one
-        if (TextUtils.isEmpty(pin)) {
+        if (TextUtils.isEmpty(pin))
+        {
             mClassPINView.setError(getString(R.string.error_field_required));
             focusView = mClassPINView;
             cancel = true;
         }
         //checks for valid code length
-        if (isCodeShort(code)) {
+        if (isCodeShort(code))
+        {
             mClassCodeView.setError("The code must be at least 4 characters");
             focusView = mClassCodeView;
             cancel = true;
         }
         //checks for valid pin length
-        if (isPinShort(pin)) {
+        if (isPinShort(pin))
+        {
             mClassPINView.setError("The PIN must be at least 4 numbers");
             focusView = mClassPINView;
             cancel = true;
         }
         // There was an error; don't attempt login and focus the first
         // form field with an error.
-        if (cancel) {
+        if (cancel)
+        {
             focusView.requestFocus();
+            progressBar.setVisibility(View.GONE);
         }
         else // logic for adding a user to the class
         {
-            ValueEventListener valueEventListener = new ValueEventListener() {
+            ValueEventListener valueEventListener = new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
                     int count = 1;
                     //ds is the class key and value including all its fields
-                    for (DataSnapshot ds : dataSnapshot.getChildren()) {
+                    for (DataSnapshot ds : dataSnapshot.getChildren())
+                    {
                         Log.d("DataSnapshot", ds.toString());
                         //userKey are just the classNames
                         String userKey = ds.getKey(); //gets all of classCodes
                         Log.d("UserKey", userKey);
                         //if class code in database matches
                         // with the class code the user inputted
-                        if(userKey.equals(code)){
+                        if(userKey.equals(code))
+                        {
                             Log.d("KeySuccess", userKey);
                             DatabaseReference userKeyDatabase = codeRef.child(userKey);
                             Log.d("userKeyDatabaseSuccess", userKeyDatabase.toString());
                             //Start eventListener on userKeyDatabase
-                            ValueEventListener eventListener = new ValueEventListener() {
+                            ValueEventListener eventListener = new ValueEventListener()
+                            {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                public void onDataChange(DataSnapshot dataSnapshot)
+                                {
                                     if (dataSnapshot == null)
                                     {
                                         Toast.makeText(getApplicationContext(), "There are no classes", Toast.LENGTH_LONG).show();
                                     }
 
-                                    if(dataSnapshot.getKey().equals(code)){
+                                    if(dataSnapshot.getKey().equals(code))
+                                    {
                                         Log.d("Get Key", dataSnapshot.getKey().toString());
                                         String classPin = dataSnapshot.child("classPin").getValue().toString();
 
@@ -170,14 +181,13 @@ public class AddClass extends AppCompatActivity
                                             addStudentToClass(code);
                                             Intent intent = new Intent(AddClass.this,MyClasses.class );
                                             startActivity(intent);
-                                        }
-                                        else
+                                         }
+                                         else
                                          {
                                              Log.d("Invalid Pin",pin);
                                              mClassPINView.setError("Invalid Pin");
                                              mClassPINView.requestFocus();
                                              progressBar.setVisibility(View.GONE);
-
                                          }
                                     }
 
@@ -195,7 +205,7 @@ public class AddClass extends AppCompatActivity
                         else
                         {
 
-                            //Check if you've parsed through all the children in classes
+                            // Check if you've parsed through all the children in classes
                             if(count >=  dataSnapshot.getChildrenCount())
                             {
                                 mClassCodeView.setError("Invalid Class Code");
@@ -241,8 +251,6 @@ public class AddClass extends AppCompatActivity
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            // Counter to iterate through all the childs in classes
-                            int counter = 1;
                             for(DataSnapshot data: dataSnapshot.getChildren())
                             {
                                 //Gets all classes in Enrolled Classes
@@ -258,7 +266,6 @@ public class AddClass extends AppCompatActivity
                                 }
                                 else
                                 {
-
                                         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
                                         mStudentID.child("Enrolled Classes").child(classCode).setValue("");
                                         progressBar.setVisibility(View.GONE);
@@ -268,7 +275,8 @@ public class AddClass extends AppCompatActivity
                             }
                         }
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError databaseError)
+                        {
 
                         }
 
@@ -291,7 +299,6 @@ public class AddClass extends AppCompatActivity
         mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
         mStudentID.child("Enrolled Classes").child(classCode).setValue("");
         progressBar.setVisibility(View.GONE);
-       // Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -319,7 +326,18 @@ public class AddClass extends AppCompatActivity
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void loadHelpView()
+    {
+        //STUDENT HELP
+        Intent intent = new Intent(this, studentHelp.class);
+        startActivity(intent);
     }
 
     //code to transfer user to login screen when logged out

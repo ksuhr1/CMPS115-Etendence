@@ -100,7 +100,7 @@
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/bluebuttonback"
-        android:text="Create Announcement"
+        android:text="Announcements"
         android:textColor="@android:color/white"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"

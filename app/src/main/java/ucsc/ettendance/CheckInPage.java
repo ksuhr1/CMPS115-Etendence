@@ -377,6 +377,10 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -386,6 +390,14 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
+
+    private void loadHelpView()
+    {
+        //STUDENT HELP
+        Intent intent = new Intent(this, studentHelp.class);
+        startActivity(intent);
+    }
+
 
     private boolean isCodeTooShort(String dailyCode) {
         return (dailyCode.length() < 4);

@@ -3,9 +3,12 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,44 +20,57 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
+import org.w3c.dom.Text;
 
-public class pPresentStudents extends AppCompatActivity {
-    private static final String TAG = "pPresentStudents";
+import java.util.ArrayList;
+import java.util.List;
+
+public class pAnnouncementPage extends AppCompatActivity
+{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
-    private DatabaseReference classRef;
-    private PclassInformation classInformation;
+    private String day, classCode;
+    private static final String TAG = "pAnnouncementPage";
+    private DatabaseReference announceRef;
     private ListView list;
     private ArrayAdapter<String> aa;
-
-    private String day, classCode;
+    private ArrayList<String> announceArray;
+    private DatabaseReference classRef;
+    private String classTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_p_present_students);
+        setContentView(R.layout.activity_p_announcement_page);
+        updateListView();
 
-        // Strings inherited from previous activities
+        //CREATE ANNOUNCEMENT BUTTON
+        Button create = (Button) findViewById(R.id.createAnnouncementButton);
+        create.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(pAnnouncementPage.this, pSetAnnouncement.class);
+                intent.putExtra("day", day);
+                intent.putExtra("classCode", classCode);
+                startActivity(intent);
+
+
+            }
+        });
+    }
+    public void updateListView()
+    {
         day = getIntent().getExtras().getString("day");
         classCode = getIntent().getExtras().getString("classCode");
 
-        mFirebaseAuth = FirebaseAuth.getInstance();
-        mFirebaseUser= mFirebaseAuth.getCurrentUser();
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        classRef = mDatabase.child("classes").child(classCode).child("Days of Attendance").child(day).child("Attendance List");
-
         list = (ListView) findViewById(R.id.listview);
-        final ArrayList<String> studentArray = new ArrayList<>();
-
-
-        TextView tv = (TextView)findViewById(R.id.title);
-        tv.setText("Present students for");
-
-        TextView tv2 = (TextView)findViewById(R.id.title2);
-        tv2.setText(day);
+        announceArray = new ArrayList<>();
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        announceRef = mDatabase.child("classes").child(classCode).child("Announcements");
 
         ValueEventListener eventListener = new ValueEventListener()
         {
@@ -63,18 +79,25 @@ public class pPresentStudents extends AppCompatActivity {
             {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
+                    String announceDate = ds.getKey(); // key of announcement, should be a date
+                    String announcement = ds.getValue().toString(); // actual announcement text
+                    announceArray.add(announcement); // adds the announcement date and text to the list view
+                    //  String[] items = announceArray.split(",");
+//                    String temp = announceArray.toString();
+//                    String choice = temp.substring(1, temp.length()-1);
+//                    String[] arrayList = choice.split("/n");
+//                    Log.d("choice",choice);
+//                    Log.d("announceArray", temp);
+//                    for(int i = 0; i < announceArray.size(); i++){
+//                        int remainder = i% 4;
+//
+//
+//                    }
 
-                    String className = ds.getValue(String.class);
-                    String studentName = ds.getKey();
-                    String status = ds.getValue().toString();
-                    String isPresent = "true";
-                    if(status.equals(isPresent)) {
-                        studentArray.add("  "+studentName);
-                    }
-
-
+                    //announceDate + ": " +
+                    Log.d("classPage", announcement);
                 }
-                aa = new ArrayAdapter<String>(pPresentStudents.this, R.layout.studentlistblue, studentArray);
+                aa = new ArrayAdapter<String>(pAnnouncementPage.this, R.layout.studentlistblue, announceArray);
                 list.setAdapter(aa);
             }
 
@@ -85,11 +108,8 @@ public class pPresentStudents extends AppCompatActivity {
             }
 
         };
-        classRef.addListenerForSingleValueEvent(eventListener);
-        if(studentArray.isEmpty())
-        {
 
-        }
+        announceRef.addListenerForSingleValueEvent(eventListener);
     }
 
     //log out button logic
@@ -139,4 +159,5 @@ public class pPresentStudents extends AppCompatActivity {
         Intent intent = new Intent(this, pHelp.class);
         startActivity(intent);
     }
+
 }

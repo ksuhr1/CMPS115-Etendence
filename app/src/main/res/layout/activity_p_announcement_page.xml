@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="ucsc.ettendance.test">
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
@@ -23,17 +22,7 @@
             android:layout_height="match_parent"
             android:layout_alignLeft="@+id/createAnnouncementButton"
             android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/createAnnouncementButton"
             android:layout_marginTop="174dp" />
-
-        <View
-            android:id="@+id/myRectangleView"
-            android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentBottom="true"
-            android:background="@color/lightBlue"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_editor_absoluteX="-20dp" />
 
 
         <View
@@ -43,6 +32,28 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:background="@color/lightBlue"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="-20dp" />
+
+        <ImageView
+            android:id="@+id/studentBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="false"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/proffinalsmall"
+            tools:layout_editor_absoluteY="0dp" />
+        <View
+            android:id="@+id/myRectangleView"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
             android:background="@color/lightBlue"
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="-20dp" />
@@ -59,38 +70,24 @@
             android:background="@drawable/bluebuttonback"
             android:fontFamily="sans-serif"
             android:gravity="center"
-            android:text="Create a Class"
+            android:text="Create Announcement"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.AppCompat.Display1"
             android:textColor="@android:color/background_light"
-            android:textSize="36sp"
+            android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="@id/myRectangleView"
             app:layout_constraintVertical_bias="1.0"
-            tools:text="Create a Class" />
-
-        <ImageView
-            android:id="@+id/studentBackground"
-            android:layout_width="wrap_content"
-            android:layout_height="174dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:adjustViewBounds="false"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:srcCompat="@drawable/proffinalsmall"
-            tools:layout_editor_absoluteY="0dp" />
+            tools:text="Create Announcement" />
 
 
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/welcome"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -100,6 +97,7 @@
         android:shadowDx="-3"
         android:shadowDy="-3"
         android:shadowRadius="2"
+        android:text="Announcements\"
         android:textAllCaps="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2"
         android:textColor="@android:color/white"

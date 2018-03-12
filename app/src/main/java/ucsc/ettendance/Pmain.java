@@ -3,9 +3,6 @@ package ucsc.ettendance;
 import android.app.ActionBar;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -14,7 +11,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -119,7 +115,7 @@ public class Pmain extends AppCompatActivity
 
 
         //ADD CLASS BUTTON
-        Button addClass = (Button) findViewById(R.id.createClassButton);
+        Button addClass = (Button) findViewById(R.id.createAnnouncementButton);
         addClass.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -168,6 +164,11 @@ public class Pmain extends AppCompatActivity
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -178,6 +179,13 @@ public class Pmain extends AppCompatActivity
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void loadHelpView()
+    {
+        //PROFESSOR HELP
+        Intent intent = new Intent(this, pHelp.class);
         startActivity(intent);
     }
 
