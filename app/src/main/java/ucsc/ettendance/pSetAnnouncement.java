@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -21,9 +22,10 @@ public class pSetAnnouncement extends AppCompatActivity {
     private EditText mAnnouncementTextView;
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    private DatabaseReference mDatabase, codeRef;
+    private DatabaseReference mDatabase, codeRef, directRef;
     private String day, classCode;
     private static final String TAG = "pSetAnnouncement";
+    private int aCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,10 +37,41 @@ public class pSetAnnouncement extends AppCompatActivity {
         mDatabase = FirebaseDatabase.getInstance().getReference();
         codeRef = mDatabase.child("classes");
 
+
         day = getIntent().getExtras().getString("day");
         classCode = getIntent().getExtras().getString("classCode");
 
+        directRef = codeRef.child(classCode);
+
+
         mAnnouncementTextView = (EditText) findViewById(R.id.announceText);
+
+        ValueEventListener eventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                for(DataSnapshot ds: dataSnapshot.getChildren())
+                {
+                    String key = ds.getKey();
+                    if(key .equals("Announcements"))
+                    {
+                        aCount = (int) dataSnapshot.child(key).getChildrenCount();
+                        Log.d(TAG,""+ aCount);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError)
+            {
+
+            }
+
+        };
+        directRef.addListenerForSingleValueEvent(eventListener);
 
         //SEND ANNOUCEMENT BUTTON
         Button addClass = (Button) findViewById(R.id.setAnnouncementButton);
@@ -54,12 +87,17 @@ public class pSetAnnouncement extends AppCompatActivity {
 
     public void setAnnouncement()
     {
+
+
         mAnnouncementTextView.setError(null);
         final String annoucementText = mAnnouncementTextView.getText().toString();
 
         // Create/traverse to Accouncements child, create or add to selected day child, and create the
         // announcement with the announcement text.
-        codeRef.child(classCode).child("Announcements").child(day).setValue(annoucementText);
+        Log.d(TAG,"UPDATED COUNT"+ aCount);
+
+        String counter =  String.valueOf(aCount+1);
+        codeRef.child(classCode).child("Announcements").child(counter).setValue(day +":\n" + annoucementText);
         Log.d(TAG,"Add announcement to Firebase");
         Toast.makeText(getApplicationContext(), "Created Annoucement for "+ day, Toast.LENGTH_LONG).show();
         finish();

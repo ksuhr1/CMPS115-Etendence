@@ -88,7 +88,7 @@ public class DayView extends AppCompatActivity {
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(DayView.this, pSetAnnouncement.class);
+                Intent intent = new Intent(DayView.this, pAnnouncementPage.class);
                 intent.putExtra("day", day);
                 intent.putExtra("classCode", classCode);
                 startActivity(intent);
