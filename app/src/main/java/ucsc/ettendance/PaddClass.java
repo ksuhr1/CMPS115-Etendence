@@ -254,7 +254,8 @@ public class PaddClass extends AppCompatActivity
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-    //log out button logic
+
+    //more log out button logic
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
@@ -262,21 +263,34 @@ public class PaddClass extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout)
-        {
+        if (id == R.id.action_logout) {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
-    //transfers user to login page when logout button is clicked
+    //takes user to log in screen when log out button is pressed
     private void loadLogInView()
     {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void loadHelpView()
+    {
+        //PROFESSOR HELP
+        Intent intent = new Intent(this, pHelp.class);
         startActivity(intent);
     }
 }

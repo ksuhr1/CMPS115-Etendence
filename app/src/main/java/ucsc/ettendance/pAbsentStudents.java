@@ -94,6 +94,7 @@ public class pAbsentStudents extends AppCompatActivity {
         }
     }
 
+    //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -116,6 +117,11 @@ public class pAbsentStudents extends AppCompatActivity {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -126,6 +132,13 @@ public class pAbsentStudents extends AppCompatActivity {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
+
+    private void loadHelpView()
+    {
+        //PROFESSOR HELP
+        Intent intent = new Intent(this, pHelp.class);
         startActivity(intent);
     }
 }

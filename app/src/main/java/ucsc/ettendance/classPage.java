@@ -178,8 +178,20 @@ public class classPage extends AppCompatActivity
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+        if(id == R.id.action_help)
+        {
+            loadHelpView();
+        }
         return super.onOptionsItemSelected(item);
     }
+
+    private void loadHelpView()
+    {
+        //STUDENT HELP
+        Intent intent = new Intent(this, studentHelp.class);
+        startActivity(intent);
+    }
+
 
     //Allows to load the log in view of the app
     private void loadLogInView()
