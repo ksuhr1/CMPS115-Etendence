@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class pHelp extends AppCompatActivity {
     private ArrayAdapter<String> aa;
 
+    //Created  a listview of directions for professor so they know how to use the app
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
