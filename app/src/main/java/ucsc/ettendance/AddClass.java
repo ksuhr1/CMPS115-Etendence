@@ -44,6 +44,10 @@ public class AddClass extends AppCompatActivity
     private DatabaseReference mStudentID;
     private ProgressBar progressBar;
 
+    // This counter is specifically for checking if the student has already enrolled in that specific class
+    private int counter = 0;
+
+    // Used for deleting classes
     List<String> classes = new ArrayList<>();
 
 
@@ -177,10 +181,9 @@ public class AddClass extends AppCompatActivity
 
                                          if (classPin.equals(pin))
                                          {
-                                             //See if student has already enrolled
-                                            addStudentToClass(code);
-                                            Intent intent = new Intent(AddClass.this,MyClasses.class );
-                                            startActivity(intent);
+                                             //Sees if student has already enrolled
+                                             addStudentToClass(code);
+
                                          }
                                          else
                                          {
@@ -260,18 +263,22 @@ public class AddClass extends AppCompatActivity
                                 if(enrolledClasses.equals(classCode))
                                 {
                                     Log.d(TAG,"enrolledClasses, already enrolled in: " + enrolledClasses);
+                                    mClassCodeView.setError("You have already enrolled in this class.");
+                                    mClassCodeView.requestFocus();
                                     progressBar.setVisibility(View.GONE);
-                                    //Toast.makeText(getApplicationContext(), "You're already enrolled in "+classCode ,
-                                    //        Toast.LENGTH_LONG).show();
-                                }
-                                else
-                                {
-                                        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-                                        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
-                                        progressBar.setVisibility(View.GONE);
-                                        Toast.makeText(getApplicationContext(), "Course " +classCode+" has been added", Toast.LENGTH_SHORT).show();
-                                }
 
+                                    // duplicates are present so don't let the bottom conditional to work
+                                    counter++;
+                                }
+                            }
+                            // If no duplicates are present
+                            if(counter == 0)
+                            {
+                                mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
+                                mStudentID.child("Enrolled Classes").child(classCode).setValue("");
+                                progressBar.setVisibility(View.GONE);
+                                Intent intent = new Intent(AddClass.this,MyClasses.class );
+                                startActivity(intent);
                             }
                         }
                         @Override
@@ -294,11 +301,10 @@ public class AddClass extends AppCompatActivity
         };
         mStudentID.addListenerForSingleValueEvent(eventListener);
 
-        //THIS ADDS STUDENT IN CLASS
-        // Looks in Enrolled Students child and adds the logged in student child along with the display name
-        mDatabase.child("classes").child(classCode).child("Enrolled Students").child(mFirebaseUser.getUid()).setValue(mFirebaseUser.getDisplayName());
-        mStudentID.child("Enrolled Classes").child(classCode).setValue("");
-        progressBar.setVisibility(View.GONE);
+        // Resets the counter for the if statement in the for loop
+        counter = 0;
+
+
 
     }
 
