@@ -54,16 +54,9 @@ public class classPage extends AppCompatActivity
         TextView titleBar = (TextView) findViewById(R.id.className);
         titleBar.setText(className);
 
-
-       // list = (ListView) findViewById(R.id.listview);
         ArrayList<AnnouncementModel> arrayOfAnnouncements = new ArrayList<AnnouncementModel>();
         final AnnouncementAdapter adapter2 = new AnnouncementAdapter(this, arrayOfAnnouncements);
         final ListView listView2 = (ListView) findViewById(R.id.listview);
-
-
-//        AnnouncementModel newUser = new AnnouncementModel("Nathan","SanDiego");
-//        adapter2.add(newUser);
-
 
         final TextView classTextView = (TextView) findViewById(R.id.classtitle);
 
@@ -90,11 +83,11 @@ public class classPage extends AppCompatActivity
                             announce = lines[i];
                             Log.d("announce",announce);
                         }
-                        AnnouncementModel newUser = new AnnouncementModel(date,announce);
-                        adapter2.add(newUser);
                     }
 
                 }
+                AnnouncementModel newUser = new AnnouncementModel(date,announce);
+                adapter2.add(newUser);
                 listView2.setAdapter(adapter2);
             }
 

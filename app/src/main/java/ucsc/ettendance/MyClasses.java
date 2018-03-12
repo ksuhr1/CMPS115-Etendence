@@ -67,7 +67,6 @@ public class MyClasses extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-//      requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_my_classes);
         getSupportActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
         getSupportActionBar().setCustomView(R.layout.titlebar);
@@ -80,7 +79,6 @@ public class MyClasses extends AppCompatActivity
         mStudentRef = mDatabase.child("students");
         mProfRef = mDatabase.child("teachers");
         mStudentID = mStudentRef.child(mFirebaseUser.getUid()); //gives specific UID for student logged in
-       // Log.d("mStudentRef", mStudentRef.toString());
         Log.d("mStudentID: ", mStudentID.toString());
 
         // Permissions check right when the app loads in
@@ -93,8 +91,6 @@ public class MyClasses extends AppCompatActivity
             makeRequest();
         }
 
-
-      //  listView = (ListView) findViewById(R.id.listview);
         final ArrayList<String> list = new ArrayList<>();
         ValueEventListener eventListener = new ValueEventListener() {
             @Override
@@ -105,7 +101,6 @@ public class MyClasses extends AppCompatActivity
                     //Looks at children userID and gets the keys
                     //such as Enrolled classes, email, firstName etc.
                     DatabaseReference userKeyDatabase = mStudentID.child(userKey);
-                    //Log.d("userKeyDatabase", userKeyDatabase.toString());
                     ValueEventListener valueEventListener = new ValueEventListener()
                     {
                         @Override
@@ -119,9 +114,8 @@ public class MyClasses extends AppCompatActivity
 
                             }
                             final SwipeMenuListView listView2 = (SwipeMenuListView)findViewById(R.id.listView);
-                           adapter = new ArrayAdapter<String>(MyClasses.this, R.layout.classlist, list);
+                            adapter = new ArrayAdapter<String>(MyClasses.this, R.layout.classlist, list);
                             listView2.setAdapter(adapter);
-//                            adapter.notifyDataSetChanged();
                             SwipeMenuCreator creator = new SwipeMenuCreator() {
 
                                 @Override

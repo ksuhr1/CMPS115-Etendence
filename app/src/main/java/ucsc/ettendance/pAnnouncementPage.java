@@ -38,12 +38,17 @@ public class pAnnouncementPage extends AppCompatActivity
     private ArrayList<String> announceArray;
     private DatabaseReference classRef;
     private String classTitle;
+    List<String> items;
+    String announce;
+    String date;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_announcement_page);
+        mFirebaseAuth = FirebaseAuth.getInstance();
         mFirebaseUser= mFirebaseAuth.getCurrentUser();
         updateListView();
 
@@ -68,8 +73,13 @@ public class pAnnouncementPage extends AppCompatActivity
         day = getIntent().getExtras().getString("day");
         classCode = getIntent().getExtras().getString("classCode");
 
-        list = (ListView) findViewById(R.id.listview);
+        ArrayList<AnnouncementModel> arrayOfAnnouncements = new ArrayList<AnnouncementModel>();
+        final pAnnouncementAdapter adapter2 = new pAnnouncementAdapter(this, arrayOfAnnouncements);
+        final ListView listView2 = (ListView) findViewById(R.id.listview);
+
+       // list = (ListView) findViewById(R.id.listview);
         announceArray = new ArrayList<>();
+      //  Log.d("announceArray", announceArray)
         mDatabase = FirebaseDatabase.getInstance().getReference();
         announceRef = mDatabase.child("classes").child(classCode).child("Announcements");
 
@@ -80,26 +90,25 @@ public class pAnnouncementPage extends AppCompatActivity
             {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    String announceDate = ds.getKey(); // key of announcement, should be a date
+                   // String announceDate = ds.getKey(); // key of announcement, should be a date
+                  //  String announcement = ds.getValue().toString(); // actual announcement text
                     String announcement = ds.getValue().toString(); // actual announcement text
-                    announceArray.add(announcement); // adds the announcement date and text to the list view
-                    //  String[] items = announceArray.split(",");
-//                    String temp = announceArray.toString();
-//                    String choice = temp.substring(1, temp.length()-1);
-//                    String[] arrayList = choice.split("/n");
-//                    Log.d("choice",choice);
-//                    Log.d("announceArray", temp);
-//                    for(int i = 0; i < announceArray.size(); i++){
-//                        int remainder = i% 4;
-//
-//
-//                    }
-
-                    //announceDate + ": " +
-                    Log.d("classPage", announcement);
+                    String lines[] = announcement.split("\n");
+                    for(int i = 0; i <lines.length; i++){
+                        int remainder = i%2;
+                        if(remainder == 0){
+                            date = lines[i];
+                            Log.d("date", date);
+                        }
+                        if(remainder == 1){
+                            announce = lines[i];
+                            Log.d("announce",announce);
+                        }
+                    }
                 }
-                aa = new ArrayAdapter<String>(pAnnouncementPage.this, R.layout.studentlistblue, announceArray);
-                list.setAdapter(aa);
+                AnnouncementModel newUser = new AnnouncementModel(date,announce);
+                adapter2.add(newUser);
+                listView2.setAdapter(adapter2);
             }
 
             @Override
