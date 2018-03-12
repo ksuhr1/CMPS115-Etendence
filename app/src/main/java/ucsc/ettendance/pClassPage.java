@@ -24,7 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
-public class pClassPage extends AppCompatActivity {
+public class pClassPage extends AppCompatActivity
+{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private int day;
@@ -38,7 +39,8 @@ public class pClassPage extends AppCompatActivity {
     private static final String TAG = "pClassPage";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_class_page);
         mFirebaseAuth = FirebaseAuth.getInstance();
@@ -55,9 +57,6 @@ public class pClassPage extends AppCompatActivity {
         getSupportActionBar().setCustomView(R.layout.titlebar);
         TextView title = (TextView) findViewById(R.id.className);
         title.setText(className);
-
-
-
         Button dayPage = (Button) findViewById(R.id.dayButton);
         dayPage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,16 +75,16 @@ public class pClassPage extends AppCompatActivity {
                     {
                         // Counter to iterate through all the childs in classes
                         int counter = 1;
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-
+                        for (DataSnapshot data : dataSnapshot.getChildren())
+                        {
                             // gets all child inside the className child
                             String classKeys = data.getKey();
-
                             if (classKeys.equals("Days of Attendance"))
                             {
                                 DatabaseReference userKeyDatabase = directRef.child(classKeys);
 
-                                ValueEventListener eventListener = new ValueEventListener() {
+                                ValueEventListener eventListener = new ValueEventListener()
+                                {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot)
                                     {
@@ -120,7 +119,8 @@ public class pClassPage extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError)
+                    {
 
                     }
                 });
@@ -131,16 +131,16 @@ public class pClassPage extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         // Counter to iterate through all the childs in classes
                         int counter = 1;
-                        for (DataSnapshot data : dataSnapshot.getChildren()) {
-
+                        for (DataSnapshot data : dataSnapshot.getChildren())
+                        {
                             // gets all dates inside Days of Attendance child
                             String dateKeys = data.getKey();
-
                             if (dateKeys.equals(getSelectedDate()))
                             {
                                 DatabaseReference userKeyDatabase = directRef.child(dateKeys);
 
-                                ValueEventListener eventListener = new ValueEventListener() {
+                                ValueEventListener eventListener = new ValueEventListener()
+                                {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot)
                                     {
@@ -151,13 +151,12 @@ public class pClassPage extends AppCompatActivity {
                                     }
 
                                     @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                    public void onCancelled(DatabaseError databaseError)
+                                    {
 
                                     }
                                 };
                                 userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-
-
                             }
                             else
                             {
@@ -179,7 +178,8 @@ public class pClassPage extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onCancelled(DatabaseError databaseError)
+                    {
 
                     }
                 });
@@ -213,7 +213,6 @@ public class pClassPage extends AppCompatActivity {
         return stringBuilder.toString();
     }
 
-
     //log out button logic
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
@@ -233,7 +232,8 @@ public class pClassPage extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }

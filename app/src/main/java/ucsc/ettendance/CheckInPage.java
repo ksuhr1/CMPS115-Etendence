@@ -46,7 +46,8 @@ import java.util.TimeZone;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
-public class CheckInPage extends AppCompatActivity implements LocationListener{
+public class CheckInPage extends AppCompatActivity implements LocationListener
+{
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
     private DatabaseReference mDatabase;
@@ -66,7 +67,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
 
 
@@ -86,7 +88,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED &&
                 ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION)
-                        != PackageManager.PERMISSION_GRANTED) {
+                        != PackageManager.PERMISSION_GRANTED)
+        {
             // TODO: Consider calling
             //    ActivityCompat#requestPermissions
             // here to request the missing permissions, and then overriding
@@ -142,9 +145,6 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 else if(compareLocations() <= .05)
                 {
                     Log.d(TAG,"Close to location");
-
-//                    directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
-//                    Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
                     checkCode();
 
                 }
@@ -180,74 +180,92 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         boolean cancel = false;
         View focusView = null;
 
-        if (TextUtils.isEmpty(attendanceCode)) {
+        if (TextUtils.isEmpty(attendanceCode))
+        {
             dailyCodeView.setError(getString(R.string.error_field_required));
             focusView = dailyCodeView;
             cancel = true;
         }
 
         // checks if code is too short and throws error if it is
-        if (isCodeTooShort(attendanceCode)) {
+        if (isCodeTooShort(attendanceCode))
+        {
             dailyCodeView.setError("Code must be at least 4 characters");
             focusView = dailyCodeView;
             cancel = true;
         }
 
 
-        if (cancel) {
+        if (cancel)
+        {
             focusView.requestFocus();
-        } else {
-            directRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        } else
+            {
+            directRef.addListenerForSingleValueEvent(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
                     // Counter to iterate through all the childs in classes
                     int counter = 1;
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
+                    for (DataSnapshot data : dataSnapshot.getChildren())
+                    {
 
                         // gets all dates inside Days of Attendance child
                         String dateKeys = data.getKey();
 
-                        if (dateKeys.equals(getCurrentDay())) {
+                        if (dateKeys.equals(getCurrentDay()))
+                        {
 
                             DatabaseReference userKeyDatabase = directRef.child(dateKeys);
 
-                            ValueEventListener eventListener = new ValueEventListener() {
+                            ValueEventListener eventListener = new ValueEventListener()
+                            {
                                 @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.getKey().equals(getCurrentDay())) {
+                                public void onDataChange(DataSnapshot dataSnapshot)
+                                {
+                                    if (dataSnapshot.getKey().equals(getCurrentDay()))
+                                    {
                                         // Attendance Code that user inputted compared with the Database entered Attendance Code
                                         Object attendanceObj = dataSnapshot.child("Attendance Code").getValue();
                                         //String attCode = dataSnapshot.child("Attendance Code").getValue().toString();
                                         String attCode = "";
-                                        if (attendanceObj != null) {
+                                        if (attendanceObj != null)
+                                        {
                                             attCode = attendanceObj.toString();
 
                                         }
-                                        if (attCode == "") {
+                                        if (attCode == "")
+                                        {
                                             Log.d(TAG, "The day has been set, but it's currently null.");
                                             dailyCodeView.setError("Your professor has not made today an attendance day yet.");
                                             dailyCodeView.requestFocus();
-                                        } else if (attCode.equals(attendanceCode)) {
+                                        } else if (attCode.equals(attendanceCode))
+                                        {
                                             Log.d(TAG, "This date has already been made, so this student will join");
                                             directRef.child(getCurrentDay()).child("Attendance List").child(mFirebaseUser.getDisplayName()).setValue("true");
                                             Toast.makeText(getApplicationContext(), "Successfully checked in for " + getCurrentDay() + ".", Toast.LENGTH_LONG).show();
                                             finish();
-                                        } else {
+                                        } else
+                                          {
                                             dailyCodeView.setError("Invalid Attendance Code");
                                             dailyCodeView.requestFocus();
-                                        }
+                                          }
                                     }
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                public void onCancelled(DatabaseError databaseError)
+                                {
 
                                 }
                             };
                             userKeyDatabase.addListenerForSingleValueEvent(eventListener);
-                        } else {
+                        } else
+                            {
 
-                            if (counter >= dataSnapshot.getChildrenCount()) {
+                            if (counter >= dataSnapshot.getChildrenCount())
+                            {
                                 Toast.makeText(getApplicationContext(), "Your professor has not made " + getCurrentDay() + " an attendance day.", Toast.LENGTH_LONG).show();
                                 Log.d(TAG, "Your professor has not made today an attendance day.");
                             }
@@ -258,7 +276,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
                 }
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(DatabaseError databaseError)
+                {
 
                 }
             });
@@ -358,7 +377,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
     //log out button logic
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
@@ -367,14 +387,16 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
     //log out button logic
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
@@ -385,7 +407,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
         return super.onOptionsItemSelected(item);
     }
 
-    private void loadLogInView() {
+    private void loadLogInView()
+    {
         Intent intent = new Intent(this, LoginActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -407,20 +430,23 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
     //gets the current longitude and latitude location of student and displays the tag
     @Override
-    public void onLocationChanged(Location location) {
+    public void onLocationChanged(Location location)
+    {
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
         Log.d(TAG,"The location is currently" + longitude + "," + latitude + "." );
     }
 
     @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
+    public void onStatusChanged(String provider, int status, Bundle extras)
+    {
 
     }
 
     //Location service is turned on
     @Override
-    public void onProviderEnabled(String provider) {
+    public void onProviderEnabled(String provider)
+    {
         Toast.makeText(new CheckInPage().getBaseContext(), "Gps is turned on!! ",
                 Toast.LENGTH_SHORT).show();
 
@@ -428,7 +454,8 @@ public class CheckInPage extends AppCompatActivity implements LocationListener{
 
     //Location service is turned off
     @Override
-    public void onProviderDisabled(String provider) {
+    public void onProviderDisabled(String provider)
+    {
         Toast.makeText(new CheckInPage().getBaseContext(), "Gps is turned off!!",
                 Toast.LENGTH_SHORT).show();
 

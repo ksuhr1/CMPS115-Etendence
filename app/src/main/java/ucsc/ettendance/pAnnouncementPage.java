@@ -37,7 +37,6 @@ public class pAnnouncementPage extends AppCompatActivity
     private ArrayAdapter<String> aa;
     private ArrayList<String> announceArray;
     private DatabaseReference classRef;
-    private String classTitle;
     List<String> items;
     String announce;
     String date;
@@ -76,10 +75,7 @@ public class pAnnouncementPage extends AppCompatActivity
         ArrayList<AnnouncementModel> arrayOfAnnouncements = new ArrayList<AnnouncementModel>();
         final pAnnouncementAdapter adapter2 = new pAnnouncementAdapter(this, arrayOfAnnouncements);
         final ListView listView2 = (ListView) findViewById(R.id.listview);
-
-       // list = (ListView) findViewById(R.id.listview);
         announceArray = new ArrayList<>();
-      //  Log.d("announceArray", announceArray)
         mDatabase = FirebaseDatabase.getInstance().getReference();
         announceRef = mDatabase.child("classes").child(classCode).child("Announcements");
 
@@ -92,13 +88,16 @@ public class pAnnouncementPage extends AppCompatActivity
                 {
                     String announcement = ds.getValue().toString(); // actual announcement text
                     String lines[] = announcement.split("\n");
-                    for(int i = 0; i <lines.length; i++){
+                    for(int i = 0; i <lines.length; i++)
+                    {
                         int remainder = i%2;
-                        if(remainder == 0){
+                        if(remainder == 0)
+                        {
                             date = lines[i];
                             Log.d("date", date);
                         }
-                        if(remainder == 1){
+                        if(remainder == 1)
+                        {
                             announce = lines[i];
                             Log.d("announce",announce);
                         }
@@ -140,7 +139,8 @@ public class pAnnouncementPage extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }

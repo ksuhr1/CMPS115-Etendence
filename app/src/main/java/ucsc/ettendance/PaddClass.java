@@ -77,7 +77,8 @@ public class PaddClass extends AppCompatActivity
         });
     }
 
-    private void checkValid() {
+    private void checkValid()
+    {
         progressBar.setVisibility(View.VISIBLE);
 
         // Reset errors.
@@ -165,15 +166,14 @@ public class PaddClass extends AppCompatActivity
                     int counter = 1;
                     for (DataSnapshot data : dataSnapshot.getChildren())
                     {
-
                         // gets all classcodes inside class child
                         String classKeys = data.getKey();
-
                         if (classKeys.equals(code))
                         {
                            DatabaseReference userKeyDatabase = codeRef.child(classKeys);
 
-                            ValueEventListener eventListener = new ValueEventListener() {
+                            ValueEventListener eventListener = new ValueEventListener()
+                            {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot)
                                 {
@@ -186,7 +186,8 @@ public class PaddClass extends AppCompatActivity
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                public void onCancelled(DatabaseError databaseError)
+                                {
 
                                 }
                             };
@@ -214,7 +215,8 @@ public class PaddClass extends AppCompatActivity
 
 
                 @Override
-                public void onCancelled(DatabaseError databaseError) {
+                public void onCancelled(DatabaseError databaseError)
+                {
 
                 }
             });
@@ -272,7 +274,8 @@ public class PaddClass extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }

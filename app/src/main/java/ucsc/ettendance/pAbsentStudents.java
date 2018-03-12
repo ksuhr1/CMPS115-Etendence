@@ -88,10 +88,6 @@ public class pAbsentStudents extends AppCompatActivity {
 
         };
         classRef.addListenerForSingleValueEvent(eventListener);
-        if(studentArray.isEmpty())
-        {
-            //  warn.setText("No students present yet");
-        }
     }
 
     //log out button logic

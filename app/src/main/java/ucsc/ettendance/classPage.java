@@ -73,13 +73,16 @@ public class classPage extends AppCompatActivity
                 {
                     String announcement = ds.getValue().toString(); // actual announcement text
                     String lines[] = announcement.split("\n");
-                    for(int i = 0; i <lines.length; i++){
+                    for(int i = 0; i <lines.length; i++)
+                    {
                         int remainder = i%2;
-                        if(remainder == 0){
+                        if(remainder == 0)
+                        {
                             date = lines[i];
                             Log.d("date", date);
                         }
-                        if(remainder == 1){
+                        if(remainder == 1)
+                        {
                             announce = lines[i];
                             Log.d("announce",announce);
                         }
@@ -103,7 +106,6 @@ public class classPage extends AppCompatActivity
         //code to pull class info
 
         classRef = mDatabase.child("classes").child(className);
-
 
         ValueEventListener infoEventListener = new ValueEventListener()
         {

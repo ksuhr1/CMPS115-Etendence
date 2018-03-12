@@ -7,12 +7,14 @@ import android.widget.ListView;
 
 import java.util.ArrayList;
 
-public class pHelp extends AppCompatActivity {
+public class pHelp extends AppCompatActivity
+{
     private ArrayAdapter<String> aa;
 
     //Created  a listview of directions for professor so they know how to use the app
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_help);
 
@@ -27,8 +29,6 @@ public class pHelp extends AppCompatActivity {
         steps.add("STEP 6: (Optional) \nClick “Absent Students” to view students who were absent for the selected day.");
         steps.add("STEP 7: (Optional) \nClick “Announcements” to view your announcements.");
         steps.add("STEP 8: (Optional) \nClick “Create Announcement” to add a new announcements.");
-
-
 
         aa = new ArrayAdapter<String>(pHelp.this, R.layout.studentlistblue, steps);
         help.setAdapter(aa);

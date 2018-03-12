@@ -66,7 +66,6 @@ public class Pmain extends AppCompatActivity
         // Permissions check right when the app loads in
         int permission = ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION);
-
         if (permission != PackageManager.PERMISSION_GRANTED)
         {
             Log.d(TAG, "Permission for location denied");
@@ -74,12 +73,13 @@ public class Pmain extends AppCompatActivity
         }
 
 
-        ValueEventListener eventListener = new ValueEventListener() {
+        ValueEventListener eventListener = new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-
                     String userKey = ds.getKey();
                     DatabaseReference userKeyDatabase = classRef.child(userKey);
                     ValueEventListener valueEventListener = new ValueEventListener()
@@ -87,7 +87,8 @@ public class Pmain extends AppCompatActivity
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                            for(DataSnapshot data: dataSnapshot.getChildren())
+                            {
                                 String className = data.getKey();
                                 classArray.add(className);
                             }
@@ -96,7 +97,8 @@ public class Pmain extends AppCompatActivity
 
                         }
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError databaseError)
+                        {
 
                         }
 
@@ -106,7 +108,8 @@ public class Pmain extends AppCompatActivity
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
 
@@ -169,8 +172,6 @@ public class Pmain extends AppCompatActivity
         {
             loadHelpView();
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 

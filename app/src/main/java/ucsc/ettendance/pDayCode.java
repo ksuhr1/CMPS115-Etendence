@@ -36,7 +36,8 @@ public class pDayCode extends AppCompatActivity
     ArrayList<String> enrolledStudents = new ArrayList<>();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_day_code);
 
@@ -102,18 +103,18 @@ public class pDayCode extends AppCompatActivity
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot)
                 {
-                    for (DataSnapshot data : dataSnapshot.getChildren()) {
-
+                    for (DataSnapshot data : dataSnapshot.getChildren())
+                    {
                         // gets all dates inside Days of Attendance child
                         String dateKeys = data.getKey();
-
                         if (dateKeys.equals(day))
                         {
                             DatabaseReference userKeyDatabase = directRef.child(dateKeys);
 
 
 
-                            ValueEventListener eventListener = new ValueEventListener() {
+                            ValueEventListener eventListener = new ValueEventListener()
+                            {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot)
                                 {
@@ -124,15 +125,19 @@ public class pDayCode extends AppCompatActivity
                                         codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance Code").setValue(dayCode);
                                         directRef.child("NULL").removeValue();
                                         Toast.makeText(getApplicationContext(), "Modified attendance code for "+ day, Toast.LENGTH_LONG).show();
-                                        enrolledRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        enrolledRef.addListenerForSingleValueEvent(new ValueEventListener()
+                                        {
                                             @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for(DataSnapshot dt: dataSnapshot.getChildren()){
+                                            public void onDataChange(DataSnapshot dataSnapshot)
+                                            {
+                                                for(DataSnapshot dt: dataSnapshot.getChildren())
+                                                {
                                                     enrolledStudents.add(String.valueOf(dt.getValue()));
                                                     Log.d("enrolledStudentsArray", enrolledStudents.toString());
                                                     //adds all the enrolled students to Attendance List and
                                                     //defaults value to False
-                                                    for(int i =0; i< enrolledStudents.size(); i++){
+                                                    for(int i =0; i< enrolledStudents.size(); i++)
+                                                    {
                                                         codeRef.child(classCode).child("Days of Attendance").child(day).child("Attendance List").child(enrolledStudents.get(i)).setValue("false");
 
                                                     }
@@ -142,7 +147,8 @@ public class pDayCode extends AppCompatActivity
                                             }
 
                                             @Override
-                                            public void onCancelled(DatabaseError databaseError) {
+                                            public void onCancelled(DatabaseError databaseError)
+                                            {
 
                                             }
                                         });
@@ -151,7 +157,8 @@ public class pDayCode extends AppCompatActivity
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {
+                                public void onCancelled(DatabaseError databaseError)
+                                {
 
                                 }
                             };
@@ -193,7 +200,8 @@ public class pDayCode extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
@@ -201,8 +209,6 @@ public class pDayCode extends AppCompatActivity
         {
             loadHelpView();
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 

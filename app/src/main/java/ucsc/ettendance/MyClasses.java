@@ -49,7 +49,6 @@ public class MyClasses extends AppCompatActivity
 
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
-    //private FirebaseDatabase mDatabase;
     private String mUserId;
     private DatabaseReference mDatabase;
     private DatabaseReference mStudentRef;
@@ -92,9 +91,11 @@ public class MyClasses extends AppCompatActivity
         }
 
         final ArrayList<String> list = new ArrayList<>();
-        ValueEventListener eventListener = new ValueEventListener() {
+        ValueEventListener eventListener = new ValueEventListener()
+        {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
                     String userKey = ds.getKey();
@@ -106,7 +107,8 @@ public class MyClasses extends AppCompatActivity
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot)
                         {
-                            for(DataSnapshot data: dataSnapshot.getChildren()){
+                            for(DataSnapshot data: dataSnapshot.getChildren())
+                            {
                                 //Gets all classes in Enrolled Classes
                                 String enrolledClasses = data.getKey();
                                 list.add(enrolledClasses);
@@ -145,7 +147,6 @@ public class MyClasses extends AppCompatActivity
                                     deleteItem.setWidth(170);
                                     // set a icon
                                     deleteItem.setIcon(R.drawable.delete);
-//                                    deleteItem.setIcon(R.drawable.ic_trash);
                                     // add to menu
                                     menu.addMenuItem(deleteItem);
                                 }
@@ -154,7 +155,8 @@ public class MyClasses extends AppCompatActivity
                             listView2.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
                                 @Override
                                 public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
-                                    switch (index) {
+                                    switch (index)
+                                    {
                                         case 0:
                                             Log.d("view", String.valueOf(position));
                                             Intent intent = new Intent(MyClasses.this, classPage.class);
@@ -191,7 +193,8 @@ public class MyClasses extends AppCompatActivity
 
                         }
                         @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                        public void onCancelled(DatabaseError databaseError)
+                        {
 
                         }
 
@@ -201,7 +204,8 @@ public class MyClasses extends AppCompatActivity
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(DatabaseError databaseError)
+            {
 
             }
 

@@ -24,7 +24,6 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:paddingBottom="8dp"
             android:text="  Help"
             android:textAppearance="@style/TextAppearance.AppCompat.Display2"
             android:textColor="@color/lightBlue"

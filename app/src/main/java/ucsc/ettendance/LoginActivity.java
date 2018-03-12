@@ -51,7 +51,8 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity
+{
 
     private static final String TAG = "LoginActivity";
     private Button logInButton, signUpButton;
@@ -63,7 +64,8 @@ public class LoginActivity extends AppCompatActivity {
     View focusView = null;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         auth = FirebaseAuth.getInstance();
@@ -159,18 +161,21 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     //verifies that the email verification was confirmed
-    private void checkEmailVerification() {
+    private void checkEmailVerification()
+    {
        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
        Boolean emailFlag = firebaseUser.isEmailVerified();
        Log.d("emailFlag", emailFlag.toString());
-       if(emailFlag) {
+       if(emailFlag)
+       {
            startActivity(new Intent (LoginActivity.this, splashScreen.class));
            finish();
        }
-       else {
-           Toast.makeText(this, "Verify your email address", Toast.LENGTH_LONG).show();
-           auth.signOut(); //keep this or else it logs in the user
-       }
+       else
+           {
+             Toast.makeText(this, "Verify your email address", Toast.LENGTH_LONG).show();
+              auth.signOut(); //keep this or else it logs in the user
+           }
     }
     //checks to make sure that the emails field is not empty nor is it invalid
     private boolean checkEmail()
