@@ -107,6 +107,7 @@ public class pAnnouncementPage extends AppCompatActivity
                     adapter2.add(newUser);
                     listView2.setAdapter(adapter2);
                 }
+                adapter2.notifyDataSetChanged();
             }
 
             @Override
