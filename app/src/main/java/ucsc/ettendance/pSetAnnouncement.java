@@ -21,7 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class pSetAnnouncement extends AppCompatActivity {
+public class pSetAnnouncement extends AppCompatActivity
+{
 
     private EditText mAnnouncementTextView;
     private FirebaseAuth mFirebaseAuth;
@@ -32,7 +33,8 @@ public class pSetAnnouncement extends AppCompatActivity {
     private int aCount;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_set_announcement);
 
@@ -134,10 +136,12 @@ public class pSetAnnouncement extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+
         if(id == R.id.action_help)
         {
             loadHelpView();

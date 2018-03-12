@@ -43,6 +43,7 @@ import static android.Manifest.permission.READ_CONTACTS;
 /**
  * A login screen that offers login via email/password.
  */
+
 public class SignUp extends AppCompatActivity
 {
     private static final String TAG = "LoginActivity";
@@ -135,9 +136,11 @@ public class SignUp extends AppCompatActivity
                     focusView = loginInputEmail;
                     focusView.requestFocus();
                 }
-                else {
+                else
+                {
                     FirebaseUser user = auth.getCurrentUser();
-                    if (user != null) {
+                    if (user != null)
+                    {
                         String fullname = firstName + " " + lastName;
                         Log.d(TAG, "The fullname is " + fullname);
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
@@ -145,12 +148,15 @@ public class SignUp extends AppCompatActivity
                                 .build();
                         user.updateProfile(profileUpdates);
                     }
-                    if (!isProfessor) {
+                    if (!isProfessor)
+                    {
                         sendEmailVerification();
                         databaseReference.child("students").child(user.getUid()).setValue(userInformation);
                         startActivity(new Intent(SignUp.this, LoginActivity.class));
                         finish();
-                    } else {
+                    }
+                    else
+                    {
                         sendEmailVerification();
                         databaseReference.child("teachers").child(user.getUid()).setValue(userInformation);
                         startActivity(new Intent(SignUp.this, LoginActivity.class));
@@ -162,7 +168,8 @@ public class SignUp extends AppCompatActivity
     }
 
     //sends email verification
-    private void sendEmailVerification() {
+    private void sendEmailVerification()
+    {
         final FirebaseUser user = auth.getCurrentUser();
         if(user != null){
             user.sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -185,7 +192,8 @@ public class SignUp extends AppCompatActivity
     {
         //Checks to see if the email is not entered and prints out message the email is require
         String email = loginInputEmail.getText().toString().trim();
-        if (email.isEmpty()) {
+        if (email.isEmpty())
+        {
             loginInputEmail.setError(getString(R.string.error_field_required));
             focusView = loginInputEmail;
             focusView.requestFocus();
@@ -205,6 +213,7 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
+
         return true;
     }
 
@@ -225,6 +234,7 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
+
         return true;
     }
 
@@ -238,17 +248,20 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
+
         return true;
     }
     private boolean checkLastName()
     { //Makes sure that the field for the last name is not left blank
         String lastName = loginInputLastName.getText().toString().trim();
-        if (lastName.isEmpty()) {
+        if (lastName.isEmpty())
+        {
             loginInputFirstName.setError(getString(R.string.error_field_required));
             focusView = loginInputLastName;
             focusView.requestFocus();
             return false;
         }
+
         return true;
     }
 
@@ -270,6 +283,7 @@ public class SignUp extends AppCompatActivity
             focusView.requestFocus();
             return false;
         }
+
         return true;
     }
     private boolean checkConfirm()
@@ -277,6 +291,7 @@ public class SignUp extends AppCompatActivity
         Log.d(TAG,"IM IN CONFIRM.");
         String password = loginInputPassword.getText().toString();
         String confirm = loginInputConfirm.getText().toString();
+
         if (confirm.isEmpty())
         {
             loginInputConfirm.setError(getString(R.string.error_field_required));
@@ -302,12 +317,14 @@ public class SignUp extends AppCompatActivity
         {
             @Override
             public void onComplete(@NonNull Task<ProviderQueryResult> task) {
-                if(task.isSuccessful()){
+                if(task.isSuccessful())
+                {
                     // getProviders().size() will return size 1. if email ID is available.
                      result = task.getResult().getProviders().size();
                 }
             }
         });
+
         if(result ==1)
         {
             return true;

@@ -215,7 +215,8 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         if (ContextCompat.checkSelfPermission(this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                == PackageManager.PERMISSION_GRANTED)
+        {
             LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
         }
     }
@@ -237,6 +238,7 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
 
     //Verifies that there is a location permission in the Android Manifest xml
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
     private void checkLocationPermission()
     {
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -343,10 +345,12 @@ public class pMap extends AppCompatActivity implements OnMapReadyCallback, Googl
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+
         if(id == R.id.action_help)
         {
             loadHelpView();

@@ -10,7 +10,7 @@ import java.util.List;
 
 public class studentHelp extends AppCompatActivity
 
-        //Created  a listview of directions for student so they know how to use the app
+//Created  a listview of directions for student so they know how to use the app
 {
     private ArrayAdapter<String> aa;
     @Override

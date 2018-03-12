@@ -19,7 +19,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-public class pPresentStudents extends AppCompatActivity {
+public class pPresentStudents extends AppCompatActivity
+{
     private static final String TAG = "pPresentStudents";
     private FirebaseAuth mFirebaseAuth;
     private FirebaseUser mFirebaseUser;
@@ -68,7 +69,8 @@ public class pPresentStudents extends AppCompatActivity {
                     String studentName = ds.getKey();
                     String status = ds.getValue().toString();
                     String isPresent = "true";
-                    if(status.equals(isPresent)) {
+                    if(status.equals(isPresent))
+                    {
                         studentArray.add("  "+studentName);
                     }
 
@@ -111,10 +113,12 @@ public class pPresentStudents extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+
         if(id == R.id.action_help)
         {
             loadHelpView();
