@@ -90,8 +90,6 @@ public class pAnnouncementPage extends AppCompatActivity
             {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                   // String announceDate = ds.getKey(); // key of announcement, should be a date
-                  //  String announcement = ds.getValue().toString(); // actual announcement text
                     String announcement = ds.getValue().toString(); // actual announcement text
                     String lines[] = announcement.split("\n");
                     for(int i = 0; i <lines.length; i++){
