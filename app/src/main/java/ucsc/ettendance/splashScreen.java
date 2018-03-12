@@ -20,7 +20,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class splashScreen extends AppCompatActivity {
+public class splashScreen extends AppCompatActivity
+{
 
     private FirebaseAuth.AuthStateListener authListener;
     private FirebaseAuth auth;
@@ -35,7 +36,8 @@ public class splashScreen extends AppCompatActivity {
     private static final String TAG = "Splash Screen";
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
@@ -47,7 +49,8 @@ public class splashScreen extends AppCompatActivity {
         mProfRef = mDatabase.child("teachers");
 
 
-        if (mFirebaseUser == null) {
+        if (mFirebaseUser == null)
+        {
             //Not logged in, launch the Log in activity
             loadLogInView();
         }
@@ -58,15 +61,20 @@ public class splashScreen extends AppCompatActivity {
             Log.d("mUserId", mUserId);
 
             //Checks on if the user is a professor and is trying to access the student view
-            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener() {
+            mStudentRef.child(mUserId).addValueEventListener(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
 
                     UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    if (user == null) {
+                    if (user == null)
+                    {
                         Log.d(TAG, "This is a professor, trying to access the student side");
                         loadProfView();
-                    } else {
+                    }
+                    else
+                    {
                         Log.d("StudentRef", "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
                         loadStudentView(); // load student page
                         Log.d("loadStudentView", user.getFirstName());
@@ -75,30 +83,37 @@ public class splashScreen extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onCancelled(DatabaseError error)
+                {
                     // Failed to read value
                     Log.w(TAG, "Failed to read value.", error.toException());
                 }
             });
 
             //Checks on if the user is a student is and is trying to access the professor view
-            mProfRef.child(mUserId).addValueEventListener(new ValueEventListener() {
+            mProfRef.child(mUserId).addValueEventListener(new ValueEventListener()
+            {
                 @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
+                public void onDataChange(DataSnapshot dataSnapshot)
+                {
 
 
                     UserInformation user = dataSnapshot.getValue(UserInformation.class);
-                    if (user == null) {
+                    if (user == null)
+                    {
                         Log.d(TAG, "This is a student, trying to access the professor side");
                         loadStudentView();
-                    } else {
+                    }
+                    else
+                    {
                         Log.d("ProfRef", "First Name: " + user.getFirstName() + " Last Name: " + user.getLastName() + ", ID: " + user.getStudentId() + " isProfessor: " + user.isProfessor());
                         loadProfView(); // load professor page
                     }
                 }
 
                 @Override
-                public void onCancelled(DatabaseError error) {
+                public void onCancelled(DatabaseError error)
+                {
                     // Failed to read value
                     Log.w(TAG, "Failed to read value.", error.toException());
                 }

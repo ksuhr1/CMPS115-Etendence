@@ -3,6 +3,7 @@ package ucsc.ettendance;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +21,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class pSetAnnouncement extends AppCompatActivity {
+public class pSetAnnouncement extends AppCompatActivity
+{
 
     private EditText mAnnouncementTextView;
     private FirebaseAuth mFirebaseAuth;
@@ -31,7 +33,8 @@ public class pSetAnnouncement extends AppCompatActivity {
     private int aCount;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_set_announcement);
 
@@ -90,20 +93,28 @@ public class pSetAnnouncement extends AppCompatActivity {
 
     public void setAnnouncement()
     {
-
-
         mAnnouncementTextView.setError(null);
         final String annoucementText = mAnnouncementTextView.getText().toString();
+        View focusView = null;
 
         // Create/traverse to Accouncements child, create or add to selected day child, and create the
         // announcement with the announcement text.
         Log.d(TAG,"UPDATED COUNT"+ aCount);
 
-        String counter =  String.valueOf(aCount+1);
-        codeRef.child(classCode).child("Announcements").child(counter).setValue(day +"\n" + annoucementText);
-        Log.d(TAG,"Add announcement to Firebase");
-        Toast.makeText(getApplicationContext(), "Created Annoucement for "+ day, Toast.LENGTH_LONG).show();
-        finish();
+        if(!TextUtils.isEmpty(annoucementText))
+        {
+            String counter = String.valueOf(aCount + 1);
+            codeRef.child(classCode).child("Announcements").child(counter).setValue(day + "\n" + annoucementText);
+            Log.d(TAG, "Add announcement to Firebase");
+            Toast.makeText(getApplicationContext(), "Created Annoucement for " + day, Toast.LENGTH_LONG).show();
+            finish();
+        }
+        else
+        {
+            mAnnouncementTextView.setError("This field is required");
+            focusView = mAnnouncementTextView;
+            focusView.requestFocus();
+        }
     }
 
     //log out button logic
@@ -125,10 +136,12 @@ public class pSetAnnouncement extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logout)
+        {
             mFirebaseAuth.signOut();
             loadLogInView();
         }
+
         if(id == R.id.action_help)
         {
             loadHelpView();
