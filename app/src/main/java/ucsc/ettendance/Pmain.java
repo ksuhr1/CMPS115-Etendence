@@ -128,6 +128,7 @@ public class Pmain extends AppCompatActivity
 
 
         //IF ARRAY IS CLICKED
+        //Takes you to class page based on the what class on the array is clicked
         list.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3)

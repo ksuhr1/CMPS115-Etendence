@@ -355,6 +355,7 @@ public class AddClass extends AppCompatActivity
         startActivity(intent);
     }
 
+
     //checks that the id length should be atleast 4 characters
     private static boolean isPinShort(String pin)
     {

@@ -23,7 +23,7 @@ public class studentHelp extends AppCompatActivity
         steps.add("STEP 1: \nAdd any class for the quarter by pressing the “Add Class” button.");
         steps.add("STEP 2: \nEnter the class code and class pin given by the professor.");
         steps.add("STEP 3: \nClick on a class to navigate to the class page.");
-        steps.add("STEP 4: \nTo check in for the day click the “Check In” button.");
+        steps.add("STEP 4: \nTo check in for the day, click the “Check In” button.");
         steps.add("STEP 5: \nMake sure your location services are enabled in order to properly check in.");
         steps.add("STEP 6: \nInput the daily attendance code provided by the professor and click “Check In”.");
 

@@ -25,7 +25,7 @@ public class pHelp extends AppCompatActivity {
         steps.add("STEP 5: (Optional) \nClick “Present Students” to view students who were present for the selected day.");
         steps.add("STEP 6: (Optional) \nClick “Absent Students” to view students who were absent for the selected day.");
         steps.add("STEP 7: (Optional) \nClick “Announcements” to view your announcements.");
-        steps.add("STEP 8: (Optional) \nClick “Create Announcement” to add a new announcement.");
+        steps.add("STEP 8: (Optional) \nClick “Create Announcement” to add a new announcements.");
 
 
 
