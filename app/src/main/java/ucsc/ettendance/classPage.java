@@ -84,11 +84,10 @@ public class classPage extends AppCompatActivity
                             Log.d("announce",announce);
                         }
                     }
-
+                    AnnouncementModel newUser = new AnnouncementModel(date,announce);
+                    adapter2.add(newUser);
+                    listView2.setAdapter(adapter2);
                 }
-                AnnouncementModel newUser = new AnnouncementModel(date,announce);
-                adapter2.add(newUser);
-                listView2.setAdapter(adapter2);
             }
 
             @Override
