@@ -44,6 +44,7 @@ public class pAnnouncementPage extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p_announcement_page);
+        mFirebaseUser= mFirebaseAuth.getCurrentUser();
         updateListView();
 
         //CREATE ANNOUNCEMENT BUTTON
