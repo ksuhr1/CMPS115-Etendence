@@ -30,7 +30,7 @@ public class PaddClass extends AppCompatActivity
 
 {
     private static final String TAG = "PaddClass";
-    private static int result = 0;
+
     private EditText mClassNameView;
     private EditText mQuarterTermView;
     private EditText mClassCodeView;
@@ -98,42 +98,48 @@ public class PaddClass extends AppCompatActivity
 
 
         // Checks for a valid name
-        if (TextUtils.isEmpty(name)) {
+        if (TextUtils.isEmpty(name))
+        {
             mClassNameView.setError(getString(R.string.error_field_required));
             focusView = mClassNameView;
             invalidField = true;
         }
 
         // Checks for a valid class code, if the user entered one.
-        if (TextUtils.isEmpty(code)) {
+        if (TextUtils.isEmpty(code))
+        {
             mClassCodeView.setError(getString(R.string.error_field_required));
             focusView = mClassCodeView;
             invalidField = true;
         }
 
         //Checks to see if the code entered fits the length constraint
-        if (isCodeShort(pin)) {
+        if (isCodeShort(pin))
+        {
             mClassCodeView.setError("The code must be at least 4 characters");
             focusView = mClassCodeView;
             invalidField = true;
         }
 
         //Checks if Quarter Term was entered
-        if (TextUtils.isEmpty(quarter)) {
+        if (TextUtils.isEmpty(quarter))
+        {
             mQuarterTermView.setError(getString(R.string.error_field_required));
             focusView = mQuarterTermView;
             invalidField = true;
         }
 
         //Checks if a pin is entered, if not, sets an error msg
-        if (TextUtils.isEmpty(pin)) {
+        if (TextUtils.isEmpty(pin))
+        {
             mClassPINView.setError(getString(R.string.error_field_required));
             focusView = mClassPINView;
             invalidField = true;
         }
 
         //Checks to see if pin fits the correct length constraints
-        if (isPinShort(pin)) {
+        if (isPinShort(pin))
+        {
             mClassPINView.setError("The pin must be at least 4 numbers");
             focusView = mClassPINView;
             invalidField = true;
@@ -142,9 +148,10 @@ public class PaddClass extends AppCompatActivity
 
         if (invalidField)
         {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
+            // There was an error; don't attempt login and focus the first form field with an error.
+
             focusView.requestFocus();
+            progressBar.setVisibility(View.GONE);
         }
         else
         {
