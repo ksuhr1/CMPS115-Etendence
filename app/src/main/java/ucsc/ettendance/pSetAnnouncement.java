@@ -100,7 +100,7 @@ public class pSetAnnouncement extends AppCompatActivity {
         Log.d(TAG,"UPDATED COUNT"+ aCount);
 
         String counter =  String.valueOf(aCount+1);
-        codeRef.child(classCode).child("Announcements").child(counter).setValue(day +":\n" + annoucementText);
+        codeRef.child(classCode).child("Announcements").child(counter).setValue(day +"\n" + annoucementText);
         Log.d(TAG,"Add announcement to Firebase");
         Toast.makeText(getApplicationContext(), "Created Annoucement for "+ day, Toast.LENGTH_LONG).show();
         finish();

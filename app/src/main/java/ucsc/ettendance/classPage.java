@@ -36,6 +36,8 @@ public class classPage extends AppCompatActivity
     private DatabaseReference classRef;
     private String classTitle;
     List<String> items;
+    String announce;
+    String date;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -76,29 +78,24 @@ public class classPage extends AppCompatActivity
             {
                 for(DataSnapshot ds: dataSnapshot.getChildren())
                 {
-                    String announceDate = ds.getKey(); // key of announcement, should be a date
                     String announcement = ds.getValue().toString(); // actual announcement text
-                    AnnouncementModel newUser = new AnnouncementModel(announceDate,announcement);
-                    adapter2.add(newUser);
-                  //  announceArray.add(announceDate + "\n" + announcement+"\n" ); // adds the announcement date and text to the list view
-                  //  String[] items = announceArray.split(",");
-//                    String choice = temp.substring(1, temp.length()-1);
-//                    String[] arrayList = choice.split("/n");
-//                    Log.d("choice",choice);
-//                    Log.d("announceArray", temp);
-//                    for(int i = 0; i < announceArray.size(); i++){
-//                        int remainder = i% 4;
-//
-//
-//                    }
+                    String lines[] = announcement.split("\n");
+                    for(int i = 0; i <lines.length; i++){
+                        int remainder = i%2;
+                        if(remainder == 0){
+                            date = lines[i];
+                            Log.d("date", date);
+                        }
+                        if(remainder == 1){
+                            announce = lines[i];
+                            Log.d("announce",announce);
+                        }
+                        AnnouncementModel newUser = new AnnouncementModel(date,announce);
+                        adapter2.add(newUser);
+                    }
 
-                    //announceDate + ": " +
-                    Log.d("classPage", announceDate + ": " + announcement);
                 }
                 listView2.setAdapter(adapter2);
-
-            //    aa = new ArrayAdapter<String>(classPage.this, R.layout.class_page_list, announceArray);
-            //    list.setAdapter(aa);
             }
 
             @Override
